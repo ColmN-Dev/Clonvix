@@ -14,7 +14,9 @@ Clonvix was inspired by my own experience of learning about GitHub and its featu
 
 Clonvix is a web application that combines GitHub repository discovery, developer profiles and personal organisation features in one interface.
 
-Visitors can search and browse public repositories and developer profiles without creating an account. Registered users can save repositories for later, follow developers within Clonvix and manage their own profiles. Users can also connect their GitHub accounts to display their public profile and repositories.
+Visitors can search and browse public repositories and developer profiles without creating an account. Registered users can save repositories for later, follow GitHub developers within Clonvix and manage their own profiles. Users can also connect their GitHub accounts to display their public profile and repositories.
+
+GitHub developers can be followed through Clonvix even if they have never registered with the platform.
 
 The application also includes a personal developer showcase, ColmN-Dev, with separate About and Contact pages.
 
@@ -26,7 +28,7 @@ The central idea is to make GitHub-related discovery more approachable without a
 |---|---|---|
 | Discovering projects | A beginner searches for Python repositories and explores a project's details and files. | Makes it easier to find real-world code to learn from. |
 | Saving useful work | A registered user saves repositories and revisits them later. | Keeps interesting projects organised in one place. |
-| Following developers | A visitor follows a developer through Clonvix. | Makes it easier to keep track of developers without changing their GitHub following list. |
+| Following developers | A registered user follows a developer through Clonvix. | Makes it easier to keep track of developers without changing their GitHub following list. |
 | Exploring developer work | A visitor opens a developer's profile and explores their available information and links. | Makes it easier to discover developers and their work. |
 
 ## Target Audience
@@ -51,8 +53,8 @@ The design focuses on user needs rather than assumptions about age or background
 | Registration and login | Users create a Clonvix account using an email address and password, then log in. | Enables access to account-specific features. |
 | Saved repositories | Logged-in users save and remove repositories from their personal collection. | Makes useful projects easier to revisit. |
 | Developer profiles | Visitors view profile information, follower and following counts, and optional social links. | Provides a central place to discover information about developers. |
-| Following developers | Visitors follow or unfollow developers within Clonvix. | Supports developer discovery independently of GitHub's own following system. |
-| GitHub integration | Users connect or disconnect their GitHub accounts. | Allows connected users to display their public GitHub profile and repositories. |
+| Following developers | Registered users follow or unfollow developers within Clonvix. | Supports developer discovery independently of GitHub's own following system. |
+| GitHub integration | Users connect or disconnect their GitHub accounts. | Allows connected users to display their public GitHub profile, repositories and profile README. |
 | Personal showcase and supporting pages | Visitors explore the ColmN-Dev showcase, About page or Contact page. | Presents the developer's work and provides relevant contact information. |
 | Responsive design and themes | Users access the application on different screen sizes and choose light or dark mode. | Supports accessibility, consistency and ease of use. |
 
@@ -91,6 +93,10 @@ PostgreSQL stores Clonvix's own application data, while GitHub remains the sourc
 ### Usability
 
 Bootstrap provides a foundation for responsive layouts, with custom CSS supporting the Clonvix design. Consistent navigation, clear feature labels and light and dark themes help users interact with the application across different devices.
+
+### Security
+
+Django includes built-in protection against common web vulnerabilities such as cross-site scripting, cross-site request forgery and SQL injection, and stores passwords securely using hashing. Access tokens and other secrets will be kept in environment variables rather than in the code.
 
 ## Project Goals and Success Criteria
 

@@ -28,7 +28,7 @@ The application will include the following features:
 
 - **Saved repositories:** Save and remove public repositories for later reference, independently of GitHub stars.
 
-- **Following Developers:** Follow and unfollow GitHub developers through Clonvix, including developers without Clonvix accounts.
+- **Following developers:** Follow and unfollow GitHub developers through Clonvix, including developers without Clonvix accounts.
 
 - **Developer profiles:** Display available public GitHub information alongside Clonvix following relationships.
 
