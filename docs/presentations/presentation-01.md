@@ -1,4 +1,4 @@
-# Clonvix — Project Brief Presentation
+# Presentation 1 — Project Brief
 
 ## Background and Context
 
@@ -87,6 +87,8 @@ The technology stack was selected to support a maintainable application, reliabl
 ### Scalability and Maintainability
 
 Separating the React frontend from the Django backend keeps the user interface and application logic distinct. TypeScript and reusable components help maintain the frontend, while Django REST Framework provides a structured API for communication between the two layers.
+
+The trade-off is added complexity: the frontend and backend communicate through an API, which takes more setup than a single combined application.
 
 PostgreSQL stores Clonvix's own application data, while GitHub remains the source of repository and developer information. API rate limits, request failures and appropriate caching must be considered to maintain reliable access as the application develops.
 
