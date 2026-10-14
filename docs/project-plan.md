@@ -81,3 +81,9 @@ The ColmN-Dev showcase will present my development work, while About and Contact
 Development will proceed incrementally, beginning with the application setup and GitHub API integration. Repository discovery and the guest experience will be developed first, followed by user accounts, authentication and features such as profile management, saved repositories and following developers.
 
 Responsive design, testing and refinement will take place throughout development, alongside the implementation of the remaining features.
+
+## Presentation Summaries
+
+### Presentation 1 — Project Brief
+
+Presentation 1 sets out the foundation of Clonvix: the problem it addresses, the application concept and user scenarios, the target audience, core features, technology stack rationale, success criteria and initial wireframes. The full content is in [Presentation 1 — Project Brief](docs/presentations/presentation-01.md).
