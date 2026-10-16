@@ -1,0 +1,104 @@
+Project Clonvix {
+  database_type: 'PostgreSQL'
+  Note: 'Database schema for the Clonvix developer portfolio and GitHub explorer.'
+}
+
+Table user {
+  id bigint [pk, increment]
+  email varchar(254) [not null, unique]
+  username varchar(150) [not null, unique]
+  password varchar(128) [not null]
+  first_name varchar(150)
+  last_name varchar(150)
+  is_active boolean [not null, default: true]
+  is_staff boolean [not null, default: false]
+  is_superuser boolean [not null, default: false]
+  last_login timestamp
+  date_joined timestamp [not null]
+}
+
+Table profile {
+  id bigint [pk, increment]
+  user_id bigint [not null, unique]
+  display_name varchar(100)
+  bio text
+  profile_picture_url varchar(500)
+  social_url_1 varchar(500)
+  social_url_2 varchar(500)
+  social_url_3 varchar(500)
+  social_url_4 varchar(500)
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table username_change_log {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  previous_username varchar(150) [not null, unique]
+  changed_at timestamp [not null]
+}
+
+Table github_connection {
+  id bigint [pk, increment]
+  user_id bigint [not null, unique]
+  github_id bigint [not null, unique]
+  github_username varchar(100) [not null]
+  access_token text
+  connected_at timestamp [not null]
+}
+
+Table saved_repository {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  github_repo_id bigint [not null]
+  repository_name varchar(255) [not null]
+  owner_login varchar(100) [not null]
+  full_name varchar(255) [not null]
+  repository_url varchar(500) [not null]
+  description text
+  language varchar(100)
+  stars_count integer [not null, default: 0]
+  saved_at timestamp [not null]
+
+  indexes {
+    (user_id, github_repo_id) [unique]
+  }
+}
+
+Table follow {
+  id bigint [pk, increment]
+  follower_id bigint [not null]
+  following_id bigint [not null]
+  created_at timestamp [not null]
+
+  indexes {
+    (follower_id, following_id) [unique]
+  }
+}
+
+Table github_follow {
+  id bigint [pk, increment]
+  user_id bigint [not null]
+  github_user_id bigint [not null]
+  github_username varchar(100) [not null]
+  avatar_url varchar(500)
+  created_at timestamp [not null]
+
+  indexes {
+    (user_id, github_user_id) [unique]
+  }
+}
+
+Ref: profile.user_id - user.id
+
+Ref: username_change_log.user_id > user.id
+
+Ref: github_connection.user_id - user.id
+
+Ref: saved_repository.user_id > user.id
+
+Ref: follow.follower_id > user.id
+
+Ref: follow.following_id > user.id
+
+Ref: github_follow.user_id > user.id
