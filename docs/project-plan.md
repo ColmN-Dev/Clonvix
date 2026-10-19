@@ -90,7 +90,7 @@ Selecting a repository card will navigate to its dedicated detail page. Saving a
 
 The homepage will feature repository discovery content, including programming-language carousels and a Trending This Week section.
 
-Trending This Week will display the top five repositories across all programming languages, ranked by stars gained during the preceding seven days where reliable data is available. The results will be cached for one hour to reduce repeated requests.
+Trending This Week will display the top three repositories across all programming languages, ranked by stars gained during the preceding seven days where reliable data is available. The results will be cached for one hour to reduce repeated requests.
 
 ### Developer Profiles
 
