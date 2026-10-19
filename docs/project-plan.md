@@ -200,4 +200,8 @@ The generated database schema diagram can be found here: [Clonvix ERD](/docs/clo
 
 ### Presentation 1 — Project Brief
 
-Presentation 1 sets out the foundation of Clonvix: the problem it addresses, the application concept and user scenarios, the target audience, core features, technology stack rationale, success criteria and initial wireframes. The full content is in [Presentation 1 — Project Brief](docs/presentations/presentation-01.md).
+Presentation 1 sets out the foundation of Clonvix: the problem it addresses, the application concept and user scenarios, the target audience, core features, technology stack rationale, success criteria and initial wireframes. The full content is in [Presentation 1 — Project Brief](/docs/presentations/presentation-01.md).
+
+### Presentation 2 — Project Brief
+
+Presentation 2 expands on the initial concept by defining user roles, feature dependencies, potential challenges and contingency plans, user journeys, and site navigation. It establishes how Clonvix's planned features fit together and how users will navigate the application. The full content is in [Presentation 2 — Project Brief](/docs/presentations/presentation-02.md).
