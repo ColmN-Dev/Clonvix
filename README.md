@@ -6,7 +6,9 @@ Clonvix allows users to discover public GitHub repositories, explore repository 
 
 ## Site Logo
 
-![Clonvix Logo](/src/frontend/src/assets/clonvix-logo.png)
+<p align="center">
+  <img src="src/frontend/src/assets/clonvix-logo.png" alt="Clonvix Logo" width="300">
+</p>
 
 ## Features
 
