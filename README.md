@@ -28,11 +28,22 @@ Clonvix allows users to discover public GitHub repositories, explore repository 
 
 ## Technologies Used
 
+**Backend**
 - Python
 - Django
 - Django REST Framework
+
+**Frontend**
 - React
 - TypeScript
 - Vite
+- Tailwind CSS v4
+
+**Database & Deployment**
 - PostgreSQL
+- Neon
+- Render
+
+**API**
 - GitHub REST API
+- Cloudinary
