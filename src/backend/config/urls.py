@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import JsonResponse
+
+def api_status(request):
+    return JsonResponse({'message': 'Clonvix backend is running successfully.'})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/status/', api_status, name='api_status'),
 ]
