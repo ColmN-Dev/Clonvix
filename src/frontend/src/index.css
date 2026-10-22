@@ -40,7 +40,6 @@
   --text-on-accent: #17210b;
 }
 
-
 /* ========== DARK THEME ========== */
 
 @media (prefers-color-scheme: dark) {
@@ -60,6 +59,8 @@
   }
 }
 
+/* ========== MANUAL THEME OVERRIDES ========== */
+
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -73,6 +74,10 @@
   --text-primary: #f1f5f9;
   --text-secondary: #9aa9bd;
   --border: #253249;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
 }
 
 
