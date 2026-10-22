@@ -6,11 +6,16 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+# Load environment variables from .env file at the root of the project
+load_dotenv(BASE_DIR.parent.parent / '.env')
+
+# Environment variables
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+# Hosting and Cross-Origin Configuration
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -36,6 +41,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
 ]
+
+# Override the default Django user model
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
