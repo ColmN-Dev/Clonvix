@@ -55,7 +55,7 @@ The project is intended to give visitors a simple way to discover public reposit
 
 Install the following before starting development:
 
-- Python 3.12 or later
+- Python 3.14 or later
 - Node.js and npm
 - PostgreSQL, or access to a PostgreSQL database such as Neon
 - Git
@@ -92,13 +92,12 @@ Install the Python dependencies:
 python -m pip install -r requirements.txt
 ```
 
-Create a `.env` file in `src/backend` with the values needed for local development:
+Create a `.env` file in the project root with the values needed for local development:
 
 ```env
 SECRET_KEY=replace-with-a-local-development-key
 DEBUG=True
 DATABASE_URL=postgresql://username:password@localhost:5432/clonvix
-DB_SSL=False
 ```
 
 The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database.

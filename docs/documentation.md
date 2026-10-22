@@ -1,6 +1,6 @@
 # Clonvix Documentation
 
-**Last updated:** October 21, 2026
+**Last updated:** October 22, 2026
 
 ---
 
@@ -101,6 +101,8 @@ The backend is a Django project located in `src/backend`. Django REST Framework 
 
 The backend currently provides a basic health/status endpoint at `GET /api/status/`. It returns a JSON message which is used by the frontend to confirm that the two applications can communicate. The Django admin route is also configured at `/admin/`.
 
+The custom user model uses email addresses for login instead of usernames. It extends Django's built-in user model and is registered in the Django admin panel, where user accounts can be managed. The initial database migrations have been applied, and a superuser account is available for admin access.
+
 The backend settings already provide the initial environment-aware setup:
 
 - PostgreSQL is configured through `DATABASE_URL`, with `dj-database-url` handling the connection settings.
@@ -166,6 +168,7 @@ Clonvix is early in development, so the current limitations are mostly features 
 
 - The frontend currently only shows the backend status check; none of the planned screens have been built.
 - There are no user accounts, login or profiles yet.
+- The custom user model is in place, but the models for profiles, saved repositories and follow relationships still need to be implemented.
 - The database models and migrations have not been created. The ERD is still a design only.
 - There is no GitHub API integration yet, so no repository data is shown.
 - The project has not been deployed. The backend address used by the frontend is set for local development and will need to change for deployment.
@@ -226,41 +229,38 @@ To be completed as the project progresses.
 ## 13. References
 
 ### Project and source control
-
-* [Clonvix GitHub repository](https://github.com/ColmN-Dev/Clonvix)
-* [Git documentation](https://git-scm.com/doc)
+- [Clonvix GitHub repository](https://github.com/ColmN-Dev/Clonvix)
+- [Git documentation](https://git-scm.com/doc)
 
 ### Frontend
-
-* [React documentation](https://react.dev/)
-* [TypeScript documentation](https://www.typescriptlang.org/docs/)
-* [Vite documentation](https://vite.dev/guide/)
-* [Tailwind CSS documentation](https://tailwindcss.com/docs)
+- [React documentation](https://react.dev/)
+- [TypeScript documentation](https://www.typescriptlang.org/docs/)
+- [Vite documentation](https://vite.dev/guide/)
+- [Tailwind CSS documentation](https://tailwindcss.com/docs)
 
 ### Backend and API
-
-* [Python documentation](https://docs.python.org/3/)
-* [Django documentation](https://docs.djangoproject.com/)
-* [Django REST Framework documentation](https://www.django-rest-framework.org/)
-* [django-cors-headers documentation](https://github.com/adamchainz/django-cors-headers)
-* [Gunicorn documentation](https://docs.gunicorn.org/en/stable/)
-* [python-dotenv documentation](https://bbc2.github.io/python-dotenv/)
-* [dj-database-url documentation](https://github.com/jazzband/dj-database-url)
+- [Python documentation](https://docs.python.org/3/)
+- [Django documentation](https://docs.djangoproject.com/)
+- [Django custom authentication documentation](https://docs.djangoproject.com/en/6.1/topics/auth/customizing/)
+- [Django admin site documentation](https://docs.djangoproject.com/en/6.1/ref/contrib/admin/)
+- [Django model forms documentation](https://docs.djangoproject.com/en/6.1/topics/forms/modelforms/)
+- [Django REST Framework documentation](https://www.django-rest-framework.org/)
+- [django-cors-headers documentation](https://github.com/adamchainz/django-cors-headers)
+- [Gunicorn documentation](https://docs.gunicorn.org/en/stable/)
+- [python-dotenv documentation](https://bbc2.github.io/python-dotenv/)
+- [dj-database-url documentation](https://github.com/jazzband/dj-database-url)
 
 ### Database
-
-* [PostgreSQL documentation](https://www.postgresql.org/docs/)
-* [Neon documentation](https://neon.tech/docs)
-* [dbdiagram.io](https://dbdiagram.io/docs)
+- [PostgreSQL documentation](https://www.postgresql.org/docs/)
+- [Neon documentation](https://neon.tech/docs)
+- [dbdiagram.io documentation](https://dbdiagram.io/docs)
 
 ### External services
-
-* [GitHub REST API documentation](https://docs.github.com/en/rest)
-* [GitHub OAuth documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)
-* [Cloudinary documentation](https://cloudinary.com/documentation)
-* [Brevo API documentation](https://developers.brevo.com/)
+- [GitHub REST API documentation](https://docs.github.com/en/rest)
+- [GitHub OAuth documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)
+- [Cloudinary documentation](https://cloudinary.com/documentation)
+- [Brevo API documentation](https://developers.brevo.com/)
 
 ### Hosting and deployment
-
-* [Render documentation](https://render.com/docs)
-* [Django deployment checklist](https://docs.djangoproject.com/en/stable/howto/deployment/checklist/)
+- [Render documentation](https://render.com/docs)
+- [Django deployment checklist](https://docs.djangoproject.com/en/stable/howto/deployment/checklist/)
