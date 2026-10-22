@@ -187,7 +187,3 @@ Development is planned in the following broad stages:
 7. Add testing, accessibility, responsive refinements and production deployment.
 
 The roadmap is intentionally broad and may change as implementation and testing reveal new requirements.
-
-## Licence
-
-No licence has been added to the repository yet.
