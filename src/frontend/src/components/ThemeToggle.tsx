@@ -48,6 +48,7 @@ function ThemeToggle() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Change theme"
         aria-expanded={isOpen}
+        title={`Current theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`}
       >
         <Icon size={25} />
       </button>
