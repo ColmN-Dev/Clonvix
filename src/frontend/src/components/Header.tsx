@@ -1,4 +1,5 @@
 import Nav from './Nav'
+import ThemeToggle from './ThemeToggle'
 import { Link } from 'react-router'
 import logo from '../assets/clonvix-logo.png'
 
@@ -10,7 +11,7 @@ function Header() {
         <span>Clonvix</span>
       </Link>
       <Nav />
-      <div aria-hidden="true" />
+      <ThemeToggle />
     </header>
   )
 }
