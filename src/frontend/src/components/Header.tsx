@@ -7,8 +7,8 @@ function Header() {
   return (
     <header className="site-header">
       <Link className="site-brand" to="/">
-        <img alt="Clonvix logo" src={logo} />
-        <span>Clonvix</span>
+        <img className="logo" alt="Clonvix logo" src={logo} />
+        <span className="title">Clonvix</span>
       </Link>
       <Nav />
       <ThemeToggle />
