@@ -28,7 +28,6 @@ The project is intended to give visitors a simple way to discover public reposit
 - Connect a GitHub account and view public repositories
 - Showcase ColmN-Dev projects through the Clonvix interface
 - Provide About and Contact pages
-- Support light and dark themes with a responsive layout
 
 ### Currently available
 
@@ -37,6 +36,7 @@ The project is intended to give visitors a simple way to discover public reposit
 - Initial PostgreSQL configuration through environment variables
 - Initial Clonvix branding, theme variables and logo assets
 - Project plan, wireframes, user journeys, site map and database ERD
+- Light and dark theme support with a theme toggle
 
 ## Technology stack
 
