@@ -1,15 +1,16 @@
 import { Link } from 'react-router'
 
-function Nav() {
+type NavProps = {
+  onLinkClick?: () => void
+}
+
+function Nav({ onLinkClick }: NavProps) {
   return (
     <nav aria-label="Primary navigation" className="nav-links">
-      <Link to="/">Home</Link>
-      |
-      <Link to="/about">About</Link>
-      |
-      <Link to="/colmn-dev">ColmN-Dev</Link>
-      |
-      <Link to="/contact">Contact</Link>
+      <Link to="/" onClick={onLinkClick}>Home</Link>
+      <Link to="/about" onClick={onLinkClick}>About</Link>
+      <Link to="/colmn-dev" onClick={onLinkClick}>ColmN-Dev</Link>
+      <Link to="/contact" onClick={onLinkClick}>Contact</Link>
     </nav>
   )
 }
