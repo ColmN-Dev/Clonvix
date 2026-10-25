@@ -206,6 +206,7 @@ The structure will grow as the planned features are implemented. The more detail
 - [Database ERD image](docs/clonvix-erd.png)
 - [Presentation 1: Project brief](docs/presentations/presentation-01.md)
 - [Presentation 2: Project brief](docs/presentations/presentation-02.md)
+- [Presentation 3: Project Update](docs/presentations/presentation-03.md)
 - [Wireframes](docs/wireframes/)
 - [Site map and user journey diagrams](docs/images/)
 
