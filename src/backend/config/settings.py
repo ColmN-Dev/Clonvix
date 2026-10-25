@@ -13,6 +13,8 @@ load_dotenv(BASE_DIR.parent.parent / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+GITHUB_API_TOKEN = os.getenv('GITHUB_API_TOKEN')
+
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosting and Cross-Origin Configuration
