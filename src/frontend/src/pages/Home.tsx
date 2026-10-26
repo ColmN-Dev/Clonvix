@@ -1,15 +1,20 @@
+import SearchBar from "../components/SearchBar"
+
 function Home() {
   return (
 
-    <main>
-      <section className=" hero-content flex flex-1 items-start justify-center p-10 text-center">
+  <main>
+    <section className="hero-content flex flex-1 items-start justify-center p-10 text-center">
       <div>
-        <h1 className=" hero-title text-5xl font-semibold text-(--hero-text)">
+        <h1 className="hero-title text-5xl font-semibold text-(--hero-text)">
           Explore GitHub Repositories
         </h1>
-        <p className=" hero-subtitle mt-4 text-(--hero-text)">
+        <p className="hero-subtitle mt-4 text-(--hero-text)">
           Search public repositories, explore source code, and connect with developers.
         </p>
+        <div className="mt-8">
+          <SearchBar />
+        </div>
       </div>
     </section>
 
@@ -22,7 +27,8 @@ function Home() {
       </div>
     </section>
 
-    </main>
+  </main>
+  
   )
 }
 
