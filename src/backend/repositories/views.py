@@ -1,7 +1,7 @@
 import requests
 from django.http import JsonResponse
 
-from .services import get_repository_search
+from .services import cached_repository_search
 
 
 def search_repositories_view(request):
@@ -15,7 +15,7 @@ def search_repositories_view(request):
         page = 1
 
     try:
-        data = get_repository_search(query, page=page)
+        data = cached_repository_search(query, page=page)
     except requests.RequestException:
         return JsonResponse(
             {"error": "Could not reach GitHub. Try again shortly."}, status=502

@@ -6,7 +6,7 @@ from .github_client import search_repositories
 CACHE_SECONDS = 60 * 5
 
 
-def get_repository_search(query, page=1, per_page=10):
+def cached_repository_search(query, page=1, per_page=10):
     """Return repository search results, using the cache when possible."""
     query = query.strip()
     cache_key = f"repo_search:{query.lower()}:{page}:{per_page}"
