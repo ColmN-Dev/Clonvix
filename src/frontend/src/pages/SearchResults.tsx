@@ -23,7 +23,7 @@ function SearchResults() {
   return (
     <section className="search-results-page">
       <SearchBar />
-      <h1 className="mt-4 font-bold text-2xl">{total.toLocaleString()} {total === 1 ? 'result' : 'results'} for "{query}"</h1>
+      <h1 className="mt-5 font-bold text-2xl">{total.toLocaleString()} {total === 1 ? 'result' : 'results'} for "{query}"</h1>
       {/* Render each repository using the reusable RepoCard component.no */}
         <div className="mt-4 flex flex-col gap-4">
         {repos.map((repo) => (

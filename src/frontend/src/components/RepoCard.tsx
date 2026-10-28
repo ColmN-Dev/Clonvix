@@ -1,3 +1,5 @@
+import { Star } from 'lucide-react';
+
 export interface Repo {
   id: number;
   full_name: string;
@@ -32,14 +34,29 @@ function RepoCard({ repo }: { repo: Repo }) {
 
       <div className="repo-card-topics">
         {repo.topics.map((topic) => (
-          <span key={topic}>{topic}</span>
+          <a
+            key={topic}
+            href={`https://github.com/topics/${topic}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {topic}
+          </a>
         ))}
       </div>
 
       <div className="repo-card-footer">
-        <span>{repo.language ? repo.language : 'No language'}</span>
+        <span className="flex items-center gap-2">
+          {repo.language && (
+            <span
+              className={`language-dot language-${repo.language}`} />
+          )}
+          {repo.language ?? 'No language'}
+        </span>
         <span>•</span>
-        <span>{repo.stargazers_count.toLocaleString()} {repo.stargazers_count === 1 ? 'star' : 'stars'}</span>
+        <span className="flex items-center gap-1">
+          <Star size={16} />{repo.stargazers_count.toLocaleString()}
+        </span>
         <span>•</span>
         <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
       </div>

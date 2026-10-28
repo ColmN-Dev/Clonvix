@@ -442,13 +442,20 @@ button {
   gap: 0.5rem;
 }
 
-.repo-card-topics span {
+.repo-card-topics a {
   padding: 0.2rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--bg-primary);
   color: var(--text-secondary);
   font-size: 0.8rem;
+}
+
+.repo-card-topics a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
 }
 
 .repo-card-footer {
@@ -458,6 +465,49 @@ button {
   color: var(--text-secondary);
   font-size: 0.85rem;
 }
+
+/* ========================================
+    Repository Language Colours 
+   ======================================== */
+
+/* Fallback language color */
+.language-dot {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--language-color, #8b8b8b);
+}
+
+.language-Python { --language-color: #3572A5; }
+.language-JavaScript { --language-color: #F1E05A; }
+.language-TypeScript { --language-color: #3178C6; }
+.language-HTML { --language-color: #E34C26; }
+.language-CSS { --language-color: #663399; }
+.language-Java { --language-color: #B07219; }
+.language-Go { --language-color: #00ADD8; }
+.language-Rust { --language-color: #DEA584; }
+.language-Ruby { --language-color: #701516; }
+.language-PHP { --language-color: #4F5D95; }
+.language-C { --language-color: #555555; }
+.language-C\+\+ { --language-color: #F34B7D; }
+.language-C\# { --language-color: #178600; }
+.language-Shell { --language-color: #89E051; }
+.language-Kotlin { --language-color: #A97BFF; }
+.language-Swift { --language-color: #F05138; }
+.language-Dart { --language-color: #00B4AB; }
+.language-R { --language-color: #198CE7; }
+.language-Vue { --language-color: #41B883; }
+.language-Svelte { --language-color: #FF3E00; }
+.language-Scala { --language-color: #DC322F; }
+.language-Lua { --language-color: #000080; }
+.language-Perl { --language-color: #0298C3; }
+.language-Elixir { --language-color: #6E4A7E; }
+.language-Haskell { --language-color: #5E5086; }
+.language-PowerShell { --language-color: #012456; }
+.language-Makefile { --language-color: #427819; }
+.language-Dockerfile { --language-color: #384D54; }
 
 /* ========================================
    Footer
