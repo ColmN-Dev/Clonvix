@@ -11,6 +11,8 @@ def search_repositories_view(request):
 
     try:
         page = int(request.GET.get("page", 1))
+        if page < 1:
+            page = 1
     except ValueError:
         page = 1
 
