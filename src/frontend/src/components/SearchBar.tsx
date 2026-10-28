@@ -21,7 +21,7 @@ function SearchBar() {
       <input
         type="search"
         className="search-bar-input"
-        placeholder="Search GitHub Repositories..."
+        placeholder="Search GitHub..."
         aria-label="Search GitHub Repositories"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
