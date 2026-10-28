@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import ColmNDev from './pages/ColmN-Dev'
 import Contact from './pages/Contact'
+import SearchResults from './pages/SearchResults'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/colmn-dev" element={<ColmNDev />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </main>
       <Footer />

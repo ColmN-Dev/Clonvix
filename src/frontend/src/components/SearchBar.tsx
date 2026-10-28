@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 function SearchBar() {
   const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
+  // Search form submission
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // search logic to be implemented here
+    const trimmed = query.trim();
+    if (!trimmed) return;
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
   return (
