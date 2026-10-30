@@ -7,7 +7,7 @@ export interface Repo {
   html_url: string;
   stargazers_count: number;
   language: string | null;
-  updated_at: string;
+  pushed_at: string;
   topics: string[];
   owner: {
     login: string;
@@ -58,7 +58,7 @@ function RepoCard({ repo }: { repo: Repo }) {
           <Star size={16} />{repo.stargazers_count.toLocaleString()}
         </span>
         <span>•</span>
-        <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
+        <span>Updated {new Date(repo.pushed_at).toLocaleDateString()}</span>
       </div>
     </article>
   );
