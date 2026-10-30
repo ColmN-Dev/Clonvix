@@ -670,14 +670,12 @@ button {
 .language-PHP { --language-color: #4F5D95; }
 .language-C { --language-color: #555555; }
 .language-C\+\+ { --language-color: #F34B7D; }
-.language-C\# { --language-color: #178600; }
+.language-C\# { --language-color: #7355dd; }
 .language-Shell { --language-color: #89E051; }
 .language-Kotlin { --language-color: #A97BFF; }
 .language-Swift { --language-color: #F05138; }
 .language-Dart { --language-color: #00B4AB; }
 .language-R { --language-color: #198CE7; }
-.language-Vue { --language-color: #41B883; }
-.language-Svelte { --language-color: #FF3E00; }
 .language-Scala { --language-color: #DC322F; }
 .language-Lua { --language-color: #000080; }
 .language-Perl { --language-color: #0298C3; }
