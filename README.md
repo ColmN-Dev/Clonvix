@@ -6,7 +6,7 @@ The project is intended to give visitors a simple way to discover public reposit
 
 Live site: [clonvix.onrender.com](https://clonvix.onrender.com)
 
-> **Development status:** Clonvix is currently in active development. The Django backend, React frontend, custom user model, page routing, responsive layout, project documentation, database design and Render deployment are in place. The main repository and GitHub integration features are being implemented incrementally.
+> **Development status:** Clonvix is currently in active development. The Django backend, React frontend, custom user model, page routing, responsive layout, database design and Render deployment are in place. Repository and topic search are implemented, with account functionality, GitHub account integration and repository detail features still in development.
 
 ## Contents
 
@@ -23,7 +23,6 @@ Live site: [clonvix.onrender.com](https://clonvix.onrender.com)
 
 ### Planned application features
 
-- Search and explore public GitHub repositories
 - View repository details, file trees and source code
 - Register, log in and manage a Clonvix profile
 - Save repositories independently of GitHub stars
@@ -42,9 +41,14 @@ Live site: [clonvix.onrender.com](https://clonvix.onrender.com)
 - Backend status endpoint at `GET /api/status/`
 - Initial PostgreSQL configuration through environment variables
 - Initial Clonvix branding, theme variables and logo assets
-- `repositories` Django app created for the GitHub API features
+- Dedicated `github` Django app for GitHub API integration
 - GitHub API token configuration through environment variables
 - Project plan, wireframes, user journeys, site map and database ERD
+- GitHub repository and topic search through the GitHub REST API
+- Server-side caching of GitHub search responses
+- Repository language filtering and sorting
+- Repository result cards displaying owner information, descriptions, languages, topics and star counts
+- Topic result cards displaying topic information and available images
 
 ## Technology stack
 
@@ -181,14 +185,14 @@ Environment variables set on Render:
 
 ```text
 Clonvix/
-├── build.sh              # Render build script
-├── docs/                 # Project planning, design and supporting documentation
+├── build.sh                  # Render build script
+├── docs/                     # Project planning, design and supporting documentation
 ├── src/
-│   ├── backend/          # Django project and API
-│   │   ├── accounts/     # Custom user model and accounts application
-│   │   ├── config/       # Django settings and URL configuration
-│   │   └── repositories/ # GitHub API features
-│   └── frontend/         # React, TypeScript and Vite application
+│   ├── backend/              # Django project and API
+│   │   ├── accounts/         # Custom user model and accounts application
+│   │   ├── config/           # Django settings and URL configuration
+│   │   └── github/           # GitHub API features
+│   └── frontend/             # React, TypeScript and Vite application
 │       └── src/
 │           ├── assets/       # Logo and images
 │           ├── components/   # Header, Nav, Footer and ThemeToggle
@@ -208,18 +212,19 @@ The structure will grow as the planned features are implemented. The more detail
 - [Presentation 2: Project brief](docs/presentations/presentation-02.md)
 - [Presentation 3: Project Update](docs/presentations/presentation-03.md)
 - [Wireframes](docs/wireframes/)
-- [Site map and user journey diagrams](docs/images/)
+- [Site map, user journey diagrams and images](docs/images/)
 
 ## Roadmap
 
 Development is planned in the following broad stages:
 
-1. Complete the application foundation and API structure.
-2. Add repository discovery using the GitHub REST API.
-3. Add account registration, login and profile management.
-4. Add saved repositories and developer-following features.
-5. Add GitHub account connection and GitHub login.
-6. Build the portfolio showcase, About and Contact pages.
-7. Add testing, accessibility, responsive refinements and continued production deployment.
+1. Expand the backend API and complete the remaining application foundation.
+2. Expand repository discovery with pagination and additional search options.
+3. Build repository detail pages and repository contents.
+4. Add account registration, login and profile management.
+5. Add saved repositories and developer-following features.
+6. Add GitHub account connection and GitHub login.
+7. Complete the portfolio showcase, About and Contact pages.
+8. Add testing, accessibility, responsive refinements and continued production deployment.
 
 The roadmap is intentionally broad and may change as implementation and testing reveal new requirements.

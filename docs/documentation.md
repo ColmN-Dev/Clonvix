@@ -1,6 +1,6 @@
 # Clonvix Documentation
 
-**Last updated:** October 25, 2026
+**Last updated:** October 31, 2026
 
 ---
 
@@ -30,7 +30,7 @@ Visitors will be able to search public GitHub repositories, view repository deta
 
 The project is being developed with React and TypeScript on the frontend and Django with Django REST Framework on the backend. PostgreSQL is used for permanent application data, while the GitHub REST API will provide repository and developer information. The application is hosted on Render, with Neon providing the PostgreSQL database.
 
-At this stage, the project has a working foundation. The custom user model, page routing, responsive layout, theme toggle and live deployment are in place. A `repositories` app has been created for the GitHub API features, and the main Clonvix features, beginning with repository search, are being built incrementally on top of this foundation.
+At this stage, the project has a working foundation, including the custom user model, page routing, responsive layout, theme toggle and live deployment. The `github` app now handles GitHub API integration, with working repository and topic search, server-side caching, language filtering and repository sorting. User search, developer profiles, repository details and authenticated user functionality remain to be developed.
 
 ## 2. Project Structure
 
@@ -53,40 +53,35 @@ Clonvix/
     │   ├── requirements.txt
     │   ├── accounts/
     │   ├── config/
-    │   │   ├── settings.py
-    │   │   └── urls.py
-    │   └── repositories/
+    │   └── github/
     └── frontend/
+        ├── eslint.config.js
         ├── index.html
+        ├── package-lock.json
         ├── package.json
+        ├── tsconfig.app.json
+        ├── tsconfig.json
+        ├── tsconfig.node.json
         ├── vite.config.ts
         ├── public/
         └── src/
-            ├── App.tsx
-            ├── index.css
-            ├── main.tsx
             ├── assets/
             ├── components/
-            │   ├── Footer.tsx
-            │   ├── Header.tsx
-            │   ├── Nav.tsx
-            │   └── ThemeToggle.tsx
-            └── pages/
-                ├── About.tsx
-                ├── ColmN-Dev.tsx
-                ├── Contact.tsx
-                └── Home.tsx
+            ├── pages/ 
+            ├── App.tsx
+            ├── index.css
+            └── main.tsx
 ```
 
-The `docs` directory contains the project plan, presentations, user-flow and site-map images, wireframes and the database design. The `build.sh` script at the root is run by Render on every deployment. The `src/backend` directory contains the Django project, the `accounts` app and the `repositories` app for the GitHub API features. The `src/frontend` directory contains the React application, shared styling, Vite configuration and brand assets, with reusable layout components in `components` and the routed screens in `pages`.
+The `docs` directory contains the project plan, presentations, user-flow and site-map images, wireframes and database design. The `build.sh` script at the project root is run by Render during each deployment. The `src/backend` directory contains the Django project, the `accounts` app for user-related functionality and the `github` app for GitHub API integration, including repository and topic search. The `src/frontend` directory contains the React application, with `App.tsx` handling the main application routes and `main.tsx` serving as the entry point. Shared styling is maintained in `index.css`, while reusable components are organised in `components` and routed screens in `pages`. Vite and TypeScript configuration files are located at the frontend root.
 
 ## 3. Backend
 
-The backend is a Django project located in `src/backend`. Django REST Framework is included in the project dependencies so that the application can expose JSON APIs as the feature work is added. The `accounts` app is intended to contain user accounts, profiles, saved repositories and follow relationships. The `repositories` app has been created to hold the GitHub API features, such as repository search, featured repositories and trending repositories. Keeping these in their own app means `accounts` only deals with users.
+The backend is a Django project located in `src/backend`. Django REST Framework is included in the project dependencies to expose JSON APIs to the frontend. The `accounts` app handles user-related functionality, including the custom user model, while the `github` app handles integration with the GitHub REST API. This includes repository and topic search, with the GitHub API requests handled separately from the views and caching managed through the service layer.
 
-The backend currently provides a basic health/status endpoint at `GET /api/status/`. It returns a JSON message which was used to confirm that the frontend and backend can communicate. The Django admin route is also configured at `/admin/`. A catch-all route at the end of `config/urls.py` returns the built React `index.html` for any other URL, so pages such as `/about` still work when refreshed. It skips URLs starting with `api/`, `admin/` and `static/`, and has to stay last in the list.
+The backend currently provides a health/status endpoint at `GET /api/status/`, which returns a JSON response used to confirm communication between the frontend and backend. The Django admin route is configured at `/admin/`. A catch-all route at the end of `config/urls.py` returns the built React `index.html` for frontend routes such as `/about`, allowing them to work when refreshed. It skips URLs starting with `api/`, `admin/` and `static/`, and must remain last in the URL configuration.
 
-The custom user model uses email addresses for login instead of usernames, while still keeping a username. It extends Django's built-in user model and is registered in the Django admin panel, where user accounts can be managed. The initial database migrations have been applied, and a superuser account is available for admin access.
+The custom user model uses email addresses for login while retaining a username. It extends Django's built-in user model and is registered in the Django admin panel, where user accounts can be managed. The initial database migrations have been applied, and a superuser account is available for admin access. Additional account functionality, including registration, profiles and authentication endpoints, is still to be developed.
 
 The backend settings provide an environment-aware setup:
 
@@ -97,28 +92,32 @@ The backend settings provide an environment-aware setup:
 - The deployed Render hostname is included in `ALLOWED_HOSTS`.
 - Django's standard authentication, sessions and security middleware are enabled.
 
-The GitHub API token is a fine-grained personal access token with read-only access to public repositories and no extra permissions. Separate tokens are used for local development and production, so one can be revoked without affecting the other.
+The GitHub API token is a fine-grained personal access token with read-only access to public repositories. Separate tokens are used for local development and production, so one can be revoked without affecting the other. The token is stored in an environment variable and is not exposed to the frontend.
 
-The account models, authentication endpoints, GitHub API integration and feature-specific routes are not complete yet. They will be added in stages, beginning with repository discovery. The planned structure inside the `repositories` app is a `github_client.py` for the raw GitHub API calls, a `services.py` for the logic and caching, and `views.py` and `urls.py` for the endpoints.
+The `github` app currently handles repository and topic search through the GitHub REST API. The API endpoint is `GET /api/github/search/`, which requires a search query. Repository searches support language filtering and sorting, while topic searches use the GitHub topic search endpoint. The GitHub API requests are separated into `github_client.py`, while `services.py` handles the service logic and server-side caching. The views in `views.py` process incoming requests, and `urls.py` defines the app's API routes.
+
+User search, repository detail pages, developer profiles and further authenticated functionality remain to be implemented.
 
 ## 4. Frontend
 
-The frontend is a React application written in TypeScript and built with Vite. The entry point renders the `App` component, which uses React Router to show the Home, About, ColmN-Dev and Contact pages. ColmN-Dev and Contact are placeholders for now.
+The frontend is a React application written in TypeScript and built with Vite. The entry point renders the `App` component, which uses React Router to handle navigation between the Home, About, ColmN-Dev, Contact and Search Results pages. The ColmN-Dev, About and Contact pages are placeholders for now.
 
-The layout is built from separate components. `Header` contains the Clonvix logo and title, the `Nav` links and the `ThemeToggle`. `Footer` contains the brand, explore links and a GitHub link. On screens below 1050px the nav links collapse into a hamburger button that opens a slide-out menu with a dark overlay. The button switches between a menu and a close icon, and the menu closes when the overlay or a link is clicked. Icons come from `lucide-react`.
+The layout is built from separate components. `Header` contains the Clonvix logo and title, the `Nav` links and the `ThemeToggle`. `Footer` contains the brand, explore links and a GitHub link. On screens below 1050px the navigation links collapse into a hamburger button that opens a slide-out menu with a dark overlay. The button switches between a menu and close icon, and the menu closes when the overlay or a link is clicked. Icons come from [`lucide-react`](https://lucide.dev/icons/).
 
 The theme toggle offers System, Light and Dark. The choice is saved in `localStorage` and applied by setting a `data-theme` attribute on the `<html>` element. In System mode the attribute is removed and the CSS follows the operating system through `prefers-color-scheme`.
 
-Tailwind CSS v4 is configured through the Vite plugin, alongside a custom stylesheet in `src/frontend/src/index.css`. The stylesheet holds the Clonvix visual language and the responsive rules, including:
+Tailwind CSS v4 is configured through the Vite plugin, alongside a custom stylesheet in `src/frontend/src/index.css`. The stylesheet holds the Clonvix visual language and responsive rules, including:
 
 - Inter and Sora typography.
 - Light and dark colour themes, with a darker green accent in light mode and a lime accent in dark mode.
 - Shared background, text, border and card colour variables.
 - Header, navigation, theme toggle and footer styles.
-- The hamburger menu and responsive breakpoints for tablets, small phones and landscape phones.
-- Basic focus-visible styling for keyboard accessibility.
+- The hamburger menu and responsive breakpoints for screens below 1050px, tablets, small phones and landscape phones.
+- Basic `focus-visible` styling for keyboard accessibility.
 
-The Home page has a hero section with a blurred background image, which is still being developed. Planned screens still to be built include repository search results, repository details, saved repositories, developer profiles, account settings and the ColmN-Dev showcase. A search bar, featured repository carousels and a trending repositories grid are planned for the Home page. Shared repository cards will be introduced as these screens are implemented.
+The Search Results page supports repository and topic searches through the Django API. Repository results include information such as the repository name, owner, description, programming language, topics and star count. Repository searches support language filtering and sorting, while topic searches display topic information and available images. Search options and filters are reflected in the URL query parameters, allowing search results to be shared or revisited.
+
+The Home page has a hero section with a blurred background image. Planned features include repository details, saved repositories, developer profiles, account settings and the ColmN-Dev showcase. Featured repository carousels and a trending repositories grid are also planned for the Home page.
 
 ## 5. Database
 
@@ -142,84 +141,95 @@ The `user` table is implemented as the custom user model. The remaining tables a
 
 ## 6. Implemented Features
 
-The following parts of Clonvix are in place at this stage:
+**The following parts of Clonvix are in place at this stage:**
 
-- A Django backend with Django REST Framework included in its dependencies.
-- A Vite, React and TypeScript frontend, deployed on Render.
-- A custom Django user model with email login, registered in the admin.
-- React Router with Home, About, ColmN-Dev and Contact pages.
+- A Django backend with Django REST Framework.
+- A React, TypeScript and Vite frontend, deployed on Render.
+- A custom Django user model with email login, registered in the Django admin.
+- React Router with Home, About, ColmN-Dev, Contact and Search Results pages.
 - A responsive header and footer, with a slide-out hamburger menu on smaller screens.
-- A System, Light and Dark theme toggle, saved between visits.
+- A System, Light and Dark theme toggle, with the preference saved between visits.
 - A status endpoint at `GET /api/status/`.
+- GitHub repository search through the GitHub REST API.
+- GitHub topic search through the GitHub REST API.
+- Server-side caching of GitHub search responses.
+- Repository language filtering and sorting.
+- URL query parameters for search queries, categories, filters and sorting options.
+- Repository result cards displaying owner information, descriptions, programming languages, topics and star counts.
+- Topic result cards displaying topic information and available images.
 - Environment-based configuration for the secret key, debug mode, database connection and GitHub API token.
-- A single-service deployment where Django serves the built React app through WhiteNoise, with a build script that runs on every deploy.
-- The `repositories` app, created for the GitHub API features.
-- Tailwind CSS v4 set up through the Vite plugin, with shared theme colour variables in `index.css`.
-- The initial Clonvix branding, including the logo.
-- Project documentation: project documentation, README, project plan, presentations, wireframes, user journey, site map and database ERD.
+- A single-service deployment where Django serves the built React app through WhiteNoise, with a build script that runs on every deployment.
+- A dedicated `github` Django app for GitHub API integration, separate from the `accounts` app.
+- Tailwind CSS v4 configured through the Vite plugin, with shared theme colour variables in `index.css`.
+- Initial Clonvix branding, including the logo.
+- Project documentation, including the README, project plan, presentations, wireframes, user journey, site map and database ERD.
 
-The main Clonvix features, such as repository search, saved repositories and following, have not been built yet.
+**The following features are still under development:**
+
+- User search and developer profiles.
+- Repository detail pages and repository contents.
+- User registration, login and profile management.
+- Saved repositories and following relationships.
+- GitHub account connection and authentication.
 
 ## 7. Current Limitations
 
-Clonvix is still early in development, so the current limitations are mostly features that are planned but not started:
+Clonvix relies on the GitHub REST API to retrieve public repository and topic information. This introduces some limitations outside the application's direct control:
 
-- The Home page hero section is still in progress, and the ColmN-Dev and Contact pages are placeholders.
-- There is no search, and no featured or trending repositories yet.
-- There is no user registration, login or profile functionality yet.
-- The custom user model is in place, but the models for profiles, saved repositories and follow relationships still need to be implemented.
-- The remaining database models and migrations have not been created. The ERD is still a design for those tables.
-- There is no GitHub API integration yet, so no repository data is shown. The token configuration is in place, but nothing uses it yet.
-- GitHub login and the option to connect a GitHub account have not been started.
-- There are no automated tests yet.
-- The colour themes and layout may still change.
+- **GitHub stargazer access:** GitHub restricts access to public stargazer lists to repository administrators and collaborators. This prevents Clonvix from linking visitors directly to a repository's stargazers, so the star count is currently displayed as an informational statistic.
+- **GitHub API rate limits:** Requests are subject to GitHub's API rate limits. Authentication and server-side caching help reduce the impact, but requests can still be restricted.
+- **Limited topic information:** The GitHub topic search endpoint does not return all potentially useful information, such as related topics and repository counts.
+- **Public repository access:** The current integration focuses on publicly accessible GitHub repositories. Private repository access is not supported.
+- **External API dependency:** Repository and topic search depend on GitHub's availability. API errors or service interruptions can affect search functionality.
+- **No automated tests:** The project currently relies on manual testing, meaning regressions may not be detected automatically.
+- **Single-service deployment:** The Django backend serves the built React frontend in production, rather than using separate frontend and backend deployments.
 
 ## 8. Key Design Decisions
 
-**React and TypeScript.** The project brief does not require React, and TypeScript is not mentioned at all. Both were chosen deliberately to build on what has been learned so far and to get more experience with tools used in software development.
+**React and TypeScript.** The project brief does not require React, and TypeScript is not mentioned at all. Both were chosen deliberately to build on what has been learned so far and to gain more experience with tools used in software development.
 
-**Separate frontend and backend in development, one service in production.** The React frontend and Django backend are separate applications that communicate through a JSON API while developing, which is why CORS is configured locally. In production, Django serves the built React app, so everything runs as one Render service on one address. This avoids CORS problems and the cost of running two services.
+**Separate frontend and backend in development, one service in production.** The React frontend and Django backend are separate applications that communicate through a JSON API during development, which is why CORS is configured locally. In production, Django serves the built React app, so everything runs as one Render service on one address. This avoids the need to deploy and maintain two separate services.
 
-**Tailwind CSS instead of Bootstrap, with a custom stylesheet.** Tailwind CSS v4 is installed for styling, and the shared theme colours are defined as variables in `index.css`. The header, navigation and footer are styled with plain CSS classes in the same stylesheet, in the same way as the NodeNexus project.
+**Tailwind CSS instead of Bootstrap, with a custom stylesheet.** Tailwind CSS v4 is installed for styling, and the shared theme colours are defined as variables in `index.css`. The header, navigation and footer also use custom CSS classes in the same stylesheet, following an approach previously used in my last project.
 
-**Solid colours instead of glassmorphism.** Previous projects used a glassmorphism style. For Clonvix the design uses solid colours instead, so the site looks different from earlier work while still looking professional. Dark mode uses a navy background, near-black header and footer and lighter blue cards, with lime green accents for buttons and hover states. The light theme uses grey tones with a darker green accent so it stays readable on light backgrounds.
+**Solid colours instead of glassmorphism.** Previous projects used a glassmorphism style. For Clonvix, the design uses solid colours instead, giving the site a different appearance while maintaining a professional look. Dark mode uses a navy background, near-black header and footer, and lighter blue cards, with lime green accents for buttons and hover states. The light theme uses grey tones with a darker green accent to maintain readability.
 
-**Theme toggle with System, Light and Dark.** Rather than a simple light/dark switch, users can follow their operating system setting or choose a theme manually. The choice is saved in `localStorage` and applied through a `data-theme` attribute, which keeps the CSS in one place.
+**Theme toggle with System, Light and Dark.** Rather than a simple light/dark switch, users can follow their operating system setting or choose a theme manually. The choice is saved in `localStorage` and applied through a `data-theme` attribute, keeping theme behaviour and styling separate.
 
-**Separate Django app for the GitHub features.** The repository search, featured and trending features live in their own `repositories` app, while `accounts` is reserved for users. The GitHub API code is planned to be split into a client that makes the raw calls and a service layer that adds caching and shapes the data, so each part has one job.
+**Separate Django apps for accounts and GitHub integration.** The `accounts` app handles Clonvix user functionality, while the `github` app handles GitHub API integration. This keeps account-related functionality separate from repository and topic search. The GitHub integration is organised into a client for making API requests, a service layer for handling caching and data processing, and views and URL routes for handling incoming requests.
 
-**Server-side GitHub tokens for public data.** Search, featured and trending only read public data, so the server calls GitHub with a read-only fine-grained token. Without a token GitHub allows far fewer requests per hour, so the token is needed. Local and production use separate tokens, and the token is never exposed to the frontend. A GitHub App is planned later for signing in and connecting accounts, since that needs permission from each user.
+**Server-side GitHub tokens for public data.** Repository and topic searches use a fine-grained GitHub personal access token with read-only access to public repositories. The token provides a higher API rate limit than unauthenticated requests. Local development and production use separate tokens, and neither token is exposed to the frontend. GitHub account connection and user-authorised access will require a separate authentication approach, planned for a later stage.
 
-**Clonvix relationships kept separate from GitHub.** Saving a repository does not star it on GitHub, and following a GitHub developer does not require them to have a Clonvix account.
+**Clonvix relationships kept separate from GitHub.** Saving a repository in Clonvix will not star it on GitHub, and following a GitHub developer will not require that developer to have a Clonvix account. These relationships will be managed within Clonvix rather than changing the user's GitHub activity.
 
-**GitHub data fetched rather than stored.** Repository and developer information comes from the GitHub REST API and is cached briefly, so Clonvix only stores its own data, such as users, saved repositories and follows.
+**GitHub data fetched rather than permanently stored.** Repository and topic information is retrieved from the GitHub REST API and cached temporarily. This avoids maintaining duplicate copies of information that GitHub already provides. Clonvix will store its own application data, such as user accounts, saved repositories and follow relationships.
 
-**Render and Neon for deployment.** Render hosts the application and Neon hosts the PostgreSQL database.
+**Render and Neon for deployment.** Render hosts the application, while Neon provides the PostgreSQL database. This setup allows the application and database to be deployed separately while keeping the frontend and backend together within the Render web service.
 
 ## 9. Deployment
 
-Clonvix is deployed on Render as a single web service at [clonvix.onrender.com](https://clonvix.onrender.com), with the PostgreSQL database hosted on Neon. Django serves the built React app, so the frontend and backend share one address.
+Clonvix is deployed on Render as a single web service at [clonvix.onrender.com](https://clonvix.onrender.com), with the PostgreSQL database hosted on Neon. Django serves the built React application, so the frontend and backend share one address in production.
 
-Render uses these commands:
+Render uses the following commands:
 
 - **Build command:** `bash build.sh`
 - **Start command:** `cd src/backend && gunicorn config.wsgi:application`
 
-`build.sh` runs on every deploy and does the following in order:
+The `build.sh` script runs during each deployment and performs the following steps in order:
 
-1. Installs the frontend dependencies and builds the React app with `npm run build`, which creates the `dist` folder.
+1. Installs the frontend dependencies and builds the React application with `npm run build`, creating the `dist` folder.
 2. Installs the Python dependencies from `requirements.txt`.
-3. Runs `collectstatic`, which copies the contents of `dist` into `staticfiles`.
+3. Runs `collectstatic`, which copies the built frontend files into `staticfiles`.
 4. Runs the database migrations.
 
-Gunicorn then runs Django instead of the development server, and WhiteNoise serves the files in `staticfiles` to the browser. A few settings have to line up for this to work:
+Gunicorn runs Django instead of the development server, while WhiteNoise serves the collected static files to the browser. Several settings need to work together for this deployment setup:
 
-- `base: '/static/'` in `vite.config.ts` makes the built `index.html` ask for its scripts and styles at `/static/...`, which is where WhiteNoise serves them.
-- `STATICFILES_DIRS` in `settings.py` points at the `dist` folder, so `collectstatic` picks up everything React built.
-- The `dist` folder is also set as a template directory, so Django can return `index.html`.
-- The catch-all route in `config/urls.py` returns `index.html` for any other URL, so React Router pages work on refresh.
+- `base: '/static/'` in `vite.config.ts` makes the built `index.html` request its scripts and styles from `/static/`, where WhiteNoise serves them.
+- `STATICFILES_DIRS` in `settings.py` points to the frontend `dist` folder, allowing `collectstatic` to collect the built files.
+- The `dist` folder is also configured as a Django template directory so Django can return `index.html`.
+- The catch-all route in `config/urls.py` returns `index.html` for frontend routes, allowing React Router pages to work when refreshed.
 
-Environment variables are set in the Render dashboard and are not committed to the repository:
+Environment variables are configured through the Render dashboard and are not committed to the repository:
 
 | Variable | Purpose |
 |---|---|
@@ -228,34 +238,61 @@ Environment variables are set in the Render dashboard and are not committed to t
 | `DEBUG` | Set to `False` in production |
 | `GITHUB_API_TOKEN` | Production GitHub token with read-only access to public data |
 
-The deployed hostname is included in `ALLOWED_HOSTS`. Because the frontend and backend share one origin in production, CORS is only needed for local development, where the Vite dev server runs on a different port. The GitHub tokens expire after a set period, so an expired token is the first thing to check if GitHub requests start failing with authorization errors.
+The deployed hostname is included in `ALLOWED_HOSTS`. Because the frontend and backend share one origin in production, CORS is only required during local development, where the Vite development server runs on a different port.
+
+The GitHub API tokens have an expiry period, so an expired token is one of the first things to check if GitHub requests begin failing with authentication errors.
 
 ## 10. Testing
 
-No automated tests have been written yet. At this stage the project is checked in the following ways:
+No automated tests have been written yet. At this stage, the project is checked through manual testing and the following development commands:
 
 - `npm run lint` and `npm run build` are run from `src/frontend` to check the frontend code and confirm it builds.
-- The responsive layout is checked by resizing the browser and using the browser's device emulator, including a landscape phone size. The checks cover the hamburger menu opening and closing, the overlay, scrolling inside the menu, and the theme dropdown appearing on top of the open menu.
+- `python manage.py check` is run from `src/backend` to identify Django configuration issues.
+- The GitHub repository search endpoint is tested using different search queries and parameters, including language filtering and sorting.
+- The GitHub topic search endpoint is tested separately to confirm that topic results are returned correctly.
+- API error handling is checked by testing requests with missing or invalid parameters.
+- The responsive layout is checked by resizing the browser and using the browser's device emulator, including a landscape phone size. Checks cover the hamburger menu opening and closing, the overlay, scrolling inside the menu and the theme dropdown appearing on top of the open menu.
 - The theme toggle is checked by switching between System, Light and Dark.
+- Search functionality is checked in the browser, including switching between repository and topic searches and using the available filters.
 - The deployed site on Render is checked in the browser after each deployment.
 
-Automated tests for the backend and further checks for the frontend will be added as the main features are built, and this section will be updated to describe what is covered and how the tests are run.
+Automated tests for the backend and frontend will be added as development continues. This section will be updated to describe the tests, their coverage and how they are run.
 
 ## 11. Challenges and Solutions
 
-**Connecting the frontend to the backend.** The React app and the Django backend run on different addresses during development, so by default the browser blocks the frontend's requests to the API. This was solved by configuring CORS in Django with `django-cors-headers`, allowing the local frontend addresses. A small status endpoint and a message on the frontend were added to confirm that the connection works. In production the problem goes away because Django serves the frontend itself.
+**Connecting the frontend to the backend.** The React app and Django backend run on different addresses during development, so by default the browser blocks the frontend's requests to the API. This was solved by configuring CORS in Django with `django-cors-headers`, allowing the local frontend addresses. A status endpoint and a message on the frontend were added to confirm that the connection works. In production, the problem is avoided because Django serves the frontend itself.
 
-**Serving the React app from Django.** In production there is one server, so Django has to hand the browser the built React files. This needed WhiteNoise to serve the static files, a build script to build React and collect the files, and several settings that had to agree with each other: Vite's `base` path, `STATICFILES_DIRS` and the template directory. A catch-all route was also needed so that refreshing a page such as `/about` returns the React app instead of a 404.
+**Serving the React app from Django.** In production there is one server, so Django has to return the built React application and serve its static files. This required WhiteNoise, a build script to build React and collect the files, and several settings that had to work together: Vite's `base` path, `STATICFILES_DIRS` and the template directory. A catch-all route was also needed so that refreshing a page such as `/about` returns the React app instead of a 404.
 
-**Keeping the theme in sync between the OS and the user's choice.** The site needed to follow the operating system by default, but also let the user pick a theme. This was solved by using a `data-theme` attribute only when the user chooses Light or Dark, and by using `prefers-color-scheme` in the CSS only when the attribute is absent.
+**Integrating the GitHub REST API.** Connecting Clonvix to GitHub required handling external API requests, authentication and different response types. The integration was organised into separate client and service layers. The client makes the API requests, while the service layer handles caching and data processing. Repository and topic searches were implemented through their respective GitHub endpoints.
+
+**Managing GitHub API requests and caching.** Unauthenticated GitHub requests have a much lower rate limit, so a server-side personal access token was configured through environment variables. Search responses are also cached temporarily to reduce repeated requests and unnecessary API calls. Separate tokens are used for local development and production.
+
+**Keeping the theme in sync between the OS and the user's choice.** The site needed to follow the operating system by default, but also let the user pick a theme. This was solved by using a `data-theme` attribute only when the user chooses Light or Dark, and by using `prefers-color-scheme` in the CSS when the attribute is absent.
 
 **Layering the mobile menu and the theme dropdown.** The slide-out menu and its overlay covered the theme dropdown when both were open. Raising the dropdown's `z-index` above the menu and overlay fixed it. The menu also had to scroll on short landscape phone screens, which was solved by allowing the panel to scroll and tightening the spacing on short screens.
 
-When more challenges and solutions arise, they will be added here as the project progresses.
+**Handling GitHub stargazer restrictions.** During development, links to repository stargazer lists returned 404 responses for ordinary visitors. GitHub restricts access to these lists to repository administrators and collaborators. Since this restriction cannot be fixed through Clonvix, the star count remains visible as an informational statistic rather than linking to the stargazer list.
+
+**Repository sorting.** Initially, sorting was handled in the React frontend using `.sort()`, meaning only the repositories already loaded on the current page were sorted. The sorting state also wasn't being passed correctly to the backend. This was resolved by moving sorting to the Django backend and passing the `sort` and `order` parameters to GitHub's API, allowing GitHub to sort the results before returning them.
+
+**Displaying GitHub topic images.** The GitHub topic search endpoint does not provide image URLs for topics. To display topic images, a URL is constructed using GitHub's public Explore repository, following its topic image directory structure. An `onError` handler hides the image when a matching image cannot be found, preventing broken image placeholders from appearing.
+
+Further challenges and solutions will be documented as development continues.
 
 ## 12. What Was Learned
 
-To be completed as the project progresses.
+Working on Clonvix has helped me understand how the different parts of a full-stack application fit together. Having previously worked with Flask, moving to Django and Django REST Framework has given me more experience with backend development, API endpoints, database configuration and structuring a project across multiple apps.
+
+On the frontend, I've gained experience with React, TypeScript and Tailwind CSS. I've had to learn how components work together, how routing is handled and how the frontend communicates with the backend. I've also become more comfortable working with responsive layouts, CSS and managing application state.
+
+One of the biggest learning experiences has been integrating the GitHub REST API. This involved understanding external API requests, authentication tokens, rate limits, response data and caching. It also showed me why it's important to separate responsibilities in the backend rather than putting everything into one file.
+
+I've also gained more experience with Git, environment variables and deploying an application using Render and Neon. Getting the application working locally is one thing, but making sure it builds and runs correctly in production introduced a different set of challenges.
+
+Overall, the project has helped me become more confident working across the frontend and backend. I've also learned that debugging often involves looking beyond the file where an issue first appears and understanding how different parts of the application interact.
+
+There is still more to learn as I work on authentication, GitHub account integration and the remaining features.
 
 ## 13. References
 
@@ -293,7 +330,6 @@ To be completed as the project progresses.
 - [GitHub REST API documentation](https://docs.github.com/en/rest)
 - [GitHub personal access tokens documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 - [GitHub Apps documentation](https://docs.github.com/en/apps)
-- [GitHub OAuth documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)
 - [Cloudinary documentation](https://cloudinary.com/documentation)
 - [Brevo API documentation](https://developers.brevo.com/)
 
