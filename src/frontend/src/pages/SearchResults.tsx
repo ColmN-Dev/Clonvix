@@ -98,7 +98,7 @@ function SearchResults() {
     if (sort) params.set('sort', sort);
     if (order) params.set('order', order);
 
-    fetch(`/api/repositories/search/?${params.toString()}`)
+    fetch(`/api/github/search/?${params.toString()}`)
       .then((response) => {
         if (!response.ok) throw new Error('Search failed');
         return response.json();

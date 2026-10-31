@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'accounts',
-    'repositories',
+    'github',
 ]
 
 # Override the default Django user model
@@ -153,6 +153,7 @@ MAILERS = {
 
 # Logging
 # https://docs.djangoproject.com/en/6.1/topics/logging/#topic-logging-configuration
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
