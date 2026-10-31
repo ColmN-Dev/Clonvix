@@ -1,23 +1,44 @@
-# Clonvix
+<h1 align="center">
+  <img src="docs/images/clonvix-logo.png" alt="Clonvix logo" width="150">
+  <br>
+  Clonvix
+</h1>
 
-Clonvix is a full-stack web application that combines a personal developer portfolio with a GitHub repository explorer.
+<p align="center">
+  A full-stack web application combining a personal developer portfolio
+  with a GitHub repository explorer.
+</p>
 
-The project is intended to give visitors a simple way to discover public repositories and developers. Registered users will be able to save repositories, follow developers and manage a Clonvix profile. Users will also be able to connect a GitHub account to display their public repositories.
+<p align="center">
+    Discover public repositories and developers, save your favourite projects, follow developers and connect your GitHub account — all in one place.
+</p>
 
-Live site: [clonvix.onrender.com](https://clonvix.onrender.com)
+<p align="center">
+  <a href="https://clonvix.onrender.com">Website</a>
+  &nbsp;•&nbsp;
+  <a href="https://github.com/ColmN-Dev/Clonvix">GitHub Repository</a>
+  &nbsp;•&nbsp;
+  <a href="https://github.com/ColmN-Dev/">Developer</a>
+</p>
+
+---
 
 > **Development status:** Clonvix is currently in active development. The Django backend, React frontend, custom user model, page routing, responsive layout, database design and Render deployment are in place. Repository and topic search are implemented, with account functionality, GitHub account integration and repository detail features still in development.
 
+---
+
 ## Contents
 
-- [Features](#features)
-- [Technology stack](#technology-stack)
-- [Getting started](#getting-started)
-- [Running the application](#running-the-application)
-- [Deployment](#deployment)
-- [Project structure](#project-structure)
-- [Documentation](#documentation)
-- [Roadmap](#roadmap)
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#technology-stack">Technology Stack</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#running-the-application">Running the Application</a> •
+  <a href="#deployment">Deployment</a> •
+  <a href="#project-structure">Project Structure</a> •
+  <a href="#documentation">Documentation</a> •
+  <a href="#roadmap">Roadmap</a>
+</p>
 
 ## Features
 
