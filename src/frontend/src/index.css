@@ -300,6 +300,7 @@ button {
   background: transparent;
   color: var(--text-primary);
   text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .theme-menu button:hover {
@@ -564,7 +565,7 @@ button {
 
 .search-sort-check {
   flex-shrink: 0;
-  color: var(--text-secondary);
+  color: inherit;
 }
 
 
@@ -628,6 +629,8 @@ button {
   background: var(--bg-primary);
   color: var(--text-secondary);
   font-size: 0.8rem;
+  transition: color 0.2s ease, border-color 0.2s ease,
+    text-shadow 0.2s ease, box-shadow 0.2s ease;
 }
 
 .repo-card-topics a:hover {
@@ -643,6 +646,50 @@ button {
   gap: 1rem;
   color: var(--text-secondary);
   font-size: 0.85rem;
+}
+
+/* ========================================
+   Topic Card
+   ======================================== */
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 75rem;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topic-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.topic-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topic-card-header a {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.topic-card-header a:hover {
+  text-decoration: underline;
+}
+
+.topic-card-avatar {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
 }
 
 /* ========================================
@@ -703,12 +750,36 @@ button {
   color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .search-language-option:hover {
   background: var(--bg-secondary);
-  color: var(--text-primary);
+  color: var(--accent-hover);
+}
+
+.search-language-option.active {
+  background: var(--bg-secondary);
+  color: var(--accent);
+}
+
+.search-language-check {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: inherit;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .search-language-dot {

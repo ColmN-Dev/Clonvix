@@ -4,16 +4,18 @@ from django.conf import settings
 GITHUB_API_URL = "https://api.github.com"
 
 
-def search_repositories(query, page=1, per_page=10):
+def search_repositories(query, page=1, per_page=10, language=None, sort=None, order=None):
     """Search public GitHub repositories and return GitHub's JSON response."""
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
     }
     params = {
-        "q": query,
+        "q": f"{query} language:{language}" if language else query,
         "page": page,
         "per_page": per_page,
+        "sort": sort,
+        "order": order,
     }
 
     response = requests.get(
@@ -22,5 +24,28 @@ def search_repositories(query, page=1, per_page=10):
         params=params,
         timeout=10,
     )
+    response.raise_for_status()
+    return response.json()
+
+def search_topics(query, page=1, per_page=10):
+    """Search GitHub for topics and return the API response."""
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
+    }
+
+    params = {
+        "q": query,
+        "page": page,
+        "per_page": per_page,
+    }
+
+    response = requests.get(
+        f"{GITHUB_API_URL}/search/topics",
+        headers=headers,
+        params=params,
+        timeout=10,
+    )
+
     response.raise_for_status()
     return response.json()

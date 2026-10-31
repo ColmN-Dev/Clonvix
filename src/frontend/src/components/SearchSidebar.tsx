@@ -1,6 +1,43 @@
-import { FolderGit2, Tag } from 'lucide-react';
+import { BookBookmark, Tags, Check } from 'lucide-react';
+import { useSearchParams } from 'react-router';
+
 
 function SearchSidebar() {
+
+    // Get the current search parameters from the URL
+    const [searchParams, setSearchParams] = useSearchParams();
+    const selectedType = searchParams.get('type') ?? 'repositories';
+    const selectedLanguage = searchParams.get('lang') ?? '';
+
+    // Function to handle category filter
+    function handleCategoryChange(category: string) {
+        const params = new URLSearchParams(searchParams);
+
+        params.set('type', category);
+        params.delete('page');
+
+        if (category === 'topics') {
+            params.delete('lang');
+            params.delete('sort');
+            params.delete('order');
+        }
+
+        setSearchParams(params);
+    }
+
+    // Function to handle language filter
+    function handleLanguageChange(language: string) {
+        const params = new URLSearchParams(searchParams);
+
+        if (selectedLanguage === language) {
+            params.delete('lang');
+        } else {
+            params.set('lang', language);
+        }
+
+        params.delete('page');
+        setSearchParams(params);
+    }
 
     return (
 
@@ -8,18 +45,25 @@ function SearchSidebar() {
           <h2 className="search-sidebar-heading">Filter by</h2>
 
           <nav className="search-categories" aria-label="Search categories">
-            <button className="search-category active">
-              <FolderGit2 size={18} />
+
+            <button className={`search-category ${selectedType === 'repositories' ? 'active' : ''}`}
+              onClick={() => handleCategoryChange('repositories')}
+            >
+              <BookBookmark size={18} />
               <span>Repositories</span>
             </button>
 
-            <button className="search-category">
-              <Tag size={18} />
+            <button className={`search-category ${selectedType === 'topics' ? 'active' : ''}`}
+              onClick={() => handleCategoryChange('topics')}
+            >
+              <Tags size={18} />
               <span>Topics</span>
             </button>
+
           </nav>
         
           {/* Language filters */}
+          {selectedType === 'repositories' && (
           <div className="search-language-filters">
             <h3>Languages</h3>
             <div className="search-language-list">
@@ -53,19 +97,24 @@ function SearchSidebar() {
               ].map((language) => (
                 <button
                   key={language.name}
-                  className="search-language-option"
+                  className={`search-language-option ${selectedLanguage === language.name ? 'active' : ''}`}
                   type="button"
+                  onClick={() => handleLanguageChange(language.name)}
                 >
                   <span
                     className="search-language-dot"
                     style={{ backgroundColor: language.color }}
                   />
                   <span>{language.name}</span>
+                  {selectedLanguage === language.name && (
+                    <Check size={16} className="search-language-check" />
+                  )}
                 </button>
               ))}
             </div>
             
           </div>
+          )}
         </aside>
 
     );

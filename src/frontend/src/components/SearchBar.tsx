@@ -12,7 +12,8 @@ function SearchBar() {
     e.preventDefault();
     const trimmed = query.trim();
     if (!trimmed) return;
-      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+      // Navigate to the search results page with the query and default type as repositories
+      navigate(`/search?q=${encodeURIComponent(trimmed)}&type=repositories`);
   };
 
   return (
@@ -22,7 +23,7 @@ function SearchBar() {
         type="search"
         className="search-bar-input"
         placeholder="Search GitHub..."
-        aria-label="Search GitHub Repositories"
+        aria-label="Search GitHub"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

@@ -16,7 +16,7 @@ export interface Repo {
   };
 }
 
-// Present the repository metadata returned by the search API as a compact result card.
+// Display the repository metadata returned by the search API as a compact result card.
 function RepoCard({ repo }: { repo: Repo }) {
   return (
     <article className="repo-card">
