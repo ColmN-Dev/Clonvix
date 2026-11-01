@@ -1,44 +1,64 @@
-<h1 align="center">
+<div align="center">
+
   <img src="docs/images/clonvix-logo.png" alt="Clonvix logo" width="150">
+
+  <h1>Clonvix</h1>
+
+  <p>
+    <strong>A full-stack web application combining a personal developer portfolio
+    with a GitHub repository explorer.</strong>
+  </p>
+
+  <p>
+    <strong>Discover public repositories and developers, save your favourite projects,
+    follow developers and connect your GitHub account — all in one place.</strong>
+  </p>
+
+  <p>
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+    <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+    <img src="https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white" alt="Render">
+  </p>
+
+  <p>
+    <a href="https://clonvix.onrender.com">Website</a>
+    &nbsp;•&nbsp;
+    <a href="https://github.com/ColmN-Dev/Clonvix">GitHub Repository</a>
+    &nbsp;•&nbsp;
+    <a href="https://github.com/ColmN-Dev/">Developer</a>
+  </p>
+
+  <hr>
+
+  <p>
+    <a href="#features">Features</a> •
+    <a href="#technology-stack">Technology Stack</a> •
+    <a href="#getting-started">Getting Started</a> •
+    <a href="#running-the-application">Running the Application</a> •
+    <a href="#deployment">Deployment</a> •
+    <a href="#project-structure">Project Structure</a> •
+    <a href="#documentation">Documentation</a> •
+    <a href="#roadmap">Roadmap</a>
+  </p>
+
+  <blockquote>
+    <strong>Development status:</strong> Clonvix is currently in active development.
+    The Django backend, React frontend, custom user model, page routing,
+    responsive layout, database design and Render deployment are in place.
+    Repository and topic search are implemented, with account functionality,
+    GitHub account integration and repository detail features still in development.
+  </blockquote>
+
   <br>
-  Clonvix
-</h1>
 
-<p align="center">
-  A full-stack web application combining a personal developer portfolio
-  with a GitHub repository explorer.
-</p>
+  <img src="docs/images/homepage-v2-dark.png" alt="Clonvix home page" width="750">
 
-<p align="center">
-    Discover public repositories and developers, save your favourite projects, follow developers and connect your GitHub account — all in one place.
-</p>
+  <br>
 
-<p align="center">
-  <a href="https://clonvix.onrender.com">Website</a>
-  &nbsp;•&nbsp;
-  <a href="https://github.com/ColmN-Dev/Clonvix">GitHub Repository</a>
-  &nbsp;•&nbsp;
-  <a href="https://github.com/ColmN-Dev/">Developer</a>
-</p>
-
----
-
-> **Development status:** Clonvix is currently in active development. The Django backend, React frontend, custom user model, page routing, responsive layout, database design and Render deployment are in place. Repository and topic search are implemented, with account functionality, GitHub account integration and repository detail features still in development.
-
----
-
-<h2 align="center">Contents</h2>
-
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#technology-stack">Technology Stack</a> •
-  <a href="#getting-started">Getting Started</a> •
-  <a href="#running-the-application">Running the Application</a> •
-  <a href="#deployment">Deployment</a> •
-  <a href="#project-structure">Project Structure</a> •
-  <a href="#documentation">Documentation</a> •
-  <a href="#roadmap">Roadmap</a>
-</p>
+</div>
 
 ## Features
 
