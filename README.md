@@ -27,7 +27,7 @@
 
 ---
 
-## Contents
+<h2 align="center">Contents</h2>
 
 <p align="center">
   <a href="#features">Features</a> •
@@ -221,7 +221,7 @@ Clonvix/
 └── README.md
 ```
 
-The structure will grow as the planned features are implemented. The more detailed current tree is maintained in [the project documentation](docs/documentation.md).
+The structure will grow as the planned features are implemented. The more detailed current tree is maintained in [Project documentation](docs/documentation.md).
 
 ## Documentation
 
