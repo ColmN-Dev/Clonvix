@@ -10,6 +10,13 @@ import SearchSidebar from '../components/SearchSidebar';
 import SortDropdown from '../components/SortDropdown';
 
 function SearchResults() {
+
+  useEffect(() => {
+    document.title = query
+      ? `Results for ${query} | Clonvix`
+      : 'Search | Clonvix';
+  }, []);
+
   // Read search and filter parameters from the URL
   const [searchParams, setSearchParams] = useSearchParams();
 

@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import SearchBar from "../components/SearchBar"
 
 function Home() {
+  useEffect(() => {
+  document.title = 'Home | Clonvix';
+}, []);
+
   return (
 
   <main>
