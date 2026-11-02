@@ -4,12 +4,12 @@ import { Check, ChevronDown } from 'lucide-react';
 type SortDropdownProps = {
   value: string;
   onChange: (option: string) => void;
+  options: string[];
 };
 
-function SortDropdown({ value, onChange }: SortDropdownProps) {
+function SortDropdown({ value, onChange, options }: SortDropdownProps) {
   const [isSortOpen, setIsSortOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
-  const sortOptions = ['Best match', 'Most stars', 'Least stars', 'Most forks', 'Least forks', 'Recently updated'];
 
   // Close sort menu when clicking outside it
   useEffect(() => {
@@ -37,7 +37,7 @@ function SortDropdown({ value, onChange }: SortDropdownProps) {
       {/* Sort options menu */}
       {isSortOpen && (
         <div className="search-sort-menu">
-          {sortOptions.map((option) => (
+          {options.map((option) => (
             <button
               key={option}
               type="button"

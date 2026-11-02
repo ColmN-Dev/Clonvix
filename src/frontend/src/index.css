@@ -505,6 +505,10 @@ button {
   overflow-wrap: anywhere;
 }
 
+/* ========================================
+   Search Sort Dropdown
+   ======================================== */
+
 .search-sort {
   display: inline-flex;
   flex-shrink: 0;
@@ -583,12 +587,13 @@ button {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--bg-secondary);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .repo-card:hover {
   border-color: var(--accent);
   box-shadow: 0 0 12px var(--accent);
+  transform: translateY(-2px);
 }
 
 .repo-card-header {
@@ -649,6 +654,90 @@ button {
 }
 
 /* ========================================
+   User Card
+   ======================================== */
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 75rem;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.user-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  transform: translateY(-2px);
+}
+
+.user-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-card-header a {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-card-header .user-display-name {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.user-card-header .user-display-name:hover {
+  text-decoration: underline;
+}
+
+.user-card-header a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1.75px;
+  text-decoration-color: var(--accent-hover);
+}
+
+.user-card-avatar {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.user-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.user-card-location {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.user-card-location svg {
+  flex-shrink: 0;
+}
+
+.user-card-location-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========================================
    Topic Card
    ======================================== */
 
@@ -662,12 +751,13 @@ button {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--bg-secondary);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .topic-card:hover {
   border-color: var(--accent);
   box-shadow: 0 0 12px var(--accent);
+  transform: translateY(-2px);
 }
 
 .topic-card-header {
@@ -693,7 +783,7 @@ button {
 }
 
 /* ========================================
-    Repository Language Colours 
+    Repository Language Filters 
    ======================================== */
 
 .language-dot {
@@ -787,6 +877,84 @@ button {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
+}
+
+/* ========================================
+   User Type Filters
+   ======================================== */
+
+.user-type-filters {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.user-type-filters h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.user-type-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.user-type-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.user-type-option:hover {
+  background: var(--bg-secondary);
+  color: var(--accent-hover);
+}
+
+.user-type-option.active {
+  background: var(--bg-secondary);
+  color: var(--accent);
+}
+
+.user-type-option:first-child {
+  padding-top: 1.094rem;
+  padding-bottom: 1.094rem;
+}
+
+.clonvix-user-type-option {
+  gap: 0.25rem;
+  padding-left: 0;
+}
+
+.user-type-option svg:first-child {
+  flex-shrink: 0;
+}
+
+.user-type-option img:first-child {
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: contain;
+  padding-left: 0.15rem;
+}
+
+.search-user-check {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: inherit;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  animation: fade-in 0.2s ease;
 }
 
 /* ========================================
@@ -1056,6 +1224,21 @@ body.menu-open {
     padding-left: 1rem;
   }
 
+  .user-card-location {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .user-card-footer {
+    flex-wrap: nowrap;
+  }
+
+  .user-card-footer > span:not(.user-card-location) {
+    flex-shrink: 0;
+  }
+
   .search-language-list {
     max-height: 12.5rem;
     overflow-y: auto;
@@ -1200,6 +1383,11 @@ body.menu-open {
   .search-results-toolbar h1 {
     flex: 1 1 100%;
   }
+
+  .user-type-filters {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1214,6 +1402,34 @@ body.menu-open {
   .search-sort {
     max-width: 100%;
   }
+
+  .user-card-bio {
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 5rem;
+    white-space: nowrap;
+  }
+
+}
+
+@media (max-width: 360px) {
+  .user-card {
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .user-card-footer {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .user-card-footer svg {
+    width: 13px;
+    height: 13px;
+  }
 }
 
 @media (max-width: 320px) {
@@ -1222,4 +1438,15 @@ body.menu-open {
     padding-right: 0.75rem;
     padding-left: 0.75rem;
   }
+
+  .user-card {
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  .user-card-bio {
+    font-size: 0.85rem;
+    max-height: 4rem;
+  }
+
 }

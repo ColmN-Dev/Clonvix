@@ -1,5 +1,7 @@
-import { BookBookmark, Tags, Check } from 'lucide-react';
+import { BookBookmark, UsersRound, Hash, Check } from 'lucide-react';
 import { useSearchParams } from 'react-router';
+import GithubIcon from './GithubIcon';
+import logo from '../assets/clonvix-logo.png';
 
 
 function SearchSidebar() {
@@ -15,11 +17,11 @@ function SearchSidebar() {
 
         params.set('type', category);
         params.delete('page');
+        params.delete('sort');
+        params.delete('order');
 
-        if (category === 'topics') {
+        if (category === 'topics' || category === 'users') {
             params.delete('lang');
-            params.delete('sort');
-            params.delete('order');
         }
 
         setSearchParams(params);
@@ -53,10 +55,17 @@ function SearchSidebar() {
               <span>Repositories</span>
             </button>
 
+            <button className={`search-category ${selectedType === 'users' ? 'active' : ''}`}
+              onClick={() => handleCategoryChange('users')}
+            >
+              <UsersRound size={18} />
+              <span>Users</span>
+            </button>
+
             <button className={`search-category ${selectedType === 'topics' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('topics')}
             >
-              <Tags size={18} />
+              <Hash size={18} />
               <span>Topics</span>
             </button>
 
@@ -64,58 +73,75 @@ function SearchSidebar() {
         
           {/* Language filters */}
           {selectedType === 'repositories' && (
-          <div className="search-language-filters">
-            <h3>Languages</h3>
-            <div className="search-language-list">
-              {[
-                { name: 'Python', color: '#3572A5' },
-                { name: 'JavaScript', color: '#F1E05A' },
-                { name: 'TypeScript', color: '#3178C6' },
-                { name: 'HTML', color: '#E34C26' },
-                { name: 'CSS', color: '#663399' },
-                { name: 'Java', color: '#B07219' },
-                { name: 'Lua', color: '#000080' },
-                { name: 'Swift', color: '#F05138' },
-                { name: 'C++', color: '#F34B7D' },
-                { name: 'Elixir', color: '#6E4A7E' },
-                { name: 'Go', color: '#00ADD8' },
-                { name: 'Perl', color: '#0298C3' },
-                { name: 'Rust', color: '#DEA584' },
-                { name: 'Dart', color: '#00B4AB' },
-                { name: 'C#', color: '#7355DD' },
-                { name: 'Ruby', color: '#701516' },
-                { name: 'Kotlin', color: '#A97BFF' },
-                { name: 'R', color: '#198CE7' },
-                { name: 'Haskell', color: '#5E5086' },
-                { name: 'PHP', color: '#4F5D95' },
-                { name: 'PowerShell', color: '#012456' },
-                { name: 'Scala', color: '#DC322F' },
-                { name: 'C', color: '#555555' },
-                { name: 'Shell', color: '#89E051' },
-                { name: 'Makefile', color: '#427819' },
-                { name: 'Dockerfile', color: '#384D54' },
-              ].map((language) => (
-                <button
-                  key={language.name}
-                  className={`search-language-option ${selectedLanguage === language.name ? 'active' : ''}`}
-                  type="button"
-                  onClick={() => handleLanguageChange(language.name)}
-                >
-                  <span
-                    className="search-language-dot"
-                    style={{ backgroundColor: language.color }}
-                  />
-                  <span>{language.name}</span>
-                  {selectedLanguage === language.name && (
-                    <Check size={16} className="search-language-check" />
-                  )}
-                </button>
-              ))}
+            <div className="search-language-filters">
+              <h3>Languages</h3>
+                <div className="search-language-list">
+                  {[
+                    { name: 'Python', color: '#3572A5' },
+                    { name: 'JavaScript', color: '#F1E05A' },
+                    { name: 'TypeScript', color: '#3178C6' },
+                    { name: 'HTML', color: '#E34C26' },
+                    { name: 'CSS', color: '#663399' },
+                    { name: 'Java', color: '#B07219' },
+                    { name: 'Lua', color: '#000080' },
+                    { name: 'Swift', color: '#F05138' },
+                    { name: 'C++', color: '#F34B7D' },
+                    { name: 'Elixir', color: '#6E4A7E' },
+                    { name: 'Go', color: '#00ADD8' },
+                    { name: 'Perl', color: '#0298C3' },
+                    { name: 'Rust', color: '#DEA584' },
+                    { name: 'Dart', color: '#00B4AB' },
+                    { name: 'C#', color: '#7355DD' },
+                    { name: 'Ruby', color: '#701516' },
+                    { name: 'Kotlin', color: '#A97BFF' },
+                    { name: 'R', color: '#198CE7' },
+                    { name: 'Haskell', color: '#5E5086' },
+                    { name: 'PHP', color: '#4F5D95' },
+                    { name: 'PowerShell', color: '#012456' },
+                    { name: 'Scala', color: '#DC322F' },
+                    { name: 'C', color: '#555555' },
+                    { name: 'Shell', color: '#89E051' },
+                    { name: 'Makefile', color: '#427819' },
+                    { name: 'Dockerfile', color: '#384D54' },
+                  ].map((language) => (
+                    <button
+                      key={language.name}
+                      className={`search-language-option ${selectedLanguage === language.name ? 'active' : ''}`}
+                      type="button"
+                      onClick={() => handleLanguageChange(language.name)}
+                    >
+                      <span
+                        className="search-language-dot"
+                        style={{ backgroundColor: language.color }}
+                      />
+                      <span>{language.name}</span>
+                      {selectedLanguage === language.name && (
+                        <Check size={16} className="search-language-check" />
+                      )}
+                    </button>
+                  ))}
+                </div>
             </div>
-            
+        )}
+
+        {/* User type filters */}
+        {selectedType === 'users' && (
+          <div className="user-type-filters">
+            <h3>User type</h3>
+              <div className="user-type-list">
+                <button className="user-type-option active" type="button">
+                    <GithubIcon size={30} />
+                    <span>GitHub</span>
+                    <Check size={16} className="search-user-check" />
+                </button>
+                <button className="user-type-option clonvix-user-type-option" type="button">
+                    <img src={logo} alt="Clonvix logo" className="clonvix-logo" />
+                    <span>Clonvix</span>
+                </button>
+              </div>
           </div>
-          )}
-        </aside>
+        )}
+      </aside>
 
     );
 }
