@@ -477,6 +477,10 @@ button {
   margin-top: 2rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
+  max-height: 30rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 .search-language-filters h3 {
@@ -821,6 +825,10 @@ button {
 .language-PowerShell { --language-color: #012456; }
 .language-Makefile { --language-color: #427819; }
 .language-Dockerfile { --language-color: #384D54; }
+.language-Jupyter\ Notebook { --language-color: #DA5B0B; }
+.language-XML { --language-color: #0060AC; }
+.language-SQL { --language-color: #E38C00; }
+.language-Assembly { --language-color: #6E4C13; }
 
 .search-language-list {
   display: flex;
@@ -1411,6 +1419,36 @@ body.menu-open {
     white-space: nowrap;
   }
 
+  .repo-card-description {
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 5rem;
+    white-space: nowrap;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  .repo-card-header a {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .repo-card-description {
+    font-size: 0.9rem;
+    max-height: 4.5rem;
+  }
+
+  .repo-card-footer {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 360px) {
@@ -1445,6 +1483,11 @@ body.menu-open {
   }
 
   .user-card-bio {
+    font-size: 0.85rem;
+    max-height: 4rem;
+  }
+
+  .repo-card-description {
     font-size: 0.85rem;
     max-height: 4rem;
   }

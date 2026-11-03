@@ -31,7 +31,7 @@ function RepoCard({ repo }: { repo: Repo }) {
         </a>
       </div>
 
-      <p>{repo.description ? repo.description : 'No description available.'}</p>
+      <p className="repo-card-description">{repo.description ? repo.description : 'No description available.'}</p>
 
       <div className="repo-card-topics">
         {repo.topics.map((topic) => (

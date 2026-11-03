@@ -21,12 +21,10 @@ function SearchResults() {
   const sort = searchParams.get('sort') ?? '';
   const order = searchParams.get('order') ?? '';
 
-  // Set the document title based on the search query
+  // Set the document title based on the selected search type
   useEffect(() => {
-    document.title = query
-      ? `Results for ${query} | Clonvix`
-      : 'Search | Clonvix';
-  }, [query]);
+    document.title = `${type === 'repositories' ? 'Repository' : type === 'users' ? 'User' : 'Topic'} search results | Clonvix`;
+  }, [type]);
 
   // Ensure that the "type" parameter is always in the URL, defaulting to "repositories" if not
   useEffect(() => {
@@ -37,31 +35,41 @@ function SearchResults() {
     }
   }, [searchParams, setSearchParams]);
 
-  // Convert the URL sorting values into dropdown labels
-  const sortLabels: Record<string, string> = {
-
+  // Available sorting options for repositories and users
+  const sortOptions = [
     // Repository sorting options
-    'stars-desc': 'Most stars',
-    'stars-asc': 'Least stars',
-    'forks-desc': 'Most forks',
-    'forks-asc': 'Least forks',
-    'updated-desc': 'Recently updated',
+    { label: 'Most stars', sort: 'stars', order: 'desc', type: 'repositories' },
+    { label: 'Least stars', sort: 'stars', order: 'asc', type: 'repositories' },
+    { label: 'Most forks', sort: 'forks', order: 'desc', type: 'repositories' },
+    { label: 'Least forks', sort: 'forks', order: 'asc', type: 'repositories' },
+    { label: 'Recently updated', sort: 'updated', order: 'desc', type: 'repositories' },
 
     // User sorting options
-    'followers-desc': 'Most followers',
-    'followers-asc': 'Least followers',
-    'joined-desc': 'Newest members',
-    'joined-asc': 'Oldest members',
-    'repositories-desc': 'Most repositories',
-    'repositories-asc': 'Least repositories',
+    { label: 'Most followers', sort: 'followers', order: 'desc', type: 'users' },
+    { label: 'Least followers', sort: 'followers', order: 'asc', type: 'users' },
+    { label: 'Newest members', sort: 'joined', order: 'desc', type: 'users' },
+    { label: 'Oldest members', sort: 'joined', order: 'asc', type: 'users' },
+    { label: 'Most repositories', sort: 'repositories', order: 'desc', type: 'users' },
+    { label: 'Least repositories', sort: 'repositories', order: 'asc', type: 'users' },
+  ];
 
-  };
+  // Separate sorting options for repositories and users, default to 'Best match'
+  const repoSortOptions = ['Best match'];
+  const userSortOptions = ['Best match'];
 
-  const repoSortOptions = ['Best match', 'Most stars', 'Least stars', 'Most forks', 'Least forks', 'Recently updated'];
-  const userSortOptions = ['Best match', 'Most followers', 'Least followers', 'Newest members', 'Oldest members', 'Most repositories', 'Least repositories'];
-  const sortOptions = type === 'users' ? userSortOptions : repoSortOptions;
+  // Populate the sorting options based on their type
+  sortOptions.forEach(option => {
+    if (option.type === 'repositories') {
+      repoSortOptions.push(option.label);
+    } else if (option.type === 'users') {
+      userSortOptions.push(option.label);
+    }
+  });
 
-  const sortBy = sortLabels[`${sort}-${order}`] ?? 'Best match';
+  // Determine the appropriate sorting options based on the selected type
+  const dropdownSortOptions = type === 'users' ? userSortOptions : repoSortOptions;
+  const selectedSort = sortOptions.find(option => option.sort === sort && option.order === order && option.type === type);
+  const sortBy = selectedSort ? selectedSort.label : 'Best match';
 
   // Store repository results and the total result count
   const [repos, setRepos] = useState<Repo[]>([]);
@@ -86,33 +94,13 @@ function SearchResults() {
   function handleSortChange(option: string) {
     const params = new URLSearchParams(searchParams);
 
-    // Convert dropdown selections to their corresponding URL sorting parameters
-    const sortOptions: Record<string, { sort: string; order: string }> = {
-
-      // Repository sorting options
-      'Most stars': { sort: 'stars', order: 'desc' },
-      'Least stars': { sort: 'stars', order: 'asc' },
-      'Most forks': { sort: 'forks', order: 'desc' },
-      'Least forks': { sort: 'forks', order: 'asc' },
-      'Recently updated': { sort: 'updated', order: 'desc' },
-
-      // User sorting options
-      'Most followers': { sort: 'followers', order: 'desc' },
-      'Least followers': { sort: 'followers', order: 'asc' },
-      'Newest members': { sort: 'joined', order: 'desc' },
-      'Oldest members': { sort: 'joined', order: 'asc' },
-      'Most repositories': { sort: 'repositories', order: 'desc' },
-      'Least repositories': { sort: 'repositories', order: 'asc' },
-
-    };
-
-    // Get the selected sorting values based on the dropdown option
-    const selectedSort = sortOptions[option];
+    // Find the chosen sorting option based on the label and type
+    const chosenSort = sortOptions.find(sortOption => sortOption.label === option && sortOption.type === type);
 
     // Add the selected sorting values, or remove them for Best match
-    if (selectedSort) {
-      params.set('sort', selectedSort.sort);
-      params.set('order', selectedSort.order);
+    if (chosenSort) {
+      params.set('sort', chosenSort.sort);
+      params.set('order', chosenSort.order);
     } else {
       params.delete('sort');
       params.delete('order');
@@ -174,20 +162,16 @@ function SearchResults() {
          return Promise.all(
             data.items.map((user: User) =>
               fetch(`/api/github/users/${user.login}/`)
-
                 .then((response) => {
-                  if (!response.ok) throw new Error('Failed to fetch user profile');
+                  if (!response.ok) return null;
                   return response.json();
                 })
+                .catch(() => null)
             )
-
           ).then((profiles) => {
-
-            setUsers(profiles);
+            setUsers(profiles.filter(profile => profile !== null));
             setTotalUsers(data.total_count);
-
           });
-
         } else if (type === 'topics') {
           setTopics(data.items);
           setTotalTopics(data.total_count);
@@ -195,7 +179,6 @@ function SearchResults() {
           setRepos(data.items);
           setTotalRepos(data.total_count);
         }
-
       })
       .catch(() => {
         setRepos([]);
@@ -238,7 +221,7 @@ function SearchResults() {
 
             {/* Sort dropdown */}
             {query.trim() && (type === 'repositories' || type === 'users') && (
-                <SortDropdown value={sortBy} onChange={handleSortChange} options={sortOptions} />
+                <SortDropdown value={sortBy} onChange={handleSortChange} options={dropdownSortOptions} />
               )}
           </div>
 
