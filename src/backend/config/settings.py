@@ -15,6 +15,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 GITHUB_API_TOKEN = os.getenv('GITHUB_API_TOKEN')
 
+BREVO_API_KEY = os.getenv('BREVO_API_KEY')
+
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosting and Cross-Origin Configuration
