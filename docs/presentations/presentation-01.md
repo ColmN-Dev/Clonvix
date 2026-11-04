@@ -79,7 +79,7 @@ The technology stack was selected to support a maintainable application, reliabl
 | PostgreSQL | Application database | Stores structured data such as user accounts, saved repositories and following relationships. |
 | GitHub REST API | External data integration | Provides access to public repository and developer information without duplicating GitHub's entire dataset. |
 | Bootstrap and custom CSS | Interface styling | Support responsive layouts while allowing a consistent, customised visual design. |
-| Resend | Email delivery | Supports application email workflows through an API. |
+| Brevo | Email delivery | Supports application email workflows through an API. |
 | Automated and manual testing | Quality assurance | Helps identify errors, prevent regressions and verify important user journeys. |
 | Git and GitHub | Version control | Track changes and maintain the source code in a central repository. |
 | Render and Neon | Production deployment and database hosting | Provide a hosted application environment and production PostgreSQL database. |
