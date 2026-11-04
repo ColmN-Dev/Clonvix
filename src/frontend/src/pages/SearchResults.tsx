@@ -10,6 +10,7 @@ import type { User } from '../components/UserCard';
 import type { Topic } from '../components/TopicCard';
 import SearchSidebar from '../components/SearchSidebar';
 import SortDropdown from '../components/SortDropdown';
+import Pagination from '../components/Pagination';
 
 function SearchResults() {
 
@@ -20,6 +21,8 @@ function SearchResults() {
   const type = searchParams.get('type') ?? 'repositories';
   const sort = searchParams.get('sort') ?? '';
   const order = searchParams.get('order') ?? '';
+  const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
+  const perPage = 10;
 
   // Set the document title based on the selected search type
   useEffect(() => {
@@ -86,9 +89,21 @@ function SearchResults() {
   // Get the total result count based on the selected type
   const totalResults = type === 'users' ? totalUsers : type === 'topics' ? totalTopics : totalRepos;
 
+  // Calculate the total number of pages, maximum 100 pages
+  const totalPages = Math.min(Math.ceil(totalResults / perPage), 100);
+
   // Manage loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  function handlePageChange(page: number) {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', String(page));
+    setSearchParams(params);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  }
 
   // Update the URL when a sorting option is selected
   function handleSortChange(option: string) {
@@ -138,7 +153,7 @@ function SearchResults() {
     // Build the API request URL
     const params = new URLSearchParams({
       q: query,
-      page: '1',
+      page: String(currentPage),
     });
 
     // Add the selected filters to the API request
@@ -197,7 +212,7 @@ function SearchResults() {
       });
 
   // Run the request again when any of the search parameters changes
-  }, [query, language, type, sort, order]);
+  }, [query, language, type, sort, order, currentPage]);
 
   return (
     <section className="search-results-page">
@@ -245,6 +260,15 @@ function SearchResults() {
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
+
+          {/* Pagination */}
+          {!loading && !error && query.trim() && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
 
         </main>
       </div>
