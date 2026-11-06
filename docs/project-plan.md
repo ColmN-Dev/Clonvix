@@ -205,3 +205,11 @@ Presentation 1 sets out the foundation of Clonvix: the problem it addresses, the
 ### Presentation 2 — Project Brief
 
 Presentation 2 expands on the initial concept by defining user roles, feature dependencies, potential challenges and contingency plans, user journeys, and site navigation. It establishes how Clonvix's planned features fit together and how users will navigate the application. The full content is in [Presentation 2 — Project Brief](/docs/presentations/presentation-02.md).
+
+### Presentation 3 — Project Update
+
+Presentation 3 documents the early implementation progress, including the deployed React and Django foundation, responsive navigation, theme support, the custom user model and the initial GitHub integration structure. It also records the planned feature dependencies, development challenges, changes from the original plan and the lessons learned during the first implementation stage. The full content is in [Presentation 3 — Project Update](/docs/presentations/presentation-03.md).
+
+### Presentation 4 — Project Update
+
+Presentation 4 reviews the implemented repository search experience, including the homepage and search-results design changes, GitHub API integration, filtering, sorting, pagination, theme support and deployment. It also records integration and compatibility testing, identified development challenges, feedback received and the remaining work planned for the final development stage. The full content is in [Presentation 4 — Project Update](/docs/presentations/presentation-04.md).
