@@ -21,10 +21,13 @@
     <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
     <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
     <img src="https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white" alt="Render">
+    <a href="https://clonvix.onrender.com">
+      <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Clonvix-a3e635?style=for-the-badge" alt="Live Demo">
+    </a>
   </p>
 
   <p>
-    <a href="https://clonvix.onrender.com">Website</a>
+    <a href="https://github.com/ColmN-Dev/Clonvix/blob/main/docs/documentation.md">Documentation</a>
     &nbsp;•&nbsp;
     <a href="https://github.com/ColmN-Dev/Clonvix">GitHub Repository</a>
     &nbsp;•&nbsp;
@@ -46,23 +49,27 @@
 
   <blockquote>
     <strong>Development status:</strong> Clonvix is currently in active development.
-    The Django backend, React frontend, custom user model, page routing,
-    responsive layout, database design and Render deployment are in place.
-    Repository and topic search are implemented, with account functionality,
-    GitHub account integration and repository detail features still in development.
+    The Django backend, React frontend, custom user model, responsive interface,
+    database configuration and Render deployment are in place.
+    GitHub repository, user and topic search are implemented, including
+    repository filtering, sorting and pagination. Account functionality,
+    GitHub account integration and repository detail features remain in development.
   </blockquote>
 
   <br>
 
-  <img src="docs/images/homepage-v2-dark.png" alt="Clonvix home page" width="750">
-
+  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" style="width: 48.5%; height: auto;">
+    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" style="width: 48.5%; height: auto;">
+  </div>
+  
   <br>
 
 </div>
 
 ## Features
 
-### Planned application features
+### Planned features
 
 - View repository details, file trees and source code
 - Register, log in and manage a Clonvix profile
@@ -72,7 +79,7 @@
 - Showcase ColmN-Dev projects through the Clonvix interface
 - Provide About and Contact pages
 
-### Currently available
+### Current features
 
 - Django backend and Vite React frontend, deployed on Render
 - Custom Django user model with email login, registered in the admin
@@ -80,16 +87,16 @@
 - Responsive header with a slide-out mobile menu, and a footer
 - Light and dark theme support with a System, Light and Dark theme toggle
 - Backend status endpoint at `GET /api/status/`
-- Initial PostgreSQL configuration through environment variables
-- Initial Clonvix branding, theme variables and logo assets
+- PostgreSQL configuration through environment variables
+- Clonvix branding, theme variables and logo assets
 - Dedicated `github` Django app for GitHub API integration
 - GitHub API token configuration through environment variables
 - Project plan, wireframes, user journeys, site map and database ERD
-- GitHub repository and topic search through the GitHub REST API
+- GitHub repository, user and topic search through the GitHub REST API
 - Server-side caching of GitHub search responses
 - Repository language filtering and sorting
-- Repository result cards displaying owner information, descriptions, languages, topics and star counts
-- Topic result cards displaying topic information and available images
+- Repository pagination
+- Search result cards for repositories, users and topics, displaying relevant information such as owner details, descriptions, programming languages, topics, star counts, profile information and available images
 
 ## Technology stack
 
@@ -148,10 +155,10 @@ python -m pip install -r requirements.txt
 Create a `.env` file in the project root with the values needed for local development:
 
 ```env
-SECRET_KEY=replace-with-a-local-development-key
 DEBUG=True
-DATABASE_URL=postgresql://username:password@localhost:5432/clonvix
+SECRET_KEY=replace-with-a-local-development-key
 GITHUB_API_TOKEN=replace-with-a-github-personal-access-token
+DATABASE_URL=postgresql://username:password@localhost:5432/clonvix
 ```
 
 The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database. Set `DB_SSL=True` as well if the host requires SSL and the connection string does not already include it.
@@ -234,10 +241,11 @@ Clonvix/
 │   │   ├── config/           # Django settings and URL configuration
 │   │   └── github/           # GitHub API features
 │   └── frontend/             # React, TypeScript and Vite application
+│       ├── public/           # Public assets and static files
 │       └── src/
-│           ├── assets/       # Logo and images
-│           ├── components/   # Header, Nav, Footer and ThemeToggle
-│           └── pages/        # Home, About, ColmN-Dev and Contact
+│           ├── assets/       # Application images and imported assets
+│           ├── components/   # Reusable UI components
+│           └── pages/        # Application pages and views
 └── README.md
 ```
 
@@ -252,20 +260,20 @@ The structure will grow as the planned features are implemented. The more detail
 - [Presentation 1: Project brief](docs/presentations/presentation-01.md)
 - [Presentation 2: Project brief](docs/presentations/presentation-02.md)
 - [Presentation 3: Project Update](docs/presentations/presentation-03.md)
+- [Presentation 4: Project Update](docs/presentations/presentation-04.md)
 - [Wireframes](docs/wireframes/)
-- [Site map, user journey diagrams and images](docs/images/)
+- [Project diagrams and images](docs/images/)
 
 ## Roadmap
 
 Development is planned in the following broad stages:
 
-1. Expand the backend API and complete the remaining application foundation.
-2. Expand repository discovery with pagination and additional search options.
-3. Build repository detail pages and repository contents.
-4. Add account registration, login and profile management.
-5. Add saved repositories and developer-following features.
-6. Add GitHub account connection and GitHub login.
-7. Complete the portfolio showcase, About and Contact pages.
-8. Add testing, accessibility, responsive refinements and continued production deployment.
+1. Build repository detail pages and repository contents.
+2. Add account registration, login and profile management.
+3. Add saved repositories and developer-following features.
+4. Add GitHub account connection and GitHub login.
+5. Complete the portfolio showcase and remaining profile features.
+6. Integrate external services, including Cloudinary and Brevo.
+7. Add testing, accessibility, responsive refinements and continued production improvements.
 
 The roadmap is intentionally broad and may change as implementation and testing reveal new requirements.
