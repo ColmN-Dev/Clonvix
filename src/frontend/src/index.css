@@ -321,9 +321,8 @@ button {
 .hero-content::before {
   content: '';
   position: absolute;
-  inset: -10px;
-  background: url('./assets/clonvix-hero.png') center / cover no-repeat;
-  filter: blur(4px);
+  inset: 0;
+  background: linear-gradient(rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 0.75)), url('./assets/clonvix-hero.png') center / 100% auto no-repeat;
   z-index: -1;
 }
 
