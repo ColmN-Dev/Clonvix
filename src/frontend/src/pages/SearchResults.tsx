@@ -14,7 +14,7 @@ import Pagination from '../components/Pagination';
 
 function SearchResults() {
 
-  // Read search and filter parameters from the URL
+  // Get the search parameters from the URL
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') ?? '';
   const language = searchParams.get('lang') ?? '';
@@ -23,6 +23,7 @@ function SearchResults() {
   const order = searchParams.get('order') ?? '';
   const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
   const perPage = 10;
+  const hasQuery = query.trim().length > 0;
 
   // Set the document title based on the selected search type
   useEffect(() => {
@@ -60,7 +61,7 @@ function SearchResults() {
   const repoSortOptions = ['Best match'];
   const userSortOptions = ['Best match'];
 
-  // Populate the sorting options based on their type
+  // Separate sorting options by search type
   sortOptions.forEach(option => {
     if (option.type === 'repositories') {
       repoSortOptions.push(option.label);
@@ -86,8 +87,13 @@ function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [totalTopics, setTotalTopics] = useState(0);
 
-  // Get the total result count based on the selected type
-  const totalResults = type === 'users' ? totalUsers : type === 'topics' ? totalTopics : totalRepos;
+  // Select the total result count for the current search type
+  const totalResults = !hasQuery ? 0 : type === 'users' ? totalUsers : type === 'topics' ? totalTopics : totalRepos;
+
+  // Only display results when a search query exists
+  const visibleRepos = hasQuery ? repos : [];
+  const visibleUsers = hasQuery ? users : [];
+  const visibleTopics = hasQuery ? topics : [];
 
   // Calculate the total number of pages, maximum 100 pages
   const totalPages = Math.min(Math.ceil(totalResults / perPage), 100);
@@ -96,13 +102,12 @@ function SearchResults() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Update the URL when a new page is selected
   function handlePageChange(page: number) {
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
     setSearchParams(params);
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   }
 
   // Update the URL when a sorting option is selected
@@ -131,17 +136,7 @@ function SearchResults() {
   // Fetch search results whenever the search or filters change
   useEffect(() => {
     // Don't make an API request if the search query is empty
-    if (!query.trim()) {
-
-      setRepos([]);
-      setTotalRepos(0);
-
-      setUsers([]);
-      setTotalUsers(0);
-
-      setTopics([]);
-      setTotalTopics(0);
-
+    if (!hasQuery) {
       setLoading(false);
       setError('');
       return;
@@ -173,7 +168,7 @@ function SearchResults() {
       .then((data) => {
         if (type === 'users') {
 
-          // Set the full profile data for each user in the results
+          // Fetch full profile details for each user
          return Promise.all(
             data.items.map((user: User) =>
               fetch(`/api/github/users/${user.login}/`)
@@ -226,21 +221,23 @@ function SearchResults() {
           </div>
 
           <div className="search-results-toolbar">
-            <h1 className={`font-bold text-2xl ${!query.trim() ? 'flex-1 flex items-center justify-center' : ''}`}>
-              {!query.trim()
+            <h1 className={`font-bold text-2xl ${!hasQuery ? 'flex-1 flex items-center justify-center' : ''}`}>
+              {!hasQuery
                 ? 'Enter a search term to see results'
-                : totalResults === 0
-                  ? `No results found for "${query}"`
-                  : `${totalResults.toLocaleString()} ${totalResults === 1 ? 'result' : 'results'} for "${query}"`}
+                : loading
+                  ? `Searching for ${query}...`
+                  : totalResults === 0
+                    ? `No results found for ${query}`
+                    : `${totalResults.toLocaleString()} ${totalResults === 1 ? 'result' : 'results'} for ${query}`}
             </h1>
 
             {/* Sort dropdown */}
-            {query.trim() && (type === 'repositories' || type === 'users') && (
+            {hasQuery && (type === 'repositories' || type === 'users') && (
                 <SortDropdown value={sortBy} onChange={handleSortChange} options={dropdownSortOptions} />
               )}
           </div>
 
-          {/* Display errors and loading spinner */}
+          {/* Display the current error or loading state */}
           {error && <div className="search-error">{error}</div>}
 
           {loading && (
@@ -251,18 +248,18 @@ function SearchResults() {
 
           {/* Display the search results */}
           <div className="flex flex-col gap-4">
-            {type === 'users' ? users.map((user) => (
+            {type === 'users' ? visibleUsers.map((user) => (
               <UserCard key={user.id} user={user} />
-            )) : type === 'topics' ? topics.map((topic) => (
+            )) : type === 'topics' ? visibleTopics.map((topic) => (
               <TopicCard key={topic.name} topic={topic} />
             ))
-            : repos.map((repo) => (
+            : visibleRepos.map((repo) => (
               <RepoCard key={repo.id} repo={repo} />
             ))}
           </div>
 
           {/* Pagination */}
-          {!loading && !error && query.trim() && (
+          {!loading && !error && hasQuery && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
