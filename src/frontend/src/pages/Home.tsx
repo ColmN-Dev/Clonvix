@@ -9,7 +9,7 @@ function Home() {
   return (
 
   <main>
-    <section className="hero-content flex flex-1 items-start justify-center p-10 text-center">
+    <section className="hero-content flex flex-1 items-start justify-center p-20 text-center">
       <div>
         <h1 className="hero-title text-5xl font-semibold text-(--hero-text)">
           Explore GitHub Repositories

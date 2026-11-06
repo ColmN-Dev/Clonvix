@@ -1305,7 +1305,25 @@ body.menu-open {
    Mobile Devices
    ======================================== */
 
+@media (max-width: 761px) {
+  .hero-content {
+    max-height: 32rem;
+    overflow: hidden;
+  }
+
+  .hero-content::before {
+    background-image:
+      linear-gradient(rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 0.75)),
+      url('./assets/clonvix-hero-mobile.png');
+    background-size: 100% auto;
+  }
+}
+
 @media (max-width: 480px) {
+  .hero-content .search-bar {
+    margin-top: 2rem;
+  }
+
   .search-results-page {
     padding-right: 1rem;
     padding-left: 1rem;
@@ -1385,6 +1403,12 @@ body.menu-open {
   }
 }
 
+@media (max-width: 381px) {
+  .hero-content {
+    max-height: 28rem;
+  }
+}
+
 @media (max-width: 360px) {
 
   .hero-title {
@@ -1423,6 +1447,10 @@ body.menu-open {
   .mobile-menu .nav-links a {
     padding: 1rem 0.75rem;
     font-size: 1.1rem;
+  }
+
+  .hero-content {
+    padding: 3.25rem;
   }
 }
 
@@ -1663,6 +1691,10 @@ body.menu-open {
 }
 
 @media (max-width: 320px) {
+  .hero-content {
+    max-height: 24rem;
+  }
+
   .pagination-button {
     min-width: 2rem;
     height: 2rem;
