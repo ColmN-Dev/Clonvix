@@ -58,10 +58,10 @@
 
   <br>
 
-  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" style="width: 100%; height: auto;">
-    <br>
-    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" style="width: 100%; height: auto;">
+  <div align="center">
+    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" width="100%">
+    <br><br>
+    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" width="100%">
   </div>
   
   <br>
