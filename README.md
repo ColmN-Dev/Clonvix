@@ -59,8 +59,8 @@
   <br>
 
   <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" style="width: 48.5%; height: auto;">
-    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" style="width: 48.5%; height: auto;">
+    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" style="width: 100%; height: auto;">
+    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" style="width: 100%; height: auto;">
   </div>
   
   <br>
