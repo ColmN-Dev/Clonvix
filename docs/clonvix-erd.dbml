@@ -89,6 +89,17 @@ Table github_follow {
   }
 }
 
+Table repository_snapshot {
+  id bigint [pk, increment]
+  github_id bigint [not null]
+  star_count integer [not null]
+  snapshot_date date [not null]
+
+  indexes {
+    (github_id, snapshot_date) [unique]
+  }
+}
+
 Ref: profile.user_id - user.id
 
 Ref: username_change_log.user_id > user.id
