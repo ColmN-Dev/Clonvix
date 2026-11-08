@@ -17,6 +17,8 @@ GITHUB_API_TOKEN = os.getenv('GITHUB_API_TOKEN')
 
 BREVO_API_KEY = os.getenv('BREVO_API_KEY')
 
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosting and Cross-Origin Configuration
