@@ -97,6 +97,19 @@ DATABASES = {
     )
 }
 
+# Redis cache configuration
+# https://github.com/jazzband/django-redis
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.getenv('REDIS_URL'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators

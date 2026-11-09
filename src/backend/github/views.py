@@ -1,7 +1,7 @@
 import requests
 from django.http import JsonResponse
 
-from .services import cached_repository_search, cached_user_search, cached_topic_search, cached_user_profile
+from .services import cached_repository_search, cached_trending_repositories, cached_user_search, cached_topic_search, cached_user_profile
 
 
 # View to handle search requests
@@ -94,3 +94,20 @@ def user_profile_view(request, username):
         )
 
     return JsonResponse(data)
+
+def trending_repositories_view(request):
+    """View to handle requests for trending repositories."""
+    
+    date_range = request.GET.get("range", "daily")
+    
+    if not date_range:
+        date_range = "daily"
+
+    try:
+        data = cached_trending_repositories(date_range=date_range)
+    except ValueError:
+        return JsonResponse(
+            {"error": "Invalid date range."}, status=400
+        )
+
+    return JsonResponse(data, safe=False)

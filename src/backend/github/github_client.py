@@ -89,3 +89,27 @@ def get_user_profile(username):
     )
     response.raise_for_status()
     return response.json()
+
+def get_trending_repositories(page=1, per_page=100):
+    """Fetch public repositories, minimum 1,000 stars."""
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
+    }
+
+    params = {
+        "q": "stars:>=1000",
+        "page": page,
+        "per_page": per_page,
+        "sort": "stars",
+        "order": "desc",
+    }
+
+    response = requests.get(
+        f"{GITHUB_API_URL}/search/repositories",
+        headers=headers,
+        params=params,
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
