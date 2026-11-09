@@ -11,7 +11,7 @@ import type { Topic } from '../components/TopicCard';
 import SearchSidebar from '../components/SearchSidebar';
 import Dropdown from '../components/Dropdown';
 import Pagination from '../components/Pagination';
-import { scrollToTop } from '../components/ScrollToTop';
+import { scrollToTop } from '../components/scrollToTop';
 
 function SearchResults() {
 
@@ -137,12 +137,12 @@ function SearchResults() {
   // Fetch search results whenever the search or filters change
   useEffect(() => {
     // Don't make an API request if the search query is empty
-    if (!hasQuery) {
-      setLoading(false);
-      setError('');
+    if (!query.trim()) {
       return;
     }
 
+    // Replace this local loading state when global loading is added.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError('');
 
@@ -239,9 +239,9 @@ function SearchResults() {
           </div>
 
           {/* Display the current error or loading state */}
-          {error && <div className="search-error">{error}</div>}
+          {hasQuery && error && <div className="search-error">{error}</div>}
 
-          {loading && (
+          {hasQuery && loading && (
             <div className="search-loading-overlay">
               <LoaderCircle className="search-spinner" size={40} />
             </div>
