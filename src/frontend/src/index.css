@@ -655,7 +655,6 @@ button {
   color: inherit;
 }
 
-
 /* ========================================
    Repository Card
    ======================================== */
@@ -734,6 +733,120 @@ button {
   gap: 1rem;
   color: var(--text-secondary);
   font-size: 0.85rem;
+}
+
+/* ========================================
+   Trending Card
+   ======================================== */
+
+.trending-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 75rem;
+  min-height: 13rem;
+  margin-inline: auto;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.trending-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  transform: translateY(-2px);
+}
+
+.trending-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.trending-card-header a {
+  color: var(--accent-hover);
+  font-weight: 600;
+  font-size: 1.125rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.trending-card-header a:hover {
+  text-decoration: underline;
+}
+
+.trending-card-description {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.trending-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.trending-card-metadata {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.trending-card-metadata span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.trending-card-growth {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  color: inherit;
+  font-size: 0.85rem;
+}
+
+.trending-card-growth span {
+  display: inline;
+}
+
+.trending-card-list {
+  justify-items: center;
+}
+
+.trending-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  max-width: 75rem;
+  margin-right: auto;
+  margin-left: auto;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.trending-toolbar h2 {
+  grid-column: 2;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.trending-toolbar > .search-sort-container {
+  grid-column: 3;
+  justify-self: end;
 }
 
 /* ========================================
@@ -1626,6 +1739,7 @@ body.menu-open {
     max-height: 5rem;
     white-space: nowrap;
   }
+
 }
 
 @media (max-width: 380px) {
@@ -1669,6 +1783,7 @@ body.menu-open {
     font-size: 0.7rem;
     white-space: nowrap;
   }
+
 }
 
 @media (max-width: 360px) {
@@ -1688,6 +1803,7 @@ body.menu-open {
     width: 13px;
     height: 13px;
   }
+
 }
 
 @media (max-width: 320px) {
@@ -1733,5 +1849,165 @@ body.menu-open {
     gap: 0.4rem;
     font-size: 0.65rem;
     white-space: nowrap;
+  }
+}
+
+/* ========================================
+   Trending Card Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .trending-toolbar {
+    gap: 1rem;
+  }
+
+  .trending-card {
+    min-height: 12rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .trending-card-footer {
+    gap: 0.75rem;
+  }
+
+  .trending-card-metadata {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .trending-toolbar {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .trending-toolbar h2 {
+    grid-column: 1;
+    justify-self: center;
+  }
+
+  .trending-toolbar > .search-sort-container {
+    grid-column: 1;
+    justify-self: end;
+  }
+
+  .trending-card {
+    min-height: 11rem;
+    padding: 1rem;
+  }
+
+  .trending-card-header a {
+    font-size: 0.95rem;
+  }
+
+  .trending-card-description {
+    font-size: 0.95rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 5rem;
+    white-space: nowrap;
+  }
+
+  .trending-card-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .trending-card-metadata {
+    gap: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .trending-card-growth {
+    margin-left: auto;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 396px) {
+  .trending-card-growth {
+    align-self: flex-start;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .trending-toolbar h2 {
+    font-size: 1.75rem;
+  }
+  .trending-card-header a {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .trending-card-description {
+    font-size: 0.9rem;
+    max-height: 4.5rem;
+  }
+
+  .trending-card-footer {
+    align-items: flex-start;
+    font-size: 0.7rem;
+  }
+
+  .trending-card-metadata {
+    gap: 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .trending-card-growth {
+    align-self: flex-start;
+    margin-left: 0;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .trending-card {
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .trending-card-footer {
+    gap: 0.4rem;
+  }
+
+  .trending-card-growth {
+    align-self: flex-start;
+    margin-left: 0;
+    gap: 0.35rem;
+  }
+}
+
+@media (max-width: 352px) {
+
+  .trending-toolbar h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 324px) {
+
+  .trending-toolbar h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+
+    .trending-toolbar h2 {
+    font-size: 1.5rem;
+  }
+  .trending-card-description {
+    font-size: 0.85rem;
+    max-height: 4rem;
+  }
+
+  .trending-card-footer {
+    font-size: 0.65rem;
   }
 }
