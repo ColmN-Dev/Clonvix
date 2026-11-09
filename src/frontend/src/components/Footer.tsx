@@ -19,7 +19,7 @@ function Footer() {
         <div>
           <h2 className="footer-heading">Explore</h2>
           <nav aria-label="Footer navigation" className="footer-links">
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Home</Link>
           </nav>
         </div>
 
