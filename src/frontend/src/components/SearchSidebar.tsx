@@ -39,8 +39,6 @@ function SearchSidebar() {
 
         params.delete('page');
         setSearchParams(params);
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     return (

@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
-type SortDropdownProps = {
+type DropdownProps = {
+  label: string;
   value: string;
   onChange: (option: string) => void;
-  options: string[];
+  options: { label: string; value: string }[];
 };
 
-function SortDropdown({ value, onChange, options }: SortDropdownProps) {
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const sortRef = useRef<HTMLDivElement>(null);
+function Dropdown({ label, value, onChange, options }: DropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close sort menu when clicking outside it
+  // Close the menu when clicking outside it
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
-        setIsSortOpen(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -23,32 +24,32 @@ function SortDropdown({ value, onChange, options }: SortDropdownProps) {
   }, []);
 
   return (
-    <div className="search-sort-container" ref={sortRef}>
+    <div className="search-sort-container" ref={dropdownRef}>
       <button
         className="search-sort"
         type="button"
-        onClick={() => setIsSortOpen(!isSortOpen)}
-        aria-expanded={isSortOpen}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
       >
-        Sort by: {value}
+        {label} {options.find(option => option.value === value)?.label}
         <ChevronDown size={16} />
       </button>
 
-      {/* Sort options menu */}
-      {isSortOpen && (
+      {/* Dropdown options menu */}
+      {isOpen && (
         <div className="search-sort-menu">
           {options.map((option) => (
             <button
-              key={option}
+              key={option.value}
               type="button"
               className="search-sort-option"
               onClick={() => {
-                onChange(option);
-                setIsSortOpen(false);
+                onChange(option.value);
+                setIsOpen(false);
               }}
             >
-              <span>{option}</span>
-              {value === option && (
+              <span>{option.label}</span>
+              {value === option.value && (
                 <Check size={16} className="search-sort-check" />
               )}
             </button>
@@ -59,4 +60,4 @@ function SortDropdown({ value, onChange, options }: SortDropdownProps) {
   );
 }
 
-export default SortDropdown;
+export default Dropdown;

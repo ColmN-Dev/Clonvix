@@ -9,8 +9,9 @@ import type { Repo } from '../components/RepoCard';
 import type { User } from '../components/UserCard';
 import type { Topic } from '../components/TopicCard';
 import SearchSidebar from '../components/SearchSidebar';
-import SortDropdown from '../components/SortDropdown';
+import Dropdown from '../components/Dropdown';
 import Pagination from '../components/Pagination';
+import { scrollToTop } from '../components/ScrollToTop';
 
 function SearchResults() {
 
@@ -58,15 +59,15 @@ function SearchResults() {
   ];
 
   // Separate sorting options for repositories and users, default to 'Best match'
-  const repoSortOptions = ['Best match'];
-  const userSortOptions = ['Best match'];
+  const repoSortOptions = [{ label: 'Best match', value: 'Best match' }];
+  const userSortOptions = [{ label: 'Best match', value: 'Best match' }];
 
   // Separate sorting options by search type
   sortOptions.forEach(option => {
     if (option.type === 'repositories') {
-      repoSortOptions.push(option.label);
+      repoSortOptions.push({ label: option.label, value: option.label });
     } else if (option.type === 'users') {
-      userSortOptions.push(option.label);
+      userSortOptions.push({ label: option.label, value: option.label });
     }
   });
 
@@ -107,7 +108,7 @@ function SearchResults() {
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
     setSearchParams(params);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }
 
   // Update the URL when a sorting option is selected
@@ -233,7 +234,7 @@ function SearchResults() {
 
             {/* Sort dropdown */}
             {hasQuery && (type === 'repositories' || type === 'users') && (
-                <SortDropdown value={sortBy} onChange={handleSortChange} options={dropdownSortOptions} />
+                <Dropdown value={sortBy} onChange={handleSortChange} options={dropdownSortOptions} label="Sort by:" />
               )}
           </div>
 
