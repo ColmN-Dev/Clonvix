@@ -1,0 +1,86 @@
+name: Project Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend Checks
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      SECRET_KEY: ci-only-secret-key
+      DEBUG: "False"
+      DATABASE_URL: sqlite:///ci.sqlite3
+      DB_SSL: "False"
+      REDIS_URL: redis://127.0.0.1:6379/0
+      GITHUB_API_TOKEN: ci-placeholder-token
+      BREVO_API_KEY: ""
+      CLOUDINARY_URL: ""
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        working-directory: src/backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Prepare frontend directory
+        run: mkdir -p src/frontend/dist
+
+      - name: Run Django checks
+        working-directory: src/backend
+        run: python manage.py check
+
+      - name: Run Django tests
+        working-directory: src/backend
+        run: python manage.py test
+
+  frontend:
+    name: Frontend Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: src/frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: src/frontend
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: src/frontend
+        run: npm run lint
+
+      - name: Build frontend
+        working-directory: src/frontend
+        run: npm run build
