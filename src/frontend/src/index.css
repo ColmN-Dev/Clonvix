@@ -97,6 +97,12 @@
   color-scheme: light;
 }
 
+/* Text Selection */
+::selection {
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+}
+
 /* ========================================
    Global Styles
    ======================================== */
