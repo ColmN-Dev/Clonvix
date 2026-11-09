@@ -48,18 +48,13 @@
   </p>
 
   <blockquote>
-    <strong>Development status:</strong> Clonvix is currently in active development.
-    The Django backend, React frontend, custom user model, responsive interface,
-    database configuration and Render deployment are in place.
-    GitHub repository, user and topic search are implemented, including
-    repository filtering, sorting and pagination. Account functionality,
-    GitHub account integration and repository detail features remain in development.
+    <strong>Development status:</strong> Clonvix is currently in active development. The Django backend, React frontend, custom user model, responsive interface, PostgreSQL database configuration and Render deployment are in place. GitHub repository, user and topic search are implemented, including repository filtering, sorting and pagination. A Trending feature has also been implemented, using daily repository snapshots to calculate historical star growth across daily, weekly and monthly ranges, with Redis caching. Account functionality, GitHub account integration and repository detail features remain in development.
   </blockquote>
 
   <br>
 
   <div align="center">
-    <img src="docs/images/homepage-v4-dark.png" alt="Clonvix home page" width="100%">
+    <img src="docs/images/homepage-v5-dark.png" alt="Clonvix home page" width="100%">
     <br><br>
     <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" width="100%">
   </div>
@@ -83,10 +78,11 @@
 ### Current features
 
 - Django backend and Vite React frontend, deployed on Render
-- Custom Django user model with email login, registered in the admin
+- Custom Django user model with email login and Django admin integration
 - React Router with Home, About, ColmN-Dev and Contact pages
 - Responsive header with a slide-out mobile menu, and a footer
 - Light and dark theme support with a System, Light and Dark theme toggle
+- Custom text selection colours that adapt to the active theme
 - Backend status endpoint at `GET /api/status/`
 - PostgreSQL configuration through environment variables
 - Clonvix branding, theme variables and logo assets
@@ -97,7 +93,10 @@
 - Server-side caching of GitHub search responses
 - Repository language filtering and sorting
 - Repository pagination
-- Search result cards for repositories, users and topics, displaying relevant information such as owner details, descriptions, programming languages, topics, star counts, profile information and available images
+- Search result cards for repositories, users and topics
+- Redis caching for GitHub search responses and Trending results
+- Trending repositories ranked by historical star growth across daily, weekly and monthly periods
+- Daily repository star snapshots stored in PostgreSQL
 
 ## Technology stack
 
@@ -106,9 +105,10 @@
 | Frontend | React, TypeScript, Vite, React Router, Tailwind CSS v4 |
 | Backend | Python, Django, Django REST Framework |
 | Database | PostgreSQL, Neon |
+| Caching | Redis, Upstash |
 | External services | GitHub REST API, Cloudinary, Brevo |
 | Deployment | Render, gunicorn, WhiteNoise |
-| Development | Git and GitHub |
+| Development | Git, GitHub, Layerbase |
 
 ## Getting started
 
@@ -119,6 +119,7 @@ Install the following before starting development:
 - Python 3.14 or later
 - Node.js and npm
 - PostgreSQL, or access to a PostgreSQL database such as Neon
+- Redis, or access to a Redis instance
 - Git
 
 ### Clone the repository
@@ -158,13 +159,18 @@ Create a `.env` file in the project root with the values needed for local develo
 ```env
 DEBUG=True
 SECRET_KEY=replace-with-a-local-development-key
+DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+REDIS_URL=replace-with-your-redis-connection-url
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 GITHUB_API_TOKEN=replace-with-a-github-personal-access-token
-DATABASE_URL=postgresql://username:password@localhost:5432/clonvix
+BREVO_API_KEY=replace-with-your-brevo-api-key
 ```
 
-The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database. Set `DB_SSL=True` as well if the host requires SSL and the connection string does not already include it.
+The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database. Set `DB_SSL=True` if the host requires SSL and the connection string does not already include it.
 
-`GITHUB_API_TOKEN` is a fine-grained personal access token with read-only access to public repositories and no extra permissions. Without a token, GitHub allows far fewer API requests per hour.
+`REDIS_URL` should point to your Redis instance. Clonvix uses Redis for caching GitHub search responses and Trending results.
+
+`GITHUB_API_TOKEN` is a GitHub personal access token used to authenticate API requests. Read-only access to public repository data is sufficient. Without a token, GitHub applies lower API rate limits.
 
 Apply the database migrations:
 
@@ -229,6 +235,9 @@ Environment variables set on Render:
 | `DATABASE_URL` | Neon PostgreSQL connection string |
 | `DEBUG` | Set to `False` in production |
 | `GITHUB_API_TOKEN` | Production GitHub token with read-only public access |
+| `REDIS_URL` | Upstash Redis connection string |
+| `CLOUDINARY_URL` | Cloudinary connection details |
+| `BREVO_API_KEY` | Brevo API authentication key |
 
 ## Project structure
 
@@ -271,10 +280,10 @@ Development is planned in the following broad stages:
 
 1. Build repository detail pages and repository contents.
 2. Add account registration, login and profile management.
-3. Add saved repositories and developer-following features.
+3. Implement saved repositories and developer-following features.
 4. Add GitHub account connection and GitHub login.
 5. Complete the portfolio showcase and remaining profile features.
 6. Integrate external services, including Cloudinary and Brevo.
-7. Add testing, accessibility, responsive refinements and continued production improvements.
+7. Expand testing, accessibility, responsive refinements and production improvements.
 
-The roadmap is intentionally broad and may change as implementation and testing reveal new requirements.
+The roadmap is intentionally broad and may evolve as implementation and testing reveal new requirements.
