@@ -47,8 +47,11 @@
     <a href="#roadmap">Roadmap</a>
   </p>
 
+</div>
+
 > [!IMPORTANT]
-> Clonvix is currently in active development. The Django backend, React frontend, custom user model configuration, responsive interface, PostgreSQL database configuration and Render deployment are in place. GitHub repository, user and topic search are implemented, including repository filtering, sorting and pagination. A shared full-screen loading overlay covers Home, Trending, repository searches and search filtering. A Trending feature has also been implemented, using daily repository snapshots to calculate historical star growth across daily, weekly and monthly ranges, with Redis caching. Repository detail pages, authentication, account functionality and GitHub account integration remain planned.
+> Clonvix is currently in active development. 
+> Features, functionality and the overall application are subject to change as development continues.
 
 
   <br>
@@ -61,7 +64,7 @@
   
   <br>
 
-</div>
+
 
 ## Features
 
