@@ -1939,7 +1939,9 @@ body.menu-open {
   }
 }
 
-@media (max-width: 396px) {
+
+
+@media (max-width: 426px) {
   .trending-card-growth {
     align-self: flex-start;
     margin-left: 0;
