@@ -47,9 +47,9 @@
     <a href="#roadmap">Roadmap</a>
   </p>
 
-  <blockquote>
-    <strong>Development status:</strong> Clonvix is currently in active development. The Django backend, React frontend, custom user model, responsive interface, PostgreSQL database configuration and Render deployment are in place. GitHub repository, user and topic search are implemented, including repository filtering, sorting and pagination. A Trending feature has also been implemented, using daily repository snapshots to calculate historical star growth across daily, weekly and monthly ranges, with Redis caching. Account functionality, GitHub account integration and repository detail features remain in development.
-  </blockquote>
+  > [!IMPORTANT]
+  > Clonvix is currently in active development. The Django backend, React frontend, custom user model configuration, responsive interface, PostgreSQL database configuration and Render deployment are in place. GitHub repository, user and topic search are implemented, including repository filtering, sorting and pagination. A shared full-screen loading overlay covers Home, Trending, repository searches and search filtering. A Trending feature has also been implemented, using daily repository snapshots to calculate historical star growth across daily, weekly and monthly ranges, with Redis caching. Repository detail pages, authentication, account functionality and GitHub account integration remain planned.
+
 
   <br>
 
@@ -78,7 +78,7 @@
 ### Current features
 
 - Django backend and Vite React frontend, deployed on Render
-- Custom Django user model with email login and Django admin integration
+- Custom Django user model configuration with Django admin integration.
 - React Router with Home, About, ColmN-Dev and Contact pages
 - Responsive header with a slide-out mobile menu, and a footer
 - Light and dark theme support with a System, Light and Dark theme toggle
@@ -94,9 +94,12 @@
 - Repository language filtering and sorting
 - Repository pagination
 - Search result cards for repositories, users and topics
+- Shared full-screen loading overlay for Home, Trending, repository searches and search filtering
 - Redis caching for GitHub search responses and Trending results
 - Trending repositories ranked by historical star growth across daily, weekly and monthly periods
 - Daily repository star snapshots stored in PostgreSQL
+- GitHub Actions checks for backend tests, frontend linting and frontend builds
+- Scheduled GitHub Actions workflow for collecting daily repository snapshots
 
 ## Technology stack
 
@@ -108,6 +111,7 @@
 | Caching | Redis, Upstash |
 | External services | GitHub REST API, Cloudinary, Brevo |
 | Deployment | Render, gunicorn, WhiteNoise |
+| CI/CD | GitHub Actions |
 | Development | Git, GitHub, Layerbase |
 
 ## Getting started

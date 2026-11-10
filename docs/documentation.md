@@ -1,6 +1,6 @@
 # Clonvix Documentation
 
-**Last updated:** November 09, 2026
+**Last updated:** November 10, 2026
 
 ---
 
@@ -30,7 +30,7 @@ Visitors can search public GitHub repositories and explore search results withou
 
 The project is being developed using React and TypeScript on the frontend, with Django and Django REST Framework on the backend. PostgreSQL is used for persistent application data, while the GitHub REST API provides repository and developer information. The application is hosted on Render, with Neon providing the production PostgreSQL database.
 
-The project currently has a working foundation, including a custom user model, frontend routing, responsive layouts, light and dark themes, and a live production deployment. The `github` app handles GitHub API integration and currently supports repository and topic searches, server-side caching, language filtering, sorting, pagination and trending repositories based on historical star growth. Further functionality, including repository detail pages, developer profiles and authenticated user features, remains under development.
+The project currently has a working foundation, including custom user model configuration, frontend routing, responsive layouts, light and dark themes, and a live production deployment. The `github` app handles GitHub API integration and currently supports repository, user and topic searches, server-side caching, language filtering, sorting, pagination and trending repositories based on historical star growth. Further functionality, including repository detail pages, authentication, account features and GitHub account integration, remains planned.
 
 ## 2. Project Structure
 
@@ -85,7 +85,7 @@ The backend is a Django project located in `src/backend`. Django REST Framework 
 
 The backend currently provides a health/status endpoint at `GET /api/status/`, which returns a JSON response used to confirm communication between the frontend and backend. The Django admin route is configured at `/admin/`. A catch-all route at the end of `config/urls.py` returns the built React `index.html` for frontend routes such as `/about`, allowing them to work when refreshed. It skips URLs starting with `api/`, `admin/` and `static/`, and must remain last in the URL configuration.
 
-The custom user model uses email addresses for login while retaining a username. It extends Django's built-in user model and is registered in the Django admin panel, where user accounts can be managed. Database migrations have been created and applied, and a superuser account is available for admin access. Additional account functionality, including registration, profiles and authentication endpoints, is still to be developed.
+The custom user model is configured with email and username fields and is registered in the Django admin panel. Registration, login, profiles and authentication endpoints are still to be developed.
 
 The backend settings provide an environment-aware setup:
 
@@ -103,6 +103,8 @@ The `github` app currently handles repository, user and topic searches through t
 GitHub API requests are separated into `github_client.py`, while `services.py` handles the service logic and server-side caching. Redis is used to cache GitHub search responses and Trending results. The views in `views.py` process incoming requests, and `urls.py` defines the app's API routes.
 
 Repository trending is implemented using daily star snapshots stored in PostgreSQL. The `RepositorySnapshot` model records repository information and its star count for each snapshot date, with a unique constraint preventing duplicate daily snapshots for the same repository. A custom Django management command, located in `github/management/commands/`, collects these snapshots. The Trending service compares historical snapshots to calculate star growth across daily, weekly and monthly periods. The endpoint `GET /api/github/trending/` provides the results, with Redis caching used to reduce repeated processing.
+
+The `project-checks.yml` GitHub Actions workflow runs Django checks and backend tests, then lints and builds the frontend. The separate `trending-snapshots.yml` workflow can be dispatched manually and runs daily on a schedule to collect repository snapshots in production using the management command.
 
 Repository detail pages, developer profiles and further authenticated functionality remain to be implemented.
 
@@ -127,6 +129,8 @@ Tailwind CSS v4 is configured through the Vite plugin, alongside a custom styles
 The Search Results page supports repository, topic and user searches through the Django API. Repository results include information such as the repository name, owner, description, programming language, topics and star count. Repository searches support language filtering, sorting and pagination. Topic searches display topic information and available images, while user searches display matching GitHub developer accounts. Search options and filters are reflected in the URL query parameters, allowing search results to be shared or revisited.
 
 The Home page contains a hero section with a Clonvix background image and introductory content. It also includes a Trending repositories section, displaying repositories ranked by historical star growth across daily, weekly and monthly periods.
+
+The application uses a shared full-screen loading overlay. It is controlled at the application level and is used while the Home page loads Trending data, while repository search requests run, and while search queries or filters change.
 
 Other planned features include repository detail pages, saved repositories, developer profiles, profile editing, account settings and the ColmN-Dev showcase.
 
@@ -159,7 +163,7 @@ The following parts of Clonvix are in place at this stage:
 
 - A Django backend with Django REST Framework.
 - A React, TypeScript and Vite frontend, deployed on Render.
-- A custom Django user model with email login, registered in the Django admin.
+- A custom Django user model configuration registered in the Django admin.
 - React Router with Home, About, ColmN-Dev, Contact and Search Results pages.
 - A responsive header and footer, with a slide-out hamburger menu on smaller screens.
 - A System, Light and Dark theme toggle, with the preference saved between visits.
@@ -180,6 +184,9 @@ The following parts of Clonvix are in place at this stage:
 - A `RepositorySnapshot` model for storing daily GitHub repository star counts.
 - A custom Django management command for collecting repository snapshots.
 - Trending repositories ranked by historical star growth across daily, weekly and monthly periods.
+- A shared full-screen loading overlay for Home, Trending, repository searches and search filtering.
+- GitHub Actions checks covering Django checks and backend tests, frontend linting and frontend builds.
+- A scheduled GitHub Actions workflow for collecting daily repository snapshots.
 - Git tags and GitHub Releases documenting development milestones.
 - Project documentation, including the README, project plan, presentations, wireframes, user journey, site map and database ERD.
 
@@ -189,7 +196,6 @@ The following features are still under development:
 - User registration, login and profile management.
 - Saved repositories and following relationships.
 - GitHub account connection and authentication.
-- Automated repository snapshot collection.
 - Developer profiles and additional profile functionality.
 
 ## 7. Current Limitations
@@ -292,9 +298,7 @@ Clonvix is currently tested manually throughout development to check that indivi
 
 ### Automated Testing
 
-Automated tests have not yet been implemented. Tests for backend functionality, API endpoints and frontend behaviour will be added as development continues.
-
-This section will be updated to describe the automated tests, their coverage and how they are run.
+The `project-checks.yml` GitHub Actions workflow runs Django checks and backend tests, followed by frontend linting and a production build check on pushes and pull requests targeting `main`. Automated testing will be expanded as development continues.
 
 ## 11. Challenges and Solutions
 
