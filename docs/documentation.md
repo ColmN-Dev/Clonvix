@@ -38,6 +38,10 @@ The project is split into documentation, a Django backend and a Vite-powered Rea
 
 ```text
 Clonvix/
+├── .github/
+│   └── workflows/
+│       ├── project-checks.yml
+│       └── trending-snapshots.yml
 ├── README.md
 ├── build.sh
 ├── docs/

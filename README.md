@@ -250,6 +250,8 @@ Environment variables set on Render:
 
 ```text
 Clonvix/
+├── .github/
+│   └── workflows/            # GitHub Actions workflows
 ├── build.sh                  # Render build script
 ├── docs/                     # Project planning, design and supporting documentation
 ├── src/
