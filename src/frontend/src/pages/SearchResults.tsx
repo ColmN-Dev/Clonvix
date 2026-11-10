@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { LoaderCircle } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import RepoCard from '../components/RepoCard';
 import UserCard from '../components/UserCard';
@@ -13,7 +12,13 @@ import Dropdown from '../components/Dropdown';
 import Pagination from '../components/Pagination';
 import { scrollToTop } from '../components/scrollToTop';
 
-function SearchResults() {
+// Define the props for the SearchResults component
+type SearchResultsProps = {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+};
+
+function SearchResults( {loading, setLoading}: SearchResultsProps) {
 
   // Get the search parameters from the URL
   const [searchParams, setSearchParams] = useSearchParams();
@@ -99,14 +104,14 @@ function SearchResults() {
   // Calculate the total number of pages, maximum 100 pages
   const totalPages = Math.min(Math.ceil(totalResults / perPage), 100);
 
-  // Manage loading and error states
-  const [loading, setLoading] = useState(false);
+  // Manage error states
   const [error, setError] = useState('');
 
   // Update the URL when a new page is selected
   function handlePageChange(page: number) {
     const params = new URLSearchParams(searchParams);
     params.set('page', String(page));
+    setError('');
     setSearchParams(params);
     scrollToTop();
   }
@@ -130,6 +135,9 @@ function SearchResults() {
     // Reset pagination when sorting changes
     params.delete('page');
 
+    // Clear any existing error messages
+    setError('');
+
     // Update the URL with the new sorting parameters
     setSearchParams(params);
   }
@@ -141,10 +149,7 @@ function SearchResults() {
       return;
     }
 
-    // Replace this local loading state when global loading is added.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
-    setError('');
 
     // Build the API request URL
     const params = new URLSearchParams({
@@ -167,6 +172,8 @@ function SearchResults() {
       })
       
       .then((data) => {
+        setError('');
+
         if (type === 'users') {
 
           // Fetch full profile details for each user
@@ -208,7 +215,7 @@ function SearchResults() {
       });
 
   // Run the request again when any of the search parameters changes
-  }, [query, language, type, sort, order, currentPage]);
+  }, [query, language, type, sort, order, currentPage, setLoading]);
 
   return (
     <section className="search-results-page">
@@ -238,14 +245,8 @@ function SearchResults() {
               )}
           </div>
 
-          {/* Display the current error or loading state */}
-          {hasQuery && error && <div className="search-error">{error}</div>}
-
-          {hasQuery && loading && (
-            <div className="search-loading-overlay">
-              <LoaderCircle className="search-spinner" size={40} />
-            </div>
-          )}
+          {/* Display the current error state */}
+          {hasQuery && !loading && error && <div className="error-message">{error}</div>}
 
           {/* Display the search results */}
           <div className="flex flex-col gap-4">

@@ -4,7 +4,11 @@ import SearchBar from "../components/SearchBar"
 import TrendingCard, { type TrendingRepo } from "../components/TrendingCard";
 import Dropdown from "../components/Dropdown";
 
-function Home() {
+type HomePageProps = {
+  setLoading: (loading: boolean) => void;
+};
+
+function Home( { setLoading }: HomePageProps) {
 
   // Store the trending repositories from the API
   const [trendingRepos, setTrendingRepos] = useState<TrendingRepo[]>([]);
@@ -27,6 +31,9 @@ function Home() {
 
     // Fetch trending repositories from the backend
     const fetchTrendingRepos = async () => {
+
+    setLoading(true);
+
     try {
       const response = await fetch(`/api/github/trending/?range=${dateRange}`);
 
@@ -43,12 +50,14 @@ function Home() {
 
     } catch (error) {
       console.error("Error fetching trending repositories:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   fetchTrendingRepos();
 
-  }, [dateRange]);
+  }, [dateRange, setLoading]);
 
   return (
 
