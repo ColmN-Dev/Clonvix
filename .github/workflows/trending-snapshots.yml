@@ -37,3 +37,7 @@ jobs:
       - name: Collect repository snapshots
         working-directory: src/backend
         run: python manage.py snapshots
+
+      - name: Cleanup repository snapshots
+        working-directory: src/backend
+        run: python manage.py cleanup_snapshots
