@@ -32,7 +32,7 @@ class Command(BaseCommand):
                 github_id = repo.get("id")
                 star_count = repo.get("stargazers_count")
 
-                # Get an existing daily snapshot or create a new one
+                # Update or create a snapshot for the repository
                 _, created = RepositorySnapshot.objects.update_or_create(
                     github_id=github_id,
                     snapshot_date=today,

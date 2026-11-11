@@ -14,5 +14,5 @@ class Command(BaseCommand):
         # Delete snapshots older than the cutoff date
         deleted, _ = RepositorySnapshot.objects.filter(snapshot_date__lt=cutoff).delete()
 
-        # Success message indicating how many snapshots were deleted in the terminal
+        # Display a success message indicating how many snapshots were deleted in the terminal
         self.stdout.write(self.style.SUCCESS(f"Successfully deleted {deleted} repository snapshots older than {cutoff}."))
