@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
-import SearchBar from "../components/SearchBar"
-import TrendingCard, { type TrendingRepo } from "../components/TrendingCard";
-import Dropdown from "../components/Dropdown";
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router'
+import SearchBar from '../components/SearchBar'
+import TrendingCard, { type TrendingRepo } from '../components/TrendingCard'
+import Dropdown from '../components/Dropdown'
 
 type HomePageProps = {
   setLoading: (loading: boolean) => void;

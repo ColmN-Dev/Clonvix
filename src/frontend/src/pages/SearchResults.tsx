@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
-import SearchBar from '../components/SearchBar';
-import RepoCard from '../components/RepoCard';
-import UserCard from '../components/UserCard';
-import TopicCard from '../components/TopicCard';
-import type { Repo } from '../components/RepoCard';
-import type { User } from '../components/UserCard';
-import type { Topic } from '../components/TopicCard';
-import SearchSidebar from '../components/SearchSidebar';
-import Dropdown from '../components/Dropdown';
-import Pagination from '../components/Pagination';
-import { scrollToTop } from '../components/scrollToTop';
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router'
+import SearchBar from '../components/SearchBar'
+import RepoCard from '../components/RepoCard'
+import UserCard from '../components/UserCard'
+import TopicCard from '../components/TopicCard'
+import type { Repo } from '../components/RepoCard'
+import type { User } from '../types/user'
+import type { Topic } from '../components/TopicCard'
+import SearchSidebar from '../components/SearchSidebar'
+import Dropdown from '../components/Dropdown'
+import Pagination from '../components/Pagination'
+import { scrollToTop } from '../utils/scrollToTop'
 
 // Define the props for the SearchResults component
 type SearchResultsProps = {
