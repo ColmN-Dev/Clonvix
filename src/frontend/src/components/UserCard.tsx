@@ -1,16 +1,5 @@
-import { MapPin, BookBookmark, UsersRound } from 'lucide-react';
-
-export interface User {
-  id: number;
-  login: string;
-  name: string | null;
-  avatar_url: string;
-  html_url: string;
-  bio: string | null;
-  location: string | null;
-  followers: number;
-  public_repos: number;
-}
+import { MapPin, BookBookmark, UsersRound } from 'lucide-react'
+import type { User } from '../types/user'
 
 // Display the developer metadata returned by the GitHub API as a compact result card.
 function UserCard({ user }: { user: User }) {

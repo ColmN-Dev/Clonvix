@@ -1,8 +1,11 @@
-import { Star } from 'lucide-react';
+import { Star } from 'lucide-react'
+import { Link } from 'react-router'
 
 export interface Repo {
   id: number;
   full_name: string;
+  name: string;
+  owner_login: string;
   description: string | null;
   html_url: string;
   stargazers_count: number;
@@ -26,9 +29,9 @@ function RepoCard({ repo }: { repo: Repo }) {
           src={repo.owner.avatar_url}
           alt={`${repo.owner.login} avatar`}
         />
-        <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-          {repo.full_name}
-        </a>
+        <Link to={`/${repo.owner.login}/${repo.name}`}>
+          {repo.owner.login}/{repo.name}
+        </Link>
       </div>
 
       <p className="repo-card-description">{repo.description ? repo.description : 'No description available.'}</p>

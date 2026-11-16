@@ -1,10 +1,15 @@
 import requests
 from django.http import JsonResponse
 
-from .services import cached_repository_search, cached_trending_repositories, cached_user_search, cached_topic_search, cached_user_profile
+from .services import cached_repository_branches, cached_repository_commits, cached_repository_readme, cached_repository_tags, cached_repository_latest_commit, cached_repository_contents
+from .services import cached_repository_detail, cached_repository_releases, cached_repository_languages, cached_repository_contributors, cached_repository_deployments
+from .services import  cached_repository_search, cached_user_search, cached_topic_search, cached_user_profile, cached_trending_repositories
 
 
-# View to handle search requests
+# ====================================================
+# Search Views
+# ====================================================
+
 def search_view(request):
     query = request.GET.get("q", "").strip()
     if not query:
@@ -80,6 +85,188 @@ def search_view(request):
 
     return JsonResponse(data)
 
+# ====================================================
+# Repository Detail Views
+# ====================================================
+
+def repository_detail_view(request, owner, repo):
+    """View to handle requests for a repository's details."""
+    
+    if not owner or not repo:
+        return JsonResponse({"error": "Missing owner or repository name."}, status=400)
+    
+    try:
+        data = cached_repository_detail(owner, repo)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Could not reach GitHub. Try again shortly."}, status=502
+        )
+
+    return JsonResponse(data)
+
+def repository_releases_view(request, owner, repo):
+    """View to handle requests for a repository's releases."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+
+    try:
+        data = cached_repository_releases(owner, repo)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Could not reach GitHub. Try again shortly."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
+
+def repository_deployments_view(request, owner, repo):
+    """View to handle requests for a repository's latest deployment."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+
+    try:
+        data = cached_repository_deployments(owner, repo)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Could not reach GitHub. Try again shortly."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
+
+def repository_contributors_view(request, owner, repo):
+    """View to handle requests for a repository's contributors."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+
+    try:
+        data = cached_repository_contributors(owner, repo)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Could not reach GitHub. Try again shortly."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
+
+def repository_languages_view(request, owner, repo):
+    """View to handle requests for a repository's programming languages."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+
+    try:
+        data = cached_repository_languages(owner, repo)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Could not reach GitHub. Try again shortly."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
+
+def repository_commits_view(request, owner, repo):
+    """View to handle requests for a repository's total number of commits."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+    
+    data = cached_repository_commits(owner, repo)
+
+    return JsonResponse({"total_commits": data})
+
+def repository_branches_view(request, owner, repo):
+    """View to handle requests for a repository's total number of branches."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+    
+    data = cached_repository_branches(owner, repo)
+
+    return JsonResponse({"total_branches": data})
+
+def repository_tags_view(request, owner, repo):
+    """View to handle requests for a repository's total number of tags."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+    
+    data = cached_repository_tags(owner, repo)
+
+    return JsonResponse({"total_tags": data})
+
+def repository_latest_commit_view(request, owner, repo):
+    """View to handle latest commits for a repository or specific path."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+        
+    path = request.GET.get("path")
+    
+    data = cached_repository_latest_commit(owner, repo, path=path)
+
+    return JsonResponse(data, safe=False)
+
+def repository_contents_view(request, owner, repo):
+    """View to handle requests for a repository's contents."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+    
+    data = cached_repository_contents(owner, repo)
+
+    return JsonResponse(data, safe=False)
+
+def repository_readme_view(request, owner, repo):
+    """View to handle requests for a repository's README."""
+
+    if not owner or not repo:
+        return JsonResponse(
+            {"error": "Missing owner or repository name."},
+            status=400
+        )
+    
+    data = cached_repository_readme(owner, repo)
+
+    if data is None:
+        return JsonResponse({"error": "README not found."}, status=404)
+
+    return JsonResponse(data)
+
+# ====================================================
+# User Profile Views
+# ====================================================
+
 def user_profile_view(request, username):
     """View to handle requests for a user's profile."""
     
@@ -94,6 +281,10 @@ def user_profile_view(request, username):
         )
 
     return JsonResponse(data)
+
+# ====================================================
+## Trending Repositories View
+# ====================================================
 
 def trending_repositories_view(request):
     """View to handle requests for trending repositories."""

@@ -1,4 +1,4 @@
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react'
 
 function LoadingState() {
     return (

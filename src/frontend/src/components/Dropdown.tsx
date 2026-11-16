@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react'
+import { Check, ChevronDown } from 'lucide-react'
 
 type DropdownProps = {
   label: string;
@@ -24,9 +24,9 @@ function Dropdown({ label, value, onChange, options }: DropdownProps) {
   }, []);
 
   return (
-    <div className="search-sort-container" ref={dropdownRef}>
+    <div className="dropdown-container" ref={dropdownRef}>
       <button
-        className="search-sort"
+        className="dropdown-button"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
@@ -37,12 +37,12 @@ function Dropdown({ label, value, onChange, options }: DropdownProps) {
 
       {/* Dropdown options menu */}
       {isOpen && (
-        <div className="search-sort-menu">
+        <div className="dropdown-menu">
           {options.map((option) => (
             <button
               key={option.value}
               type="button"
-              className="search-sort-option"
+              className="dropdown-option"
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
@@ -50,7 +50,7 @@ function Dropdown({ label, value, onChange, options }: DropdownProps) {
             >
               <span>{option.label}</span>
               {value === option.value && (
-                <Check size={16} className="search-sort-check" />
+                <Check size={16} className="dropdown-check" />
               )}
             </button>
           ))}

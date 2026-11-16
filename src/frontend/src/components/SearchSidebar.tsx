@@ -1,7 +1,7 @@
-import { BookBookmark, UsersRound, Hash, Check } from 'lucide-react';
-import { useSearchParams } from 'react-router';
-import GithubIcon from './GithubIcon';
-import logo from '../assets/clonvix-logo.png';
+import { BookBookmark, UsersRound, Hash, Check } from 'lucide-react'
+import { useSearchParams } from 'react-router'
+import GithubIcon from './GithubIcon'
+import logo from '../assets/clonvix-logo.png'
 
 
 function SearchSidebar() {
@@ -92,6 +92,8 @@ function SearchSidebar() {
                     { name: 'Ruby', color: '#701516' },
                     { name: 'Shell', color: '#89E051' },
                     { name: 'Jupyter Notebook', color: '#DA5B0B' },
+                    { name: 'Astro', color: '#FF5A03' },
+                    { name: 'SCSS', color: '#C6538C' },
                     { name: 'Kotlin', color: '#A97BFF' },
                     { name: 'Swift', color: '#F05138' },
                     { name: 'SQL', color: '#E38C00' },

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import type { SubmitEvent } from 'react';
-import { Search } from 'lucide-react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useState } from 'react'
+import type { SubmitEvent } from 'react'
+import { Search } from 'lucide-react'
+import { useNavigate, useSearchParams } from 'react-router'
 
 function SearchBar() {
   const [query, setQuery] = useState('');

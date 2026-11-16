@@ -26,7 +26,7 @@ function Footer() {
         <div>
           <h2 className="footer-heading">Information</h2>
           <nav aria-label="Information navigation" className="footer-links">
-            <Link to="/colmn-dev">ColmN-Dev</Link>
+            <Link to="/ColmN-Dev">ColmN-Dev</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
           </nav>

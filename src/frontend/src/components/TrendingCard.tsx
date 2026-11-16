@@ -1,4 +1,5 @@
-import { BookBookmark, Star, GitFork } from 'lucide-react';
+import { BookBookmark, Star, GitFork } from 'lucide-react'
+import { Link } from 'react-router'
 
 // Define the data needed for each trending repository
 export interface TrendingRepo {
@@ -30,9 +31,9 @@ function TrendingCard({ repo, dateRange }: TrendingCardProps) {
       {/* Header */}
       <div className="trending-card-header">
         <BookBookmark size={20} />
-        <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+        <Link to={`/${repo.full_name}`}>
           {repo.full_name}
-        </a>
+        </Link>
       </div>
 
       {/* Description */}

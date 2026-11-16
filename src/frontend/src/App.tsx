@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router'
 import { useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -7,6 +7,7 @@ import About from './pages/About'
 import ColmNDev from './pages/ColmN-Dev'
 import Contact from './pages/Contact'
 import SearchResults from './pages/SearchResults'
+import RepositoryDetail from './pages/RepositoryDetail'
 import LoadingState from './components/LoadingState'
 
 function App() {
@@ -21,9 +22,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home setLoading={setLoading} />} />
           <Route path="/about" element={<About />} />
-          <Route path="/colmn-dev" element={<ColmNDev />} />
+          <Route path="/colmn-dev" element={<Navigate to="/ColmN-Dev" replace />} />
+          <Route path="/ColmN-Dev" element={<ColmNDev />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/search" element={<SearchResults loading={loading} setLoading={setLoading} />} />
+          <Route path="/:owner/:repo" element={<RepositoryDetail setLoading={setLoading} />} />
         </Routes>
       </main>
       <Footer />

@@ -1,18 +1,27 @@
 from django.core.cache import cache
 from .models import RepositorySnapshot
-from .github_client import search_repositories, search_topics, search_users, get_user_profile
+from .github_client import search_repositories, search_topics, search_users
+from .github_client import get_repository, get_repository_releases, get_repository_deployments, get_repository_contributors, get_repository_languages
+from .github_client import get_repository_commits, get_repository_branches, get_repository_tags, get_repository_latest_commit, get_repository_contents, get_repository_readme
+from .github_client import get_user_profile
 from datetime import timedelta
 from django.utils import timezone
 
 # Keep search results for 5 minutes
 SEARCH_CACHE_SECONDS = 60 * 5
 
+# Keep repository details for 10 minutes
+REPOSITORY_CACHE_SECONDS = 60 * 10
+
+# Keep user profiles for 10 minutes
+PROFILE_CACHE_SECONDS = 60 * 10
+
 # Keep trending results for 15 minutes
 TRENDING_CACHE_SECONDS = 60 * 15
 
-# Cache logic for repository, user, and topic searches, as well as detailed user profiles
-# Each function checks if the results are already cached and returns them if available
-# If not, it calls the GitHub API, caches the results, and then returns them
+# ===================================================
+# Search Caching Logic
+# ===================================================
 
 def cached_repository_search(query, page=1, per_page=10, language=None, sort=None, order=None):
     """Return repository search results, using the cache when possible."""
@@ -33,6 +42,7 @@ def cached_repository_search(query, page=1, per_page=10, language=None, sort=Non
     
     # Cache the results for future requests
     cache.set(cache_key, data, SEARCH_CACHE_SECONDS)
+    
     return data
 
 def cached_user_search(query, page=1, per_page=10, sort=None, order=None):
@@ -54,6 +64,7 @@ def cached_user_search(query, page=1, per_page=10, sort=None, order=None):
 
     # Cache the results for future requests
     cache.set(cache_key, data, SEARCH_CACHE_SECONDS)
+    
     return data
 
 def cached_topic_search(query, page=1, per_page=10):
@@ -75,7 +86,273 @@ def cached_topic_search(query, page=1, per_page=10):
 
     # Cache the results for future requests
     cache.set(cache_key, data, SEARCH_CACHE_SECONDS)
+    
     return data
+
+# ===================================================
+# Repository Detail Caching Logic
+# ===================================================
+
+def cached_repository_detail(owner, repo):
+    """Return repository detail data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository detail
+    cache_key = f"repo_detail:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_releases(owner, repo):
+    """Return repository releases data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository releases
+    cache_key = f"repo_releases:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key, "miss")
+
+    if cached != "miss":
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_releases(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_deployments(owner, repo):
+    """Return repository deployments data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository deployments
+    cache_key = f"repo_deployments:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key, "miss")
+    
+    if cached != "miss":
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_deployments(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_contributors(owner, repo):
+    """Return repository contributors data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository contributors
+    cache_key = f"repo_contributors:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+    
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_contributors(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_languages(owner, repo):
+    """Return repository languages data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository languages
+    cache_key = f"repo_languages:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+    
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_languages(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_commits(owner, repo):
+    """Return repository commit count, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository commit count
+    cache_key = f"repo_commits:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_commits(owner, repo)
+
+    # Only cache data with commit counts, one or more, to avoid caching empty results
+    if data is not None:
+        cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+
+    return data
+
+def cached_repository_branches(owner, repo):
+    """Return repository branch count, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository branch count
+    cache_key = f"repo_branches:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_branches(owner, repo)
+
+    # Only cache data with branch counts, one or more, to avoid caching empty results
+    if data is not None:
+        cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+
+    return data
+
+def cached_repository_tags(owner, repo):
+    """Return repository tag count, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository tag count
+    cache_key = f"repo_tags:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_tags(owner, repo)
+
+    # Only cache data with tag counts, one or more, to avoid caching empty results
+    if data is not None:
+        cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+
+    return data
+
+def cached_repository_latest_commit(owner, repo, path=None):
+    """Return repository latest commit data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+    path = path.strip() if path else None
+
+    # Create a unique cache key for the repository latest commit
+    cache_key = f"repo_latest_commit:{owner.lower()}:{repo.lower()}:path{path or 'None'}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key, "miss")
+
+    if cached != "miss":
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_latest_commit(owner, repo, path=path)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_contents(owner, repo):
+    """Return repository contents data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository contents
+    cache_key = f"repo_contents:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_contents(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+    
+    return data
+
+def cached_repository_readme(owner, repo):
+    """Return repository README data, using the cache when possible."""
+
+    owner = owner.strip()
+    repo = repo.strip()
+
+    # Create a unique cache key for the repository README
+    cache_key = f"repo_readme:{owner.lower()}:{repo.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key, "miss")
+
+    if cached != "miss":
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_repository_readme(owner, repo)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
+
+    return data
+
+# ===================================================
+# User profile caching logic
+# ===================================================
 
 def cached_user_profile(username):
     """Return user profile data, using the cache when possible."""
@@ -95,10 +372,14 @@ def cached_user_profile(username):
     data = get_user_profile(username)
 
     # Cache the results for future requests
-    cache.set(cache_key, data, SEARCH_CACHE_SECONDS)
+    cache.set(cache_key, data, PROFILE_CACHE_SECONDS)
+    
     return data
 
-# Trending repository logic determined by historical star growth
+# ===================================================
+# Trending repository logic
+# =================================================
+
 def get_trending_repositories(date_range="daily"):
     """Return trending repositories for the selected date range."""
     
