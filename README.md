@@ -14,7 +14,7 @@
     follow developers and connect your GitHub account — all in one place.</strong>
   </p>
 
-  <p>
+<p align="left">
     <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
     <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
     <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
@@ -22,9 +22,9 @@
     <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
     <img src="https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white" alt="Render">
     <a href="https://clonvix.onrender.com">
-      <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Clonvix-a3e635?style=for-the-badge" alt="Live Demo">
+        <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Clonvix-a3e635?style=for-the-badge" alt="Live Demo">
     </a>
-  </p>
+</p>
 
   <p>
     <a href="https://github.com/ColmN-Dev/Clonvix/blob/main/docs/documentation.md">Documentation</a>
@@ -57,9 +57,11 @@
   <br>
 
   <div align="center">
-    <img src="docs/images/homepage-v5-dark.png" alt="Clonvix home page" width="100%">
-    <br><br>
-    <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" width="100%">
+      <img src="docs/images/homepage-v5-dark.png" alt="Clonvix home page" width="100%">
+      <br><br>
+      <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" width="100%">
+      <br><br>
+      <img src="docs/images/repository-detail.png" alt="Clonvix repository detail page" width="100%">
   </div>
   
   <br>
@@ -70,39 +72,45 @@
 
 ### Planned features
 
-- View repository details, file trees and source code
 - Register, log in and manage a Clonvix profile
 - Save repositories independently of GitHub stars
 - Follow Clonvix users and GitHub developers
 - Connect a GitHub account and view public repositories
-- Showcase ColmN-Dev projects through the Clonvix interface
-- Provide About and Contact pages
+- Create dedicated developer and topic pages
+- Complete account management and authentication
 
 ### Current features
 
 - Django backend and Vite React frontend, deployed on Render
-- Custom Django user model configuration with Django admin integration.
-- React Router with Home, About, ColmN-Dev and Contact pages
+- Custom Django user model configuration with Django admin integration
+- React Router with Home, About, ColmN-Dev, Contact and Repository Detail pages
 - Responsive header with a slide-out mobile menu, and a footer
-- Light and dark theme support with a System, Light and Dark theme toggle
+- Light and dark theme support with System, Light and Dark theme options
 - Custom text selection colours that adapt to the active theme
 - Backend status endpoint at `GET /api/status/`
 - PostgreSQL configuration through environment variables
 - Clonvix branding, theme variables and logo assets
 - Dedicated `github` Django app for GitHub API integration
 - GitHub API token configuration through environment variables
-- Project plan, wireframes, user journeys, site map and database ERD
 - GitHub repository, user and topic search through the GitHub REST API
-- Server-side caching of GitHub search responses
+- Server-side caching of GitHub API responses
 - Repository language filtering and sorting
 - Repository pagination
 - Search result cards for repositories, users and topics
-- Shared full-screen loading overlay for Home, Trending, repository searches and search filtering
+- Repository detail pages with metadata, descriptions and repository information
+- Repository file and directory browsing
+- Latest commit information for repository contents
+- README rendering with GitHub Flavoured Markdown support
+- Relative README image and link resolution
+- Markdown HTML sanitisation and heading anchors
+- Repository sidebar with About, README, Activity and Forks navigation
+- Latest release information when available
 - Redis caching for GitHub search responses and Trending results
 - Trending repositories ranked by historical star growth across daily, weekly and monthly periods
 - Daily repository star snapshots stored in PostgreSQL
 - GitHub Actions checks for backend tests, frontend linting and frontend builds
 - Scheduled GitHub Actions workflow for collecting daily repository snapshots
+- Project plan, wireframes, user journeys, site map and database ERD
 
 ## Technology stack
 
@@ -264,7 +272,9 @@ Clonvix/
 │       └── src/
 │           ├── assets/       # Application images and imported assets
 │           ├── components/   # Reusable UI components
-│           └── pages/        # Application pages and views
+│           ├── pages/        # Application pages and views
+│           ├── types/        # TypeScript interfaces and type definitions
+│           └── utils/        # Shared utility functions and helpers
 └── README.md
 ```
 
@@ -287,7 +297,7 @@ The structure will grow as the planned features are implemented. The more detail
 
 Development is planned in the following broad stages:
 
-1. Build repository detail pages and repository contents.
+1. Complete repository exploration, including dedicated topic pages.
 2. Add account registration, login and profile management.
 3. Implement saved repositories and developer-following features.
 4. Add GitHub account connection and GitHub login.
