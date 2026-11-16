@@ -1506,7 +1506,6 @@ button {
   margin-left: auto;
   justify-self: end;
   white-space: nowrap;
-  padding-left: 1rem;
   color: var(--text-secondary);
 }
 

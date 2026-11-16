@@ -11,11 +11,9 @@ export function timeAgo(dateString: string): string {
     if (seconds < 60) return 'now'
 
     const minutes = Math.floor(seconds / 60)
-    if (minutes < 60) return `${minutes} minutes ago`
     if (minutes < 60) return plural(minutes, 'minute')
     
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours} hours ago`
     if (hours < 24) return plural(hours, 'hour')
 
     const days = Math.floor(hours / 24)
