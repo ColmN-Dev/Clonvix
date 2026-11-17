@@ -2076,7 +2076,7 @@ button {
 }
 
 .repository-sidebar-contributors-all {
-    display: inline-block;
+    align-self: flex-start;
     margin-top: 0.25rem;
     color: var(--accent);
     font-size: 0.875rem;
