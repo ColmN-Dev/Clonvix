@@ -57,9 +57,9 @@
   <br>
 
   <div align="center">
-      <img src="docs/images/homepage-v5-dark.png" alt="Clonvix home page" width="100%">
+      <img src="docs/images/homepage-v6-dark.png" alt="Clonvix home page" width="100%">
       <br><br>
-      <img src="docs/images/search-results-v4.png" alt="Clonvix search results page" width="100%">
+      <img src="docs/images/search-results-v5.png" alt="Clonvix search results page" width="100%">
       <br><br>
       <img src="docs/images/repository-detail.png" alt="Clonvix repository detail page" width="100%">
   </div>
@@ -70,47 +70,28 @@
 
 ## Features
 
-### Planned features
+### Implemented
 
-- Register, log in and manage a Clonvix profile
-- Save repositories independently of GitHub stars
-- Follow Clonvix users and GitHub developers
-- Connect a GitHub account and view public repositories
-- Create dedicated developer and topic pages
-- Complete account management and authentication
+- Full-stack application built with Django REST Framework and React, deployed on Render.
+- Responsive interface with light, dark and system theme options.
+- GitHub repository, user and topic search using the GitHub REST API.
+- Repository search with language filtering, sorting and pagination.
+- Dedicated topic landing and detail pages for discovering repositories.
+- Repository detail pages displaying metadata, README content, latest release information, deployments, contributors, language statistics and repository files.
+- Trending repositories ranked by historical star growth, with daily, weekly and monthly views.
+- Backend integration with server-side caching to reduce GitHub API requests.
+- PostgreSQL-backed daily repository star snapshots.
+- Automated GitHub Actions workflows for backend testing and frontend quality checks.
 
-### Current features
+### Planned
 
-- Django backend and Vite React frontend, deployed on Render
-- Custom Django user model configuration with Django admin integration
-- React Router with Home, About, ColmN-Dev, Contact and Repository Detail pages
-- Responsive header with a slide-out mobile menu, and a footer
-- Light and dark theme support with System, Light and Dark theme options
-- Custom text selection colours that adapt to the active theme
-- Backend status endpoint at `GET /api/status/`
-- PostgreSQL configuration through environment variables
-- Clonvix branding, theme variables and logo assets
-- Dedicated `github` Django app for GitHub API integration
-- GitHub API token configuration through environment variables
-- GitHub repository, user and topic search through the GitHub REST API
-- Server-side caching of GitHub API responses
-- Repository language filtering and sorting
-- Repository pagination
-- Search result cards for repositories, users and topics
-- Repository detail pages with metadata, descriptions and repository information
-- Repository file and directory browsing
-- Latest commit information for repository contents
-- README rendering with GitHub Flavoured Markdown support
-- Relative README image and link resolution
-- Markdown HTML sanitisation and heading anchors
-- Repository sidebar with About, README, Activity and Forks navigation
-- Latest release information when available
-- Redis caching for GitHub search responses and Trending results
-- Trending repositories ranked by historical star growth across daily, weekly and monthly periods
-- Daily repository star snapshots stored in PostgreSQL
-- GitHub Actions checks for backend tests, frontend linting and frontend builds
-- Scheduled GitHub Actions workflow for collecting daily repository snapshots
-- Project plan, wireframes, user journeys, site map and database ERD
+- User registration, login and account management.
+- Dedicated developer profile pages.
+- Save repositories independently of GitHub stars.
+- Follow Clonvix users and GitHub developers.
+- GitHub account connection and OAuth login.
+- Profile customisation and additional account features.
+- Further accessibility, testing and responsive improvements.
 
 ## Technology stack
 
@@ -230,6 +211,7 @@ From `src/frontend`:
 
 ```bash
 npm run lint
+npx tsc --noEmit
 npm run build
 ```
 
@@ -282,27 +264,22 @@ The structure will grow as the planned features are implemented. The more detail
 
 ## Documentation
 
-- [Project documentation](docs/documentation.md)
-- [Project plan](docs/project-plan.md)
-- [Database ERD source](docs/clonvix-erd.dbml)
-- [Database ERD image](docs/clonvix-erd.png)
-- [Presentation 1: Project brief](docs/presentations/presentation-01.md)
-- [Presentation 2: Project brief](docs/presentations/presentation-02.md)
-- [Presentation 3: Project Update](docs/presentations/presentation-03.md)
-- [Presentation 4: Project Update](docs/presentations/presentation-04.md)
+Additional project documentation is available in the [`docs`](docs/) directory.
+
+- [Technical Documentation](docs/documentation.md)
+- [Project Plan](docs/project-plan.md)
+- [Database Entity Relationship Diagram](docs/erd/)
+- [Presentations](docs/presentations/)
 - [Wireframes](docs/wireframes/)
 - [Project diagrams and images](docs/images/)
 
 ## Roadmap
 
-Development is planned in the following broad stages:
-
-1. Complete repository exploration, including dedicated topic pages.
-2. Add account registration, login and profile management.
-3. Implement saved repositories and developer-following features.
-4. Add GitHub account connection and GitHub login.
-5. Complete the portfolio showcase and remaining profile features.
-6. Integrate external services, including Cloudinary and Brevo.
-7. Expand testing, accessibility, responsive refinements and production improvements.
-
-The roadmap is intentionally broad and may evolve as implementation and testing reveal new requirements.
+1. Complete repository exploration and topic discovery.
+2. Implement dedicated developer profile pages.
+3. Add user registration, login and account management.
+4. Implement saved repositories and developer-following features.
+5. Integrate GitHub account connection and OAuth login.
+6. Expand profile customisation and portfolio features.
+7. Integrate remaining external services.
+8. Improve testing, accessibility, responsiveness and production readiness.
