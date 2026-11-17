@@ -1817,9 +1817,10 @@ button {
 }
 
 .repository-sidebar-homepage {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  width: fit-content;
   min-width: 0;
   color: var(--accent);
   font-size: 0.9rem;
@@ -1869,9 +1870,10 @@ button {
 }
 
 .repository-sidebar-readme {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  width: fit-content;
   font-size: 0.875rem;
   color: var(--text-secondary);
   text-decoration: none;
@@ -1889,9 +1891,10 @@ button {
 }
 
 .repository-sidebar-activity {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  width: fit-content;
   font-size: 0.875rem;
   color: var(--text-secondary);
   text-decoration: none;
@@ -1909,9 +1912,10 @@ button {
 }
 
 .repository-sidebar-forks {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  width: fit-content;
   font-size: 0.875rem;
   color: var(--text-secondary);
   text-decoration: none;
