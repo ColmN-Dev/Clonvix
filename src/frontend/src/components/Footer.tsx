@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import logo from '../assets/clonvix-logo.png'
 import GithubIcon from './GithubIcon'
+import { scrollToTop } from '../utils/scrollToTop'
 
 function Footer() {
   return (
@@ -19,7 +20,9 @@ function Footer() {
         <div>
           <h2 className="footer-heading">Explore</h2>
           <nav aria-label="Footer navigation" className="footer-links">
-            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Home</Link>
+            <Link to="/" onClick={scrollToTop}>Home</Link>
+            <Link to="/search" onClick={scrollToTop}>Search</Link>
+            <Link to="/topics" onClick={scrollToTop}>Topics</Link>
           </nav>
         </div>
 

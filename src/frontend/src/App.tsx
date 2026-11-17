@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router'
+import { Routes, Route } from 'react-router'
 import { useState, lazy, Suspense } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -8,6 +8,8 @@ import ColmNDev from './pages/ColmN-Dev'
 import Contact from './pages/Contact'
 import SearchResults from './pages/SearchResults'
 import LoadingState from './components/LoadingState'
+import Topics from './pages/Topics'
+import TopicDetail from './pages/TopicDetail'
 
 
 const RepositoryDetail = lazy(() => import('./pages/RepositoryDetail'))
@@ -24,11 +26,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home setLoading={setLoading} />} />
           <Route path="/about" element={<About />} />
-          <Route path="/colmn-dev" element={<Navigate to="/ColmN-Dev" replace />} />
           <Route path="/ColmN-Dev" element={<ColmNDev />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/search" element={<SearchResults loading={loading} setLoading={setLoading} />} />
           <Route path="/:owner/:repo" element={<Suspense fallback={<LoadingState />}><RepositoryDetail setLoading={setLoading} /></Suspense>} />
+          <Route path="/topics/" element={<Topics />} />
+          <Route path="/topics/:topic" element={<TopicDetail loading={loading} setLoading={setLoading} />} />
         </Routes>
       </main>
       <Footer />

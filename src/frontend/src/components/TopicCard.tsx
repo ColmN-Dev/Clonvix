@@ -1,3 +1,5 @@
+import { Link } from 'react-router'
+
 export interface Topic {
   name: string;
   display_name: string;
@@ -19,13 +21,9 @@ function TopicCard({ topic }: { topic: Topic }) {
           }}
         />
 
-        <a
-          href={`https://github.com/topics/${topic.name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {topic.name}
-        </a>
+        <Link to={`/topics/${topic.name}`}>
+            {topic.name}
+        </Link>
       </div>
 
       <p>

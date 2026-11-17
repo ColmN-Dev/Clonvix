@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react'
 import { Link } from 'react-router'
+import { timeAgo } from '../utils/timeAgo';
 
 export interface Repo {
   id: number;
@@ -38,14 +39,9 @@ function RepoCard({ repo }: { repo: Repo }) {
 
       <div className="repo-card-topics">
         {repo.topics.map((topic) => (
-          <a
-            key={topic}
-            href={`https://github.com/topics/${topic}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Link to={`/topics/${topic}`} key={topic} className="repo-card-topic">
             {topic}
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -62,7 +58,7 @@ function RepoCard({ repo }: { repo: Repo }) {
           <Star size={16} />{repo.stargazers_count.toLocaleString()}
         </span>
         <span>•</span>
-        <span>Updated {new Date(repo.pushed_at).toLocaleDateString()}</span>
+        <span className="repo-card-updated">Updated {timeAgo(repo.pushed_at)}</span>
       </div>
     </article>
   );

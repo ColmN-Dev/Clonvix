@@ -3,8 +3,9 @@ import type { Deployment } from '../types/deployment'
 import type { Contributor } from '../types/contributor'
 import type { Languages } from '../types/language'
 import type { Repository } from '../types/repository'
-import { Activity, Link, BookOpen, GitFork, Tags, CircleCheck } from 'lucide-react'
+import { Activity, Link as LinkIcon, BookOpen, GitFork, Tags, CircleCheck } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router'
 import { timeAgo } from '../utils/timeAgo'
 
 interface RepoSidebarProps {
@@ -252,7 +253,7 @@ function RepoSidebar({ repository, setLoading }: RepoSidebarProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        <Link size={16} />
+                        <LinkIcon size={16} />
                         <span>{homepageUrl.replace(/^https?:\/\//i, '').replace(/\/$/, '')}</span>
                     </a>
                 )}
@@ -260,15 +261,9 @@ function RepoSidebar({ repository, setLoading }: RepoSidebarProps) {
                 {repository.topics?.length > 0 && (
                     <div className="repository-sidebar-topics">
                         {repository.topics.map((topic) => (
-                        <a
-                            key={topic}
-                            href={`https://github.com/topics/${topic}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="repository-sidebar-topic"
-                        >
-                            {topic}
-                        </a>
+                            <Link to={`/topics/${topic}`}>
+                                {topic}
+                            </Link>
                         ))}
                     </div>
                 )}

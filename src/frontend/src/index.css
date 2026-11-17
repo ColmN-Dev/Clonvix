@@ -504,6 +504,11 @@ button {
   padding: 1.5rem 2rem 2rem;
 }
 
+.topic-detail-content {
+  width: 100%;
+  margin-inline: auto;
+}
+
 .search-results-toolbar {
   display: flex;
   align-items: center;
@@ -2701,6 +2706,20 @@ body.menu-open {
 
 }
 
+@media (max-width: 420px) {
+
+  .repo-card-footer {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .repo-card-updated {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media (max-width: 380px) {
   .pagination-nav {
     gap: 0.125rem;
@@ -2739,8 +2758,13 @@ body.menu-open {
   .repo-card-footer {
     flex-wrap: nowrap;
     gap: 0.4rem;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     white-space: nowrap;
+  }
+
+  .repo-card-updated {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 }

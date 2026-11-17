@@ -3,12 +3,16 @@ import type { SubmitEvent } from 'react'
 import { Search } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router'
 
-function SearchBar() {
+type SearchBarProps = {
+  searchType?: string;
+};
+
+function SearchBar({ searchType }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   // Default type: repositories, if not specified in the URL
-  const type = searchParams.get('type') ?? 'repositories';
+  const type = searchType ?? searchParams.get('type') ?? 'repositories';
 
   // Search form submission
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
