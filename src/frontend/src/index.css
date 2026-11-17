@@ -1824,8 +1824,10 @@ button {
 .repository-sidebar-homepage {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 0.5rem;
   width: fit-content;
+  max-width: 100%;
   min-width: 0;
   color: var(--accent);
   font-size: 0.9rem;
@@ -1943,7 +1945,7 @@ button {
 
 .repository-sidebar-release {
   display: grid;
-  grid-template-columns: minmax(0, max-content) auto;
+  grid-template-columns: minmax(0, max-content) max-content;
   align-items: center;
   gap: 0.35rem 0.75rem;
   justify-content: start;
@@ -1979,7 +1981,9 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem;
+  justify-self: start;
+  flex-shrink: 0;
+  padding: 0.25rem 0.5rem;
   border: 1px solid var(--accent);
   border-radius: 999px;
   background: var(--bg-primary);
