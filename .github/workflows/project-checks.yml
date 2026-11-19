@@ -80,6 +80,10 @@ jobs:
       - name: Run ESLint
         working-directory: src/frontend
         run: npm run lint
+      
+      - name: Run TypeScript check
+        working-directory: src/frontend
+        run: npx tsc --noEmit
 
       - name: Build frontend
         working-directory: src/frontend
