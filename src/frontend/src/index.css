@@ -1686,6 +1686,7 @@ button {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 0.15em;
+  overflow-wrap: anywhere;
 }
 
 .repository-readme-body a:hover {
