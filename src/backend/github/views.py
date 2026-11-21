@@ -1,9 +1,9 @@
 import requests
 from django.http import JsonResponse
 
-from .services import cached_repository_branches, cached_repository_commits, cached_repository_readme, cached_repository_tags, cached_repository_latest_commit, cached_repository_contents
+from .services import cached_github_profile_connections, cached_repository_branches, cached_repository_commits, cached_repository_readme, cached_repository_tags, cached_repository_latest_commit, cached_repository_contents
 from .services import cached_repository_detail, cached_repository_releases, cached_repository_languages, cached_repository_contributors, cached_repository_deployments
-from .services import  cached_repository_search, cached_user_search, cached_topic_search, cached_user_profile, cached_trending_repositories
+from .services import  cached_repository_search, cached_user_search, cached_topic_search, cached_github_profile, cached_trending_repositories, cached_github_profile_repositories
 
 
 # ====================================================
@@ -264,23 +264,78 @@ def repository_readme_view(request, owner, repo):
     return JsonResponse(data)
 
 # ====================================================
-# User Profile Views
+# Profile Views
 # ====================================================
 
-def user_profile_view(request, username):
-    """View to handle requests for a user's profile."""
+def github_profile_view(request, username):
+    """View to handle requests for profile details."""
     
     if not username:
         return JsonResponse({"error": "Missing username."}, status=400)
     
     try:
-        data = cached_user_profile(username)
+        data = cached_github_profile(username)
     except requests.RequestException:
         return JsonResponse(
             {"error": "Could not reach GitHub. Try again shortly."}, status=502
         )
 
     return JsonResponse(data)
+
+def github_profile_readme_view(request, username):
+    """View to handle requests for a GitHub profile README."""
+
+    if not username:
+        return JsonResponse({"error": "Missing username."}, status=400)
+
+    profile = cached_github_profile(username)
+
+    if profile["type"] == "Organization":
+        data = cached_repository_readme(
+            username,
+            ".github",
+            "profile/README.md"
+        )
+    else:
+        data = cached_repository_readme(username, username)
+
+    if data is None:
+        return JsonResponse({"error": "README not found."}, status=404)
+
+    return JsonResponse(data)
+
+def github_profile_repositories_view(request, username):
+    """View to handle requests for a GitHub profile's repositories."""
+    if not username:
+        return JsonResponse({"error": "Missing username."}, status=400)
+
+    try:
+        data = cached_github_profile_repositories(username)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Unable to retrieve GitHub repositories."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
+
+def github_profile_connections_view(request, username, relationship):
+    """View to handle requests for a GitHub profile's followers or following."""
+
+    if not username:
+        return JsonResponse({"error": "Missing username."}, status=400)
+
+    page = request.GET.get("page", 1)
+
+    try:
+        data = cached_github_profile_connections(username, relationship, page)
+    except requests.RequestException:
+        return JsonResponse(
+            {"error": "Unable to retrieve GitHub users."},
+            status=502
+        )
+
+    return JsonResponse(data, safe=False)
 
 # ====================================================
 ## Trending Repositories View

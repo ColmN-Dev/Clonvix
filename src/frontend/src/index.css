@@ -1019,6 +1019,8 @@ button {
 .language-C { --language-color: #555555; }
 .language-C\+\+ { --language-color: #F34B7D; }
 .language-C\# { --language-color: #7355dd; }
+.language-Astro { --language-color: #FF5A03; }
+.language-SCSS { --language-color: #C6538C; }
 .language-Shell { --language-color: #89E051; }
 .language-Kotlin { --language-color: #A97BFF; }
 .language-Swift { --language-color: #F05138; }
@@ -2126,6 +2128,370 @@ button {
 .repository-sidebar-language-percentage {
   color: var(--text-secondary);
   white-space: nowrap;
+}
+
+/* ========================================
+   Profile Layout
+   ======================================== */
+
+.profile-page {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2.25rem 1.25rem;
+  box-sizing: border-box;
+}
+
+.profile-content {
+  min-width: 0;
+}
+
+/* ========================================
+   Profile Sidebar
+   ======================================== */
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.75rem;
+  padding-bottom: 1.25rem;
+  height: fit-content;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  max-width: 20rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+}
+
+.profile-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile-identity {
+  width: 100%;
+  min-width: 0;
+}
+
+.profile-identity h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.profile-identity p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.profile-bio {
+  margin: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+}
+
+.profile-connections {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.profile-followers:hover,
+.profile-following:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.profile-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.social-link a {
+  flex: 0 1 auto;
+  min-width: 0;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-link span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-link svg {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.social-link a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* ========================================
+   Profile README
+   ======================================== */
+
+.profile-readme {
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.profile-readme-header {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 1.75rem 1.5rem 0;
+  background: var(--bg-primary);
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+.profile-readme-filename {
+  color: var(--text-secondary);
+  padding: 0.01rem;
+}
+
+.profile-readme-filename-separator {
+  color: var(--text-secondary);
+  padding: 0.15rem;
+}
+
+.profile-readme-body {
+  padding: 1.5rem 1.75rem;
+  max-height: 50rem;
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.profile-readme-body > :first-child {
+  margin-top: 0;
+}
+
+.profile-readme-body > :last-child {
+  margin-bottom: 0;
+}
+
+.profile-readme-body h1 {
+  font-size: 1.6rem;
+}
+
+/* ========================================
+   Profile Repositories
+   ======================================== */
+
+.profile-repositories {
+  margin-bottom: 2rem;
+}
+   
+.profile-repositories-header {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.profile-repositories svg {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.profile-repositories-dropdown {
+  margin-left: auto;
+}
+
+.profile-repositories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-repo-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.profile-repo-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  transform: translateY(-2px);
+}
+
+.profile-repo-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.profile-repo-card-header a {
+  color: var(--accent);
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-repo-card-header a:hover {
+  text-decoration: underline;
+}
+
+.repo-visibility {
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+.profile-repo-card .repo-card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  max-height: 3em;
+}
+
+.profile-repo-card .repo-card-topics {
+  min-width: 0;
+}
+
+.profile-repo-card .repo-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   Profile Followers/Following
+   ======================================== */
+
+.profile-users {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.profile-users-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.profile-users-header svg {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.profile-users-back {
+  margin-left: auto;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.profile-users-back:hover {
+  box-shadow: 0 0 12px var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  color: var(--accent);
+}
+
+.profile-users-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  width: 100%;
 }
 
 /* ========================================
@@ -3243,5 +3609,234 @@ body.menu-open {
 
   .repository-sidebar-contributors {
     grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* ========================================
+   Profile Sidebar Responsive
+   ======================================== */
+
+@media (max-width: 1100px) {
+  .profile-layout {
+    grid-template-columns: 18rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    grid-template-columns: 16rem minmax(0, 1fr);
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .profile-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .profile-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .profile-avatar {
+    max-width: 8rem;
+    width: 8rem;
+    flex-shrink: 0;
+  }
+
+  .profile-identity {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 460px) {
+  .profile-header {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .profile-identity h1 {
+    font-size: 1.5rem;
+  }
+
+  .profile-avatar {
+    max-width: 6rem;
+    width: 6rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-header {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .profile-identity h1 {
+    font-size: 1.25rem;
+  }
+
+  .profile-avatar {
+    max-width: 5rem;
+    width: 5rem;
+  }
+}
+
+/* ========================================
+   Profile README Responsive
+   ======================================== */
+
+@media (max-width: 767.98px) {
+  .profile-readme-body {
+    padding: 1.25rem;
+  }
+
+  .profile-readme-body h1 {
+    font-size: 1.75rem;
+  }
+
+  .profile-readme-body h2 {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-readme-body {
+    padding: 1rem;
+    max-height: 25rem;
+  }
+
+  .profile-readme-body pre {
+    max-width: 100%;
+  }
+
+  .profile-readme-body table {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-readme-body {
+    padding: 0.75rem;
+  }
+
+  .profile-readme-body h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   Profile Repositories Responsive
+   ======================================== */
+
+@media (max-width: 900px) {
+  .profile-repositories-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-repositories-header {
+    flex-wrap: wrap;
+  }
+
+  .profile-repo-card {
+    padding: 1.25rem;
+  }
+
+  .profile-repo-card .repo-card-footer {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .profile-repositories-dropdown {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .profile-repo-card {
+    padding: 1rem;
+  }
+}
+
+/* ========================================
+   Profile Followers/Following Responsive
+   ======================================== */
+
+@media (max-width: 1105px) {
+  .profile-users .pagination-container {
+    width: 100%;
+  }
+
+  .profile-users .pagination-nav {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 920px) {
+  .profile-users .pagination-nav {
+    gap: 0.25rem;
+  }
+
+  .profile-users .pagination-button {
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.625rem;
+  }
+
+  .profile-users .pagination-button.pagination-nav-button {
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-users .pagination-nav {
+    gap: 0.125rem;
+  }
+
+  .profile-users .pagination-button {
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .profile-users .pagination-button.pagination-nav-button {
+    gap: 0.125rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+
+  .profile-users-header {
+    padding: 0;
+  }
+
+  .profile-users .pagination-container {
+    width: 100%;
+  }
+
+  .profile-users .pagination-nav {
+    width: 100%;
+  }
+
+  .profile-users .pagination-button.pagination-nav-button {
+    padding: 0 0.375rem;
+  }
+}
+
+@media (max-width: 380px) {
+    .profile-users-back {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
   }
 }

@@ -5,7 +5,7 @@ import RepoCard from '../components/RepoCard'
 import UserCard from '../components/UserCard'
 import TopicCard from '../components/TopicCard'
 import type { Repo } from '../components/RepoCard'
-import type { User } from '../types/user'
+import type { GithubUser } from '../types/github_profile'
 import type { Topic } from '../components/TopicCard'
 import SearchSidebar from '../components/SearchSidebar'
 import Dropdown from '../components/Dropdown'
@@ -86,7 +86,7 @@ function SearchResults( {loading, setLoading}: SearchResultsProps) {
   const [totalRepos, setTotalRepos] = useState(0);
 
   // Store user results and the total user count
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<GithubUser[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   
   // Store topic results and the total topic count
@@ -178,7 +178,7 @@ function SearchResults( {loading, setLoading}: SearchResultsProps) {
 
           // Fetch full profile details for each user
          return Promise.all(
-            data.items.map((user: User) =>
+            data.items.map((user: GithubUser) =>
               fetch(`/api/github/users/${user.login}/`)
                 .then((response) => {
                   if (!response.ok) return null;

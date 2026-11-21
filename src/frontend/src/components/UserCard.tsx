@@ -1,8 +1,9 @@
 import { MapPin, BookBookmark, UsersRound } from 'lucide-react'
-import type { User } from '../types/user'
+import type { GithubUser } from '../types/github_profile'
+import { Link } from 'react-router'
 
 // Display the developer metadata returned by the GitHub API as a compact result card.
-function UserCard({ user }: { user: User }) {
+function UserCard({ user }: { user: GithubUser }) {
   return (
     <article className="user-card">
       <div className="user-card-header">
@@ -12,17 +13,13 @@ function UserCard({ user }: { user: User }) {
           alt={`${user.login} avatar`}
         />
         {user.name && (
-          <a
-            href={user.html_url}
-            target="_blank" rel="noopener noreferrer"
-            className="user-display-name"
-          >
-            {user.name}
-          </a>
+          <Link to={`/${user.login}`} className="user-display-name">
+              {user.name}
+          </Link>
         )}
-        <a href={user.html_url} target="_blank" rel="noopener noreferrer">
-          {user.login}
-        </a>
+        <Link to={`/${user.login}`}>
+            {user.login}
+        </Link>
       </div>
 
       {user.bio && <p className="user-card-bio">{user.bio}</p>}

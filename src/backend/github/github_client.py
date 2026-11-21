@@ -182,10 +182,15 @@ def get_repository_contents(owner, repo):
     """Get the contents of a GitHub repository."""
     return github_repository_request(f"repos/{owner}/{repo}/contents")
 
-def get_repository_readme(owner, repo):
+def get_repository_readme(owner, repo, path=None):
     """Get a GitHub repository's README, or None if it has none."""
+    if path:
+        endpoint = f"repos/{owner}/{repo}/contents/{path}"
+    else:
+        endpoint = f"repos/{owner}/{repo}/readme"
+
     try:
-        data = github_repository_request(f"repos/{owner}/{repo}/readme")
+        data = github_repository_request(endpoint)
     except requests.HTTPError as e:
         if e.response.status_code == 404:
             return None
@@ -202,11 +207,11 @@ def get_repository_readme(owner, repo):
     }
 
 # ====================================================
-# User Functions
+#  Profile Functions
 # ====================================================
 
-def get_user_profile(username):
-    """Get a GitHub user's profile information."""
+def get_github_profile(username):
+    """Get the contents of a GitHub profile."""
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
@@ -215,6 +220,66 @@ def get_user_profile(username):
     response = requests.get(
         f"{GITHUB_API_URL}/users/{username}",
         headers=headers,
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
+def get_github_social_accounts(username):
+    """Get the social accounts linked to a GitHub profile."""
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
+    }
+
+    response = requests.get(
+        f"{GITHUB_API_URL}/users/{username}/social_accounts",
+        headers=headers,
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
+def get_github_profile_repositories(username):
+    """Get the public repositories owned by a GitHub user or organisation."""
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
+    }
+
+    params = {
+        "type": "owner",
+        "sort": "updated",
+        "direction": "desc",
+        "per_page": 100,
+    }
+
+    response = requests.get(
+        f"{GITHUB_API_URL}/users/{username}/repos",
+        headers=headers,
+        params=params,
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
+def get_github_profile_connections(username, relationship, page):
+    """Get one page of the users who follow, or are followed by, a GitHub profile."""
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {settings.GITHUB_API_TOKEN}",
+    }
+
+    params = {
+        "per_page": 20,
+        "page": page,
+    }
+
+    response = requests.get(
+        f"{GITHUB_API_URL}/users/{username}/{relationship}",
+        headers=headers,
+        params=params,
         timeout=10,
     )
     response.raise_for_status()

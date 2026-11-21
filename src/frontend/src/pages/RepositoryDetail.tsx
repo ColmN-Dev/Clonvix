@@ -34,12 +34,14 @@ function RepositoryDetail({ setLoading }: RepositoryDetailProps) {
     )
 }
 
+// Define the props for the RepositoryDetailContent component
 interface RepositoryDetailContentProps {
     owner: string | undefined
     repo: string | undefined
     setLoading: (loading: boolean) => void
 }
 
+// Component to fetch and display detailed information about a specific GitHub repository
 function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailContentProps) {
 
     // State declarations for repository data and error handling
@@ -323,9 +325,9 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                                 src={repository.owner.avatar_url}
                                 alt={`${repository.owner.login} avatar`}
                             />
-                            <a href={repository.owner.html_url} target="_blank" rel="noopener noreferrer">
-                                {repository.owner.login}
-                            </a>
+                            <Link to={`/${repository.owner.login}`}>
+                            {repository.owner.login}
+                            </Link>
 
                             <span className="repository-header-separator">/</span>
 
@@ -449,11 +451,8 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                                 <div className="repository-latest-commit">
                                     <span className="repository-latest-commit-author">
                                         {latestCommit.author? (
-                                            <a
-                                                href={latestCommit.author.html_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
+                                            <Link
+                                                to={`/${latestCommit.author.login}`}>
                                                 <img
                                                     className="repository-latest-commit-author-avatar"
                                                     src={latestCommit.author.avatar_url}
@@ -462,7 +461,7 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                                                 <span className="repository-latest-commit-author-name">
                                                     {latestCommit.author.login}
                                                 </span>
-                                            </a>
+                                            </Link>
                                         ) : (
                                             latestCommit.commit.author.name
                                         )}

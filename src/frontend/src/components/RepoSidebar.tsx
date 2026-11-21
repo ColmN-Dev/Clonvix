@@ -389,10 +389,8 @@ function RepoSidebar({ repository, setLoading }: RepoSidebarProps) {
                             key={contributor.id}
                             className={contributors.length === 1 ? 'repository-sidebar-contributor' : ''}
                         >
-                            <a
-                                href={contributor.html_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to={`/${contributor.login}`}
                                 title={contributor.login}
                             >
                                 <img
@@ -400,16 +398,15 @@ function RepoSidebar({ repository, setLoading }: RepoSidebarProps) {
                                     src={contributor.avatar_url}
                                     alt={`${contributor.login} avatar`}
                                 />
-                            </a>
+                            </Link>
 
                             {contributors.length === 1 && (
-                                <a
-                                    href={contributor.html_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <Link
+                                    to={`/${contributor.login}`}
+                                    title={contributor.login}
                                 >
                                     {contributor.login}
-                                </a>
+                                </Link>
                             )}
                         </div>
                     ))}

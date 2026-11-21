@@ -4,3 +4,5 @@ export interface RepositoryReadme {
   content: string
   download_url: string
 }
+
+export type ProfileReadme = RepositoryReadme

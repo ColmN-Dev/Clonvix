@@ -3,9 +3,10 @@ from .models import RepositorySnapshot
 from .github_client import search_repositories, search_topics, search_users
 from .github_client import get_repository, get_repository_releases, get_repository_deployments, get_repository_contributors, get_repository_languages
 from .github_client import get_repository_commits, get_repository_branches, get_repository_tags, get_repository_latest_commit, get_repository_contents, get_repository_readme
-from .github_client import get_user_profile
+from .github_client import get_github_profile, get_github_social_accounts, get_github_profile_repositories, get_github_profile_connections
 from datetime import timedelta
 from django.utils import timezone
+from concurrent.futures import ThreadPoolExecutor
 
 # Keep search results for 5 minutes
 SEARCH_CACHE_SECONDS = 60 * 5
@@ -13,7 +14,7 @@ SEARCH_CACHE_SECONDS = 60 * 5
 # Keep repository details for 10 minutes
 REPOSITORY_CACHE_SECONDS = 60 * 10
 
-# Keep user profiles for 10 minutes
+# Keep profile info for 10 minutes
 PROFILE_CACHE_SECONDS = 60 * 10
 
 # Keep trending results for 15 minutes
@@ -327,14 +328,16 @@ def cached_repository_contents(owner, repo):
     
     return data
 
-def cached_repository_readme(owner, repo):
+def cached_repository_readme(owner, repo, path=None):
     """Return repository README data, using the cache when possible."""
 
     owner = owner.strip()
     repo = repo.strip()
-
+    
+    cache_path = path or "root"
+    
     # Create a unique cache key for the repository README
-    cache_key = f"repo_readme:{owner.lower()}:{repo.lower()}"
+    cache_key = f"repo_readme:{owner.lower()}:{repo.lower()}:{cache_path.lower()}"
 
     # Check if the results are already cached
     cached = cache.get(cache_key, "miss")
@@ -343,7 +346,7 @@ def cached_repository_readme(owner, repo):
         return cached
 
     # Call the GitHub API and cache the results
-    data = get_repository_readme(owner, repo)
+    data = get_repository_readme(owner, repo, path=path)
 
     # Cache the results for future requests
     cache.set(cache_key, data, REPOSITORY_CACHE_SECONDS)
@@ -351,16 +354,16 @@ def cached_repository_readme(owner, repo):
     return data
 
 # ===================================================
-# User profile caching logic
+# Profile caching logic
 # ===================================================
 
-def cached_user_profile(username):
-    """Return user profile data, using the cache when possible."""
+def cached_github_profile(username):
+    """Return profile data, using the cache when possible."""
 
     username = username.strip()
 
-    # Create a unique cache key for the user profile
-    cache_key = f"user_profile:{username.lower()}"
+    # Create a unique cache key for the profile
+    cache_key = f"github_profile:{username.lower()}"
 
     # Check if the results are already cached
     cached = cache.get(cache_key)
@@ -369,11 +372,67 @@ def cached_user_profile(username):
         return cached
 
     # Call the GitHub API and cache the results
-    data = get_user_profile(username)
+    data = get_github_profile(username)
+    
+    # Call the GitHub API to get social accounts and add them to the profile data
+    data["social_links"] = get_github_social_accounts(username)
 
     # Cache the results for future requests
     cache.set(cache_key, data, PROFILE_CACHE_SECONDS)
     
+    return data
+
+def cached_github_profile_repositories(username):
+    """Return public repositories, using the cache when possible."""
+
+    username = username.strip()
+
+    # Create a unique cache key for the user's repositories
+    cache_key = f"github_repositories:{username.lower()}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API and cache the results
+    data = get_github_profile_repositories(username)
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, PROFILE_CACHE_SECONDS)
+
+    return data
+
+def cached_github_profile_connections(username, relationship, page):
+    """Return followers or following with full profiles, using the cache when possible."""
+
+    username = username.strip()
+
+    # Create a unique cache key for the followers or following page
+    cache_key = f"github_{relationship}:{username.lower()}:{page}"
+
+    # Check if the results are already cached
+    cached = cache.get(cache_key)
+
+    if cached is not None:
+        return cached
+
+    # Call the GitHub API to get the list of users
+    users = get_github_profile_connections(username, relationship, page)
+
+    # Get the usernames of the followers or following and fetch their full profiles concurrently
+    logins = []
+    for user in users:
+        logins.append(user["login"])
+    
+    # Use ThreadPoolExecutor to fetch the full profiles concurrently
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        data = list(executor.map(get_github_profile, logins))
+
+    # Cache the results for future requests
+    cache.set(cache_key, data, PROFILE_CACHE_SECONDS)
+
     return data
 
 # ===================================================
