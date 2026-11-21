@@ -39,6 +39,7 @@
   <p>
     <a href="#features">Features</a> •
     <a href="#technology-stack">Technology Stack</a> •
+    <a href="#latest-release">Latest Release</a> •
     <a href="#getting-started">Getting Started</a> •
     <a href="#running-the-application">Running the Application</a> •
     <a href="#deployment">Deployment</a> •
@@ -53,7 +54,6 @@
 > Clonvix is currently in active development. 
 > Features, functionality and the overall application are subject to change as development continues.
 
-
   <br>
 
   <div align="center">
@@ -62,6 +62,8 @@
       <img src="docs/images/search-results-v5.png" alt="Clonvix search results page" width="100%">
       <br><br>
       <img src="docs/images/repository-detail.png" alt="Clonvix repository detail page" width="100%">
+      <br><br>
+      <img src="docs/images/github-profile-v2.png" alt="Clonvix github profile page" width="100%">
   </div>
   
   <br>
@@ -77,6 +79,8 @@
 - GitHub repository, user and topic search using the GitHub REST API.
 - Repository search with language filtering, sorting and pagination.
 - Dedicated topic landing and detail pages for discovering repositories.
+- GitHub user and organisation profile pages displaying profile information, social links and statistics.
+- Profile pages with repository listings, README previews, and Followers and Following views for users, including organisation follower support.
 - Repository detail pages displaying metadata, README content, latest release information, deployments, contributors, language statistics and repository files.
 - Trending repositories ranked by historical star growth, with daily, weekly and monthly views.
 - Backend integration with server-side caching to reduce GitHub API requests.
@@ -86,7 +90,6 @@
 ### Planned
 
 - User registration, login and account management.
-- Dedicated developer profile pages.
 - Save repositories independently of GitHub stars.
 - Follow Clonvix users and GitHub developers.
 - GitHub account connection and OAuth login.
@@ -105,6 +108,14 @@
 | Deployment | Render, gunicorn, WhiteNoise |
 | CI/CD | GitHub Actions |
 | Development | Git, GitHub, Layerbase |
+
+## Latest Release
+
+**[v0.7.0 — GitHub Developer Profiles](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.7.0)**
+
+Introduces GitHub user and organisation profiles, including repository exploration, README previews, and follower/following views.
+
+See the [full release notes](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.7.0) for details.
 
 ## Getting started
 
@@ -164,7 +175,7 @@ BREVO_API_KEY=replace-with-your-brevo-api-key
 
 The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database. Set `DB_SSL=True` if the host requires SSL and the connection string does not already include it.
 
-`REDIS_URL` should point to your Redis instance. Clonvix uses Redis for caching GitHub search responses and Trending results.
+`REDIS_URL` should point to your Redis instance. Clonvix uses Redis as Django's cache backend for GitHub API responses, including repository, user and topic search results, user profiles, repository READMEs, follower/following data, and Trending results.
 
 `GITHUB_API_TOKEN` is a GitHub personal access token used to authenticate API requests. Read-only access to public repository data is sufficient. Without a token, GitHub applies lower API rate limits.
 
@@ -176,7 +187,7 @@ python manage.py migrate
 
 ### Set up the frontend
 
-Open a second terminal from the repository root:
+From the repository root:
 
 ```bash
 cd src/frontend
@@ -185,35 +196,29 @@ npm install
 
 ## Running the application
 
-### Start the backend
+### Start the development environment
 
-From `src/backend`, with the virtual environment activated:
+From the repository root, run the appropriate script for your environment:
 
-```bash
-python manage.py runserver
+**Windows PowerShell:**
+
+```powershell
+.\dev.ps1
 ```
 
-The backend will be available at `http://127.0.0.1:8000`. A quick check that it is running is `http://127.0.0.1:8000/api/status/`.
-
-### Start the frontend
-
-From `src/frontend`:
+**macOS/Linux or Windows Git Bash:**
 
 ```bash
-npm run dev
+./dev.sh
 ```
 
-The frontend will be available at the local URL shown by Vite, normally `http://localhost:5173`.
+Both scripts automatically activate the Python virtual environment, clean up repository snapshots older than 30 days, collect the latest snapshots, and start both development servers.
 
-### Frontend checks
+The backend will be available at `http://127.0.0.1:8000/`. A quick check that it is running is `http://127.0.0.1:8000/api/status/`.
 
-From `src/frontend`:
+The frontend will be available at the local URL shown by Vite, normally `http://localhost:5173/`.
 
-```bash
-npm run lint
-npx tsc --noEmit
-npm run build
-```
+Press `Ctrl + C` to stop both development servers.
 
 ## Deployment
 
@@ -243,6 +248,8 @@ Clonvix/
 ├── .github/
 │   └── workflows/            # GitHub Actions workflows
 ├── build.sh                  # Render build script
+├── dev.sh                    # Development startup script (Linux/macOS)
+├── dev.ps1                   # Development startup script (Windows)
 ├── docs/                     # Project planning, design and supporting documentation
 ├── src/
 │   ├── backend/              # Django project and API
@@ -275,11 +282,9 @@ Additional project documentation is available in the [`docs`](docs/) directory.
 
 ## Roadmap
 
-1. Complete repository exploration and topic discovery.
-2. Implement dedicated developer profile pages.
-3. Add user registration, login and account management.
-4. Implement saved repositories and developer-following features.
-5. Integrate GitHub account connection and OAuth login.
-6. Expand profile customisation and portfolio features.
-7. Integrate remaining external services.
-8. Improve testing, accessibility, responsiveness and production readiness.
+1. Add user registration, login and account management.
+2. Implement saved repositories and developer-following features.
+3. Integrate GitHub account connection and OAuth login.
+4. Expand profile customisation and portfolio features.
+5. Integrate remaining external services.
+6. Improve testing, accessibility, responsiveness and production readiness.
