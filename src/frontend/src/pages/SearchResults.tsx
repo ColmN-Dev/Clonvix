@@ -11,6 +11,7 @@ import SearchSidebar from '../components/SearchSidebar'
 import Dropdown from '../components/Dropdown'
 import Pagination from '../components/Pagination'
 import { scrollToTop } from '../utils/scrollToTop'
+import { formatCount } from '../utils/formatCount'
 
 // Define the props for the SearchResults component
 type SearchResultsProps = {
@@ -236,7 +237,7 @@ function SearchResults( {loading, setLoading}: SearchResultsProps) {
                   ? `Searching for ${query}...`
                   : totalResults === 0
                     ? `No results found for ${query}`
-                    : `${totalResults.toLocaleString()} ${totalResults === 1 ? 'result' : 'results'} for ${query}`}
+                    : `${formatCount(totalResults)} ${totalResults === 1 ? 'result' : 'results'} for ${query}`}
             </h1>
 
             {/* Sort dropdown */}

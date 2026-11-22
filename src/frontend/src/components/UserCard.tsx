@@ -1,6 +1,7 @@
 import { MapPin, BookBookmark, UsersRound } from 'lucide-react'
 import type { GithubUser } from '../types/github_profile'
 import { Link } from 'react-router'
+import { formatCount } from '../utils/formatCount'
 
 // Display the developer metadata returned by the GitHub API as a compact result card.
 function UserCard({ user }: { user: GithubUser }) {
@@ -37,14 +38,14 @@ function UserCard({ user }: { user: GithubUser }) {
 
           <span className="flex items-center gap-1">
             <BookBookmark size={16} />
-            {user.public_repos.toLocaleString()}
+            {formatCount(user.public_repos)}
           </span>
 
           <span>•</span>
 
           <span className="flex items-center gap-1">
             <UsersRound size={16} />
-            {user.followers.toLocaleString()}
+            {formatCount(user.followers)}
           </span>
         </div>
     </article>

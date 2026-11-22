@@ -1,6 +1,7 @@
 import { Star } from 'lucide-react'
 import { Link } from 'react-router'
 import { timeAgo } from '../utils/timeAgo';
+import { formatCount } from '../utils/formatCount'
 
 export interface Repo {
   id: number;
@@ -55,7 +56,7 @@ function RepoCard({ repo }: { repo: Repo }) {
         </span>
         <span>•</span>
         <span className="flex items-center gap-1">
-          <Star size={16} />{repo.stargazers_count.toLocaleString()}
+          <Star size={16} />{formatCount(repo.stargazers_count)}
         </span>
         <span>•</span>
         <span className="repo-card-updated">Updated {timeAgo(repo.pushed_at)}</span>

@@ -10,6 +10,7 @@ import Dropdown from '../components/Dropdown'
 import UserCard from '../components/UserCard'
 import Pagination from '../components/Pagination'
 import { timeAgo } from '../utils/timeAgo'
+import { formatCount } from '../utils/formatCount'
 
 // Mapping of social media providers to their corresponding Simple Icons
 const socialIcons: Record<string, SimpleIcon> = {
@@ -301,12 +302,12 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
                         <div className="profile-connections mb-2">
                             <UsersRound size={18} />
                             <Link to="?tab=followers" className="profile-followers">
-                                <strong>{profile.followers.toLocaleString()}</strong> followers
+                                <strong>{formatCount(profile.followers)}</strong> followers
                             </Link>
                             {profile.type === 'User' && (<span>•</span>)}
                             {profile.type === 'User' && (
                                 <Link to="?tab=following" className="profile-following">
-                                    <strong>{profile.following.toLocaleString()}</strong> following
+                                    <strong>{formatCount(profile.following)}</strong> following
                                 </Link>
                             )}
                         </div>
@@ -457,12 +458,12 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
                                                 </span>
                                                 {repo.stargazers_count > 0 && (
                                                     <span className="flex items-center gap-1">
-                                                    <Star size={16} />{repo.stargazers_count.toLocaleString()}
+                                                    <Star size={16} />{formatCount(repo.stargazers_count)}
                                                     </span>
                                                 )}
                                                 {repo.forks_count > 0 && (
                                                     <span className="flex items-center gap-1">
-                                                    <GitFork size={16} />{repo.forks_count.toLocaleString()}
+                                                    <GitFork size={16} />{formatCount(repo.forks_count)}
                                                     </span>
                                                 )}
                                                 <span className="repo-card-updated">Updated {timeAgo(repo.pushed_at)}</span>

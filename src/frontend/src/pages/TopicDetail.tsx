@@ -4,6 +4,7 @@ import RepoCard from '../components/RepoCard'
 import type { Repo } from '../components/RepoCard'
 import Pagination from '../components/Pagination'
 import { scrollToTop } from '../utils/scrollToTop'
+import { formatCount } from '../utils/formatCount'
 
 type TopicDetailProps = {
     loading: boolean;
@@ -104,7 +105,7 @@ function TopicDetail({ loading, setLoading }: TopicDetailProps) {
                         ? `Loading repositories for ${formattedTopic}...`
                         : totalRepos === 0
                             ? `No repositories found for ${formattedTopic}`
-                            : `${totalRepos.toLocaleString()} ${totalRepos === 1 ? 'repository' : 'repositories'} for ${formattedTopic}`}
+                            : `${formatCount(totalRepos)} ${totalRepos === 1 ? 'repository' : 'repositories'} for ${formattedTopic}`}
                     </h1>
                 </div>
 

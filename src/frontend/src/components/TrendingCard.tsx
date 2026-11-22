@@ -1,5 +1,6 @@
 import { BookBookmark, Star, GitFork } from 'lucide-react'
 import { Link } from 'react-router'
+import { formatCount } from '../utils/formatCount'
 
 // Define the data needed for each trending repository
 export interface TrendingRepo {
@@ -50,13 +51,13 @@ function TrendingCard({ repo, dateRange }: TrendingCardProps) {
             )}
             {repo.language ?? 'No language'}
           </span>
-          <span><Star size={16} /> {repo.star_count.toLocaleString()}</span>
-          <span><GitFork size={16} /> {repo.forks_count.toLocaleString()}</span>
+          <span><Star size={16} /> {formatCount(repo.star_count)}</span>
+          <span><GitFork size={16} /> {formatCount(repo.forks_count)}</span>
         </div>
         <span className="trending-card-growth">
           <Star size={16} />
           <span>
-            {repo.star_growth.toLocaleString()} stars {dateRangeLabel}
+            {formatCount(repo.star_growth)} stars {dateRangeLabel}
           </span>
         </span>
       </div>

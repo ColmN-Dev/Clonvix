@@ -12,6 +12,7 @@ import FileTreeRow from '../components/FileTreeRow'
 import ReadmeContent from '../components/ReadmeContent'
 import GithubIcon from '../components/GithubIcon'
 import { timeAgo } from '../utils/timeAgo'
+import { formatCount } from '../utils/formatCount'
 
 // Define the props for the RepositoryDetail component
 interface RepositoryDetailProps {
@@ -413,7 +414,7 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                             <span className="repository-commit-count">
                                 <RotateCcwClock size={18} />
                                 {totalCommits !== null
-                                    ? `${totalCommits.toLocaleString()} ${totalCommits === 1 ? 'Commit' : 'Commits'}`
+                                    ? `${formatCount(totalCommits)} ${totalCommits === 1 ? 'Commit' : 'Commits'}`
                                     : 'Commits'}
                             </span>
                         </a>
@@ -426,7 +427,7 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                             <span className="repository-branch-count">
                                 <GitBranch size={18} />
                                 {totalBranches !== null
-                                    ? `${totalBranches.toLocaleString()} ${totalBranches === 1 ? 'Branch' : 'Branches'}`
+                                    ? `${formatCount(totalBranches)} ${totalBranches === 1 ? 'Branch' : 'Branches'}`
                                     : 'Branches'}
                             </span>
                         </a>
@@ -439,7 +440,7 @@ function RepositoryDetailContent({owner, repo, setLoading}: RepositoryDetailCont
                             <span className="repository-tag-count">
                                 <Tag size={18} />
                                 {totalTags !== null
-                                    ? `${totalTags.toLocaleString()} ${totalTags === 1 ? 'Tag' : 'Tags'}`
+                                    ? `${formatCount(totalTags)} ${totalTags === 1 ? 'Tag' : 'Tags'}`
                                     : 'Tags'}
                             </span>
                         </a>
