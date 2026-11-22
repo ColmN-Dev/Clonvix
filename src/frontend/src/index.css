@@ -3629,6 +3629,10 @@ body.menu-open {
     grid-template-columns: 16rem minmax(0, 1fr);
     padding: 2rem;
   }
+
+  .profile-connections {
+    font-size: 0.825rem;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -3685,6 +3689,12 @@ body.menu-open {
   .profile-avatar {
     max-width: 5rem;
     width: 5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .profile-connections {
+    font-size: 0.825rem;
   }
 }
 
