@@ -28,7 +28,7 @@ function SearchResults( {loading, setLoading}: SearchResultsProps) {
   const type = searchParams.get('type') ?? 'repositories';
   const sort = searchParams.get('sort') ?? '';
   const order = searchParams.get('order') ?? '';
-  const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
+  const currentPage = Number(searchParams.get('page') || 1)
   const perPage = 10;
   const hasQuery = query.trim().length > 0;
 

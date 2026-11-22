@@ -75,7 +75,7 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
     const [users, setUsers] = useState<GithubUser[]>([])
     const [searchParams, setSearchParams] = useSearchParams()
     const tab = searchParams.get('tab')
-    const page = Number(searchParams.get('page') || 1)
+    const currentPage = Number(searchParams.get('page') || 1)
 
     // Total number of followers or following, used to work out the number of pages
     const totalUsers = tab === 'followers' ? profile?.followers : profile?.type === 'User' ? profile?.following : 0
@@ -241,7 +241,7 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
         const fetchProfileUsers = async () => {
             try {
                 const response = await fetch(
-                    `/api/github/users/${username}/${tab}/?page=${page}`,
+                    `/api/github/users/${username}/${tab}/?page=${currentPage}`,
                     { signal: controller.signal }
                 )
 
@@ -263,7 +263,7 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
 
         return () => controller.abort()
 
-    }, [username, tab, page, setLoading])
+    }, [username, tab, currentPage, setLoading])
 
     if (error) {
         return (
@@ -376,7 +376,7 @@ function GitHubProfileContent({ username, setLoading }: GitHubProfileContentProp
                                 ))}
                             </div>
                             <Pagination
-                                currentPage={page}
+                                currentPage={currentPage}
                                 totalPages={totalPages}
                                 onPageChange={handlePageChange}
                             />

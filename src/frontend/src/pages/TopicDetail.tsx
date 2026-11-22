@@ -16,7 +16,7 @@ function TopicDetail({ loading, setLoading }: TopicDetailProps) {
 
     // Get the current page number from the URL
     const [searchParams, setSearchParams] = useSearchParams()
-    const currentPage = Math.max(1, Number(searchParams.get('page')) || 1)
+    const currentPage = Number(searchParams.get('page') || 1)
     const perPage = 10
     const hasTopic = (topic?.trim().length ?? 0) > 0;
 

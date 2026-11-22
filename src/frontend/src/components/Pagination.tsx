@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useEffect } from 'react'
 
 type PaginationProps = {
     currentPage: number;
@@ -13,6 +14,15 @@ export default function Pagination({
     totalPages,
     onPageChange,
 }: PaginationProps) {
+
+    // If the page in the address is too low or too high, go to the nearest valid page
+    useEffect(() => {
+        if (totalPages > 0 && currentPage > totalPages) {
+            onPageChange(totalPages)
+        } else if (currentPage < 1 || Number.isNaN(currentPage)) {
+            onPageChange(1)
+        }
+    }, [currentPage, totalPages, onPageChange])
 
     // Array to store the page numbers and ellipses displayed in the pagination
     const pages: (number | string)[] = [];

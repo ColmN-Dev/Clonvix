@@ -325,7 +325,13 @@ def github_profile_connections_view(request, username, relationship):
     if not username:
         return JsonResponse({"error": "Missing username."}, status=400)
 
-    page = request.GET.get("page", 1)
+    # Ensure valid pagination parameters
+    try:
+        page = int(request.GET.get("page", 1))
+        if page < 1:
+            page = 1
+    except ValueError:
+        page = 1
 
     try:
         data = cached_github_profile_connections(username, relationship, page)
