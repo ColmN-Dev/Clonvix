@@ -1,6 +1,6 @@
 # Clonvix Documentation
 
-**Last updated:** November 19, 2026
+**Last updated:** November 22, 2026
 
 ## Table of Contents
 
@@ -24,11 +24,11 @@
 
 Clonvix is a full-stack web application that combines a personal developer portfolio with a GitHub repository explorer. Its aim is to make it easier for users to discover software projects and developers, while providing registered users with features to save repositories, follow developers and manage a developer profile.
 
-Visitors can search public GitHub repositories, topics and developers, and explore repository detail pages and topic pages, without creating an account. Additional functionality, including developer profiles, is planned. Authenticated users will have access to features such as saved repositories, following relationships and profile management. Users will also be able to connect their GitHub accounts to display their public repositories and support GitHub-based authentication.
+Visitors can search public GitHub repositories, topics and developers, and explore repository detail pages, topic pages and GitHub profile pages, without creating an account. Additional functionality, such as authentication, is planned. Authenticated users will have access to features such as saved repositories, following relationships and profile management. Users will also be able to connect their GitHub accounts to display their public repositories and support GitHub-based authentication.
 
 The project is being developed using React and TypeScript on the frontend, with Django and Django REST Framework on the backend. PostgreSQL is used for persistent application data, while the GitHub REST API provides repository and developer information. The application is hosted on Render, with Neon providing the production PostgreSQL database.
 
-The project currently has a working foundation, including custom user model configuration, frontend routing, responsive layouts, light and dark themes, and a live production deployment. The `github` app handles GitHub API integration and currently supports repository, user and topic searches, server-side caching, language filtering, sorting, pagination and trending repositories based on historical star growth. Repository detail pages and topic pages are now implemented. Further functionality, including developer profiles, authentication, account features and GitHub account integration, remains planned.
+The project currently has a working foundation, including custom user model configuration, frontend routing, responsive layouts, light and dark themes, and a live production deployment. The `github` app handles GitHub API integration and currently supports repository, user and topic searches, server-side caching, language filtering, sorting, pagination and trending repositories based on historical star growth. Repository detail pages, topic pages and GitHub profile pages are now implemented. Further functionality, including Clonvix profile pages, authentication, account features and GitHub account integration, remains planned.
 
 ## 2. Project Structure
 
@@ -42,6 +42,8 @@ Clonvix/
 │       └── trending-snapshots.yml
 ├── README.md
 ├── build.sh
+├── dev.ps1
+├── dev.sh
 ├── docs/
 │   ├── documentation.md
 │   ├── project-plan.md
@@ -79,7 +81,7 @@ Clonvix/
             └── main.tsx
 ```
 
-The `docs` directory contains the project plan, presentations, user-flow and site-map images, wireframes and database design. The `build.sh` script at the project root is run by Render during each deployment. The `src/backend` directory contains the Django project, the `accounts` app for user-related functionality and the `github` app for GitHub API integration, including repository, topic and user search. Custom Django management commands are organised within `github/management/commands/`.
+The `docs` directory contains the project plan, presentations, user-flow and site-map images, wireframes and database design. The `build.sh` script at the project root is run by Render during each deployment. The `dev.sh` and `dev.ps1` scripts at the project root start local development with one command, running the Django development server, the Vite development server and both snapshot management commands. The `src/backend` directory contains the Django project, the `accounts` app for user-related functionality and the `github` app for GitHub API integration, including repository, topic and user search. Custom Django management commands are organised within `github/management/commands/`.
 
 The `src/frontend` directory contains the React application, with `App.tsx` handling the main application routes and `main.tsx` serving as the entry point. Shared styling is maintained in `index.css`, while reusable components are organised in `components` and routed screens in `pages`. Vite and TypeScript configuration files are located at the frontend root. Shared TypeScript interfaces are kept in `types` and helper functions such as the relative time formatter are kept in `utils`.
 
@@ -112,17 +114,23 @@ GitHub does not provide a total commit, branch or tag count. To calculate one, t
 
 In `services.py`, endpoints that can legitimately return nothing, such as releases, deployments and the README, are cached using a `"miss"` marker. This lets an empty result be cached and returned without being mistaken for a cache miss.
 
-GitHub API requests are separated into `github_client.py`, while `services.py` handles the service logic and server-side caching. Redis is used to cache GitHub search responses and Trending results. The views in `views.py` process incoming requests, and `urls.py` defines the app's API routes.
+GitHub API requests are separated into `github_client.py`, while `services.py` handles the service logic and server-side caching. Redis is used to cache GitHub API responses, including repository, user and topic search results, user profiles, repository READMEs and Trending results. The views in `views.py` process incoming requests, and `urls.py` defines the app's API routes.
 
 Repository trending is implemented using daily star snapshots stored in PostgreSQL. The `RepositorySnapshot` model records repository information and its star count for each snapshot date, with a unique constraint preventing duplicate daily snapshots for the same repository. A custom Django management command, located in `github/management/commands/`, collects these snapshots. The Trending service compares historical snapshots to calculate star growth across daily, weekly and monthly periods. The endpoint `GET /api/github/trending/` provides the results, with Redis caching used to reduce repeated processing.
 
+GitHub profile pages are supported by endpoints under `/api/github/users/<username>/`, following the same client, cached service and view pattern. The profile endpoint returns a user or organisation, with the account's social links retrieved from GitHub's social accounts endpoint and added to the response before it is cached. A repositories endpoint returns up to 100 of the account's public repositories, ordered by last updated, which the frontend sorts and limits to ten. The followers and following endpoints return one page of 20 accounts at a time. Each account is returned as a full profile, because GitHub's lists only provide a username and avatar. The page number is validated in the view, so a missing, non-numeric or negative value defaults to page 1.
+
+A user's profile README is the `README.md` in the repository named after their username, while an organisation's is `profile/README.md` in its `.github` repository. The README function in `github_client.py` was given an optional path parameter. Without it, the normal README endpoint returns the README at the root of a repository, while a path uses GitHub's contents API, which is needed for nested paths. The profile README view checks whether the profile type is an organisation and requests the matching location.
+
+Looking up each follower's profile one at a time took 15 to 20 seconds per page, so the lookups for a page now run through a `ThreadPoolExecutor` with `max_workers=10`, ten at a time. An uncached page takes roughly five seconds, and the full page is cached afterwards.
+
 The `project-checks.yml` GitHub Actions workflow runs Django checks and backend tests, then lints and builds the frontend. The separate `trending-snapshots.yml` workflow can be dispatched manually and runs daily on a schedule to collect repository snapshots in production using the management command.
 
-Developer profiles and further authenticated functionality remain to be implemented.
+Clonvix developer profiles and further authenticated functionality remain to be implemented.
 
 ## 4. Frontend
 
-The frontend is a React application written in TypeScript and built with Vite. The entry point renders the `App` component, which uses React Router to handle navigation between the Home, About, ColmN-Dev, Contact, Topic, Repository Detail, Search and Search Results pages. The ColmN-Dev, About and Contact pages are placeholders for now.
+The frontend is a React application written in TypeScript and built with Vite. The entry point renders the `App` component, which uses React Router to handle navigation between the Home, About, ColmN-Dev, Contact, Topic,Repository Detail, GitHub Profile, Search and Search Results pages. The About and Contact pages are placeholders for now.
 
 The layout is built from separate components. `Header` contains the Clonvix logo and title, the `Nav` links and the `ThemeToggle`. `Footer` contains the brand, explore links and a GitHub link. On screens below 1050px, the navigation links collapse into a hamburger button that opens a slide-out menu with a dark overlay. The button switches between a menu and close icon, and the menu closes when the overlay or a link is clicked. Icons come from [`lucide-react`](https://lucide.dev/icons/).
 
@@ -138,7 +146,7 @@ Tailwind CSS v4 is configured through the Vite plugin, alongside a custom styles
 - Basic `focus-visible` styling for keyboard accessibility.
 - Custom text selection colours that follow the active theme.
 
-The Search Results page supports repository, topic and user searches through the Django API. Repository results include information such as the repository name, owner, description, programming language, topics and star count. Repository searches support language filtering, sorting and pagination. Topic searches display topic information and available images, while user searches display matching GitHub developer accounts. Search options and filters are reflected in the URL query parameters, allowing search results to be shared or revisited.
+The Search Results page supports repository, topic and user searches through the Django API. Repository results include information such as the repository name, owner, description, programming language, topics and star count. Repository searches support language filtering, sorting and pagination. Topic searches display topic information and available images, while user searches display matching GitHub developer accounts. Each user card links to that account's profile page. Search options and filters are reflected in the URL query parameters, allowing search results to be shared or revisited.
 
 The Repository Detail page uses a header with the owner’s avatar, repository name and stars, forks, watchers and issues counts. The main column contains a toolbar with commit, branch and tag counts that link to GitHub, a file tree, and the rendered README. A sidebar shows the description, homepage link, topics, a link to the README, the latest release, latest deployment, contributors and a language breakdown. On small screens the sidebar moves below the main content.
 
@@ -152,11 +160,19 @@ Each sidebar section has a TypeScript interface imported from the `types` folder
 
 Topic pages list repositories matching a topic, using a topic search qualifier, with pagination. Topics are linked from the header, footer, search results and the repository sidebar.
 
+The GitHub Profile page uses one layout for both users and organisations. A sidebar shows the avatar, name and username, followed by the details GitHub provides: bio, followers and following counts, location, website and social links. Fields such as the bio and following count only exist for users, so they are only rendered for users, and organisations show followers only. Social links show a platform icon from the `simple-icons` package where one is available, and a generic link icon otherwise, with the protocol and `www.` removed from the displayed text to keep the sidebar compact.
+
+The main column shows the profile README in a scrollable container with a maximum height, followed by the account's top ten repositories as repository cards. A dropdown sorts them by last updated, stars or A–Z, and the Repositories heading links to the account's repositories on GitHub.
+
+Clicking the followers or following count replaces the README and repositories with a list of user cards, controlled by a `tab` URL parameter (`?tab=followers` or `?tab=following`). The list uses the same `UserCard` component as user search results, shows 20 accounts per page through the shared `Pagination` component, and keeps the page number in the URL, so it can be refreshed or shared. `Pagination` also corrects invalid page numbers: a page higher than the last page redirects to the last page, and a page below 1 or one that is not a number redirects to page 1.
+
+Large counts are shortened with a shared `formatCount` helper in `utils`, which uses `Intl.NumberFormat` with compact notation, so 1,000 becomes 1K and 1,200,000 becomes 1.2M.
+
 The Home page contains a hero section with a Clonvix background image and introductory content. It also includes a Trending repositories section, displaying repositories ranked by historical star growth across daily, weekly and monthly periods.
 
 The application uses a shared full-screen loading overlay. It is controlled at the application level and is used while the Home page loads Trending data, while repository search requests run, and while search queries or filters change.
 
-Other planned features include saved repositories, following, developer profiles, profile editing, account settings and the ColmN-Dev showcase.
+Other planned features include saved repositories, following, Clonvix developer profiles, profile editing and account settings.
 
 ## 5. Database
 
@@ -186,6 +202,7 @@ The remaining tables are currently part of the database design rather than compl
 - **Full-stack architecture:** Django with Django REST Framework backend and a React, TypeScript and Vite frontend.
 
 - **Responsive navigation:** Home, About, Contact and Search Results pages, with a responsive header, footer and slide-out mobile menu.
+
 - **Theme system:** System, Light and Dark themes with saved preferences and theme-aware text selection colours.
 
 - **GitHub integration:** Repository, topic and user searches through the GitHub REST API.
@@ -203,11 +220,16 @@ The remaining tables are currently part of the database design rather than compl
 - **README rendering:** Markdown rendering with sanitisation and support for GitHub Flavoured Markdown.
 
 - **Topic pages:** Browse repositories by topic with pagination.
+
 - **Relative timestamps:** Human-readable time labels for repository cards, commits, releases and deployments.
+
+- **GitHub profile pages:** User and organisation profiles with a sidebar, social links with platform icons, the profile README, top ten repositories with sorting, and paginated followers and following lists.
+
+- **Pagination and number formatting:** A shared `Pagination` component that redirects out-of-range or invalid page numbers, and a `formatCount` helper that shortens large counts such as 1.2M.
 
 - **Trending repositories:** Historical star-growth rankings across daily, weekly and monthly periods, powered by daily repository snapshots.
 
-- **Backend caching:** Redis caching for GitHub search responses and trending results.
+- **Backend caching:** Redis caching for GitHub API responses, including repository, user and topic search results, user profiles, repository READMEs and trending results.
 
 - **Database:** Neon-hosted PostgreSQL with a `RepositorySnapshot` model and custom Django management command for collecting daily star counts.
 
@@ -223,6 +245,8 @@ The remaining tables are currently part of the database design rather than compl
 
 - **Scheduled tasks:** GitHub Actions workflow for daily repository snapshot collection.
 
+- **Local development script:** `dev.sh` and `dev.ps1` start the development servers and snapshot commands with one command.
+
 - **Styling:** Tailwind CSS v4 configured through the Vite plugin, with shared theme variables in `index.css`.
 
 - **Project documentation:** README, project plan, presentations, wireframes, user journey, sitemap and database ERD.
@@ -234,7 +258,7 @@ The remaining tables are currently part of the database design rather than compl
 - User registration, login and profile management.
 - Saved repositories and developer following.
 - GitHub account connection and authentication.
-- GitHub and Clonvix developer profiles.
+- Clonvix developer profiles.
 
 ## 7. Current Limitations
 
@@ -256,6 +280,10 @@ Clonvix relies on the GitHub REST API to retrieve public repository and develope
 
 - **File tree scope:** the file tree shows the root level of the default branch, limited to 25 items. Folders, individual files and longer listings link to GitHub.
 
+- **Profile repositories and social icons:** The profile page sorts the account's 100 most recently updated public repositories and shows ten, so Stars and A–Z only apply to those 100, with the full list on GitHub. GitHub's API does not provide icons for social links, so only platforms in Clonvix's icon lookup show a brand icon and all others use a generic link icon.
+
+- **Uncached followers and following pages:** Each account on a page needs its own GitHub request, so a page that is not cached takes roughly five seconds to load, while pages already in the cache load quickly.
+
 ## 8. Key Design Decisions
 
 **React and TypeScript.** The project brief does not require React, and TypeScript is not mentioned at all. Both were chosen deliberately to build on what has been learned so far and to gain more experience with tools used in software development.
@@ -276,13 +304,19 @@ Clonvix relies on the GitHub REST API to retrieve public repository and develope
 
 **Clonvix relationships kept separate from GitHub.** Saving a repository in Clonvix will not star it on GitHub, and following a GitHub developer will not require that developer to have a Clonvix account. These relationships will be managed within Clonvix rather than changing the user's GitHub activity.
 
-**GitHub data fetched rather than permanently stored.** Current repository and topic information is retrieved from the GitHub REST API and cached temporarily using Redis. This avoids maintaining unnecessary duplicate copies of information that GitHub already provides. Clonvix will store its own application data, such as user accounts, saved repositories and follow relationships, alongside historical repository snapshots.
+**GitHub data fetched rather than permanently stored.** Current repository, topic and user information is retrieved from the GitHub REST API and cached temporarily using Redis. This avoids maintaining unnecessary duplicate copies of information that GitHub already provides. Clonvix will store its own application data, such as user accounts, saved repositories and follow relationships, alongside historical repository snapshots.
 
 **Historical repository snapshots.** Historical star counts are not provided by the standard GitHub repository search API. The `RepositorySnapshot` model was introduced to store daily star-count snapshots using the repository's GitHub ID and snapshot date. This allows Clonvix to build its own historical data for calculating repository star growth.
 
-**Linking to GitHub for secondary views.** Due to time constraints and added complexity, folder navigation, file viewing, releases, commits, branches and tags link to GitHub rather than being rebuilt in Clonvix. This kept the focus on the repository overview, which is the core of the page.
+**Linking to GitHub for secondary views.** Due to time constraints and added complexity, folder navigation, file viewing, activity, releases, deployments, commits, branches and tags link to GitHub rather than being rebuilt in Clonvix. This kept the focus on the repository overview, which is the core of the page.
 
 **Sanitised markdown.** README content comes from third-party repositories, so rendered HTML is sanitised before display instead of trusting raw HTML.
+
+**One profile page for users and organisations.** Both account types share one layout. Fields that only exist for users, such as the bio and following count, are only rendered for users, and organisations show followers only.
+
+**Followers and following on the profile page.** Clicking the counts switches the main column to a list controlled by a `tab` URL parameter, instead of opening a separate page. GitHub sends organisations to a different page for this, but Clonvix keeps both on the profile page for consistency. The same layout can then be reused for Clonvix profiles later.
+
+**One command for local development.** The `dev.sh` and `dev.ps1` scripts run the Django server, the Vite development server and both snapshot commands together, so local development starts with one command in either shell.
 
 **Render and Neon for deployment.** Render hosts the application, while Neon provides the PostgreSQL database. This setup allows the application and database to be deployed separately while keeping the frontend and backend together within the Render web service.
 
@@ -346,6 +380,8 @@ Clonvix is currently tested manually throughout development to check that indivi
 - Testing the theme toggle by switching between System, Light and Dark.
 - Testing browser search functionality, including switching between repository and topic searches and using the available filters.
 - Comparing repository detail pages against a range of public repositories on GitHub, including checking commit counts after pushing new commits.
+- Testing GitHub profile pages for users and organisations, including accounts with no bio, location, social links or profile README, and links returned with the `generic` provider.
+- Testing the followers and following tabs, including page navigation, load times before and after the thread pool, and invalid page numbers such as `page=abc`, `page=0`, `page=-1` and a page higher than the last page.
 - Checking the deployed site on Render after each deployment.
 
 ### Automated Testing
@@ -388,6 +424,14 @@ The `project-checks.yml` GitHub Actions workflow runs Django checks and backend 
 
 - **Showing commit information per file:** Each file tree's row commit data requires one request per row. This was limited by capping the tree at 25 rows and caching each response for 10 minutes.
 
+- **Showing social link icons:** GitHub only returns a provider name and URL for social links, and platforms such as YouTube came back with the `generic` provider, so relying on the provider alone only showed a link icon. The `simple-icons` package was used to show popular platform icons where available, matched through a lookup object, with a generic link icon as the fallback. When the provider is `generic`, the platform name is taken from the URL's domain instead, for example `youtube` from `https://www.youtube.com`, by removing `https://` and `www.` and keeping the first part of the hostname. The displayed link text is shortened with a regular expression that removes the protocol and optional `www.`.
+
+- **Retrieving organisation profile READMEs:** A user's profile README is in the repository named after their username, but an organisation's is `profile/README.md` in its `.github` repository. The README function in `github_client.py` was given an optional path parameter, using GitHub's contents API for nested paths, and the profile README view checks whether the profile is an organisation before choosing the location.
+
+- **Slow followers and following lists:** GitHub's lists only return a username and avatar, so each account needed its own profile request. Each lookup waited for the one before it, which caused a delay of 15 to 20 seconds per page. A thread pool (`ThreadPoolExecutor` with `max_workers=10`) now runs the 20 lookups ten at a time, reducing an uncached page to roughly five seconds, and the page is cached afterwards.
+
+- **Handling invalid page numbers and large counts:** A page number higher than the last page loaded an empty list, and values such as `page=abc` or `page=-1` stayed in the address. The `Pagination` component now redirects a page above the last page to the last page, and a page below 1 or one that is not a number to page 1, which covers search, topic and profile lists. Counts in the millions also wrapped onto a second line in the sidebar, so a shared `formatCount` helper uses `Intl.NumberFormat` with compact notation to shorten values such as 1,000 to 1K.
+
 Further challenges and solutions will be documented as development continues.
 
 ## 12. What Was Learned
@@ -396,7 +440,7 @@ The development of Clonvix provided practical experience in building a full-stac
 
 Frontend development involved learning React and TypeScript while building a larger application. This included working with reusable components, props, interfaces, hooks, React Router and Tailwind CSS. It also involved managing application state, handling asynchronous data fetching, synchronising search parameters with URL queries, implementing responsive layouts and supporting multiple themes.
 
-Integrating the GitHub REST API provided experience with external API authentication, request handling, rate limits, response structures and server-side caching. It also highlighted the importance of separating API communication from application logic and handling external data reliably.
+Integrating the GitHub REST API provided experience with external API authentication, request handling, rate limits, response structures and server-side caching. It also highlighted the importance of separating API communication from application logic and handling external data reliably. Building the profile pages also introduced running requests concurrently with a thread pool, which showed how much of a page's load time can come from waiting on external APIs.
 
 Database development involved working with PostgreSQL, Django models, migrations and database relationships. The project also introduced historical data collection through repository snapshots, allowing changes in GitHub star counts to be calculated over time.
 
@@ -421,9 +465,11 @@ Overall, the project brought together frontend development, backend architecture
 - [HTML documentation](https://developer.mozilla.org/en-US/docs/Web/HTML)
 - [CSS documentation](https://developer.mozilla.org/en-US/docs/Web/CSS)
 - [JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
 - [Vite documentation](https://vite.dev/guide/)
 - [Tailwind CSS documentation](https://tailwindcss.com/docs)
 - [Lucide React documentation](https://lucide.dev/guide/packages/lucide-react)
+- [Simple Icons documentation](https://github.com/simple-icons/simple-icons)
 - [react-markdown documentation](https://github.com/remarkjs/react-markdown)
 - [rehype-raw documentation](https://github.com/rehypejs/rehype-raw)
 - [rehype-sanitize documentation](https://github.com/rehypejs/rehype-sanitize)
@@ -431,6 +477,7 @@ Overall, the project brought together frontend development, backend architecture
 
 ### Backend and API
 - [Python documentation](https://docs.python.org/3/)
+- [Python concurrent.futures documentation](https://docs.python.org/3/library/concurrent.futures.html)
 - [Django documentation](https://docs.djangoproject.com/)
 - [Django custom authentication documentation](https://docs.djangoproject.com/en/6.1/topics/auth/customizing/)
 - [Django admin site documentation](https://docs.djangoproject.com/en/6.1/ref/contrib/admin/)
@@ -451,6 +498,9 @@ Overall, the project brought together frontend development, backend architecture
 ### External services
 - [GitHub REST API documentation](https://docs.github.com/en/rest)
 - [GitHub REST API pagination documentation](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
+- [GitHub REST API followers documentation](https://docs.github.com/en/rest/users/followers)
+- [GitHub REST API social accounts documentation](https://docs.github.com/en/rest/users/social-accounts)
+- [GitHub REST API repository contents documentation](https://docs.github.com/en/rest/repos/contents)
 - [GitHub personal access tokens documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 - [GitHub Apps documentation](https://docs.github.com/en/apps)
 - [Cloudinary documentation](https://cloudinary.com/documentation)
