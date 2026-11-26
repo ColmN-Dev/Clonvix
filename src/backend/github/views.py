@@ -11,6 +11,7 @@ from .services import  cached_repository_search, cached_user_search, cached_topi
 # ====================================================
 
 def search_view(request):
+    """View to handle search requests for repositories, users, and topics."""
     query = request.GET.get("q", "").strip()
     if not query:
         return JsonResponse({"error": "Missing search query."}, status=400)

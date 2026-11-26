@@ -152,12 +152,15 @@ def get_repository_count(owner, repo, resource):
     return len(response.json())
 
 def get_repository_commits(owner, repo):
+    """Get the total number of commits in a GitHub repository."""
     return get_repository_count(owner, repo, "commits")
 
 def get_repository_branches(owner, repo):
+    """Get the total number of branches in a GitHub repository."""
     return get_repository_count(owner, repo, "branches")
 
 def get_repository_tags(owner, repo):
+    """Get the total number of tags in a GitHub repository."""
     return get_repository_count(owner, repo, "tags")
 
 def get_repository_latest_commit(owner, repo, path=None):
