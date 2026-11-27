@@ -57,13 +57,13 @@
   <br>
 
   <div align="center">
-      <img src="docs/images/homepage-v6-dark.png" alt="Clonvix home page" width="100%">
+      <img src="docs/images/homepage-v7-dark.png" alt="Clonvix home page" width="100%">
       <br><br>
-      <img src="docs/images/search-results-v5.png" alt="Clonvix search results page" width="100%">
+      <img src="docs/images/search-results-v6.png" alt="Clonvix search results page" width="100%">
       <br><br>
-      <img src="docs/images/repository-detail.png" alt="Clonvix repository detail page" width="100%">
+      <img src="docs/images/repository-detail-v2.png" alt="Clonvix repository detail page" width="100%">
       <br><br>
-      <img src="docs/images/github-profile-v2.png" alt="Clonvix github profile page" width="100%">
+      <img src="docs/images/github-profile-v3.png" alt="Clonvix github profile page" width="100%">
   </div>
   
   <br>
@@ -86,14 +86,19 @@
 - Backend integration with server-side caching to reduce GitHub API requests.
 - PostgreSQL-backed daily repository star snapshots.
 - Automated GitHub Actions workflows for backend testing and frontend quality checks.
+- User registration, login and session-based authentication.
+- Protected routes and global authentication state management.
+- Profile editing, including profile images and social links.
+- Account settings with username, email and password management.
+- Email verification and password-reset functionality using Brevo.
+- Account deletion with password confirmation and Cloudinary image cleanup.
+- Automated tests covering authentication, profiles and account management.
 
 ### Planned
 
-- User registration, login and account management.
 - Save repositories independently of GitHub stars.
 - Follow Clonvix users and GitHub developers.
 - GitHub account connection and OAuth login.
-- Profile customisation and additional account features.
 - Further accessibility, testing and responsive improvements.
 
 ## Technology stack
@@ -111,11 +116,11 @@
 
 ## Latest Release
 
-**[v0.7.0 — GitHub Developer Profiles](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.7.0)**
+**[v0.8.0 — Authentication & Account Management](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.8.0)**
 
-Introduces GitHub user and organisation profiles, including repository exploration, README previews, and follower/following views.
+Introduces user authentication and account management, including profile customisation, email verification, password recovery and account deletion.
 
-See the [full release notes](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.7.0) for details.
+See the [full release notes](https://github.com/ColmN-Dev/Clonvix/releases/tag/v0.8.0) for details.
 
 ## Getting started
 
@@ -171,6 +176,7 @@ REDIS_URL=replace-with-your-redis-connection-url
 CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 GITHUB_API_TOKEN=replace-with-a-github-personal-access-token
 BREVO_API_KEY=replace-with-your-brevo-api-key
+BREVO_SENDER_EMAIL=email-for-sending-transactional-emails
 ```
 
 The database URL can be replaced with a Neon connection string when using a hosted PostgreSQL database. Set `DB_SSL=True` if the host requires SSL and the connection string does not already include it.
@@ -240,6 +246,8 @@ Environment variables set on Render:
 | `REDIS_URL` | Upstash Redis connection string |
 | `CLOUDINARY_URL` | Cloudinary connection details |
 | `BREVO_API_KEY` | Brevo API authentication key |
+| `BREVO_SENDER_EMAIL` | Brevo transactional email sender address |
+| `FRONTEND_URL` | Frontend application URL used for email verification and password-reset links |
 
 ## Project structure
 
@@ -282,9 +290,7 @@ Additional project documentation is available in the [`docs`](docs/) directory.
 
 ## Roadmap
 
-1. Add user registration, login and account management.
-2. Implement saved repositories and developer-following features.
-3. Integrate GitHub account connection and OAuth login.
-4. Expand profile customisation and portfolio features.
-5. Integrate remaining external services.
-6. Improve testing, accessibility, responsiveness and production readiness.
+1. Implement saved repositories and developer-following features.
+2. Integrate GitHub account connection and OAuth login.
+3. Integrate remaining external services.
+4. Improve testing, accessibility, responsiveness and production readiness.
