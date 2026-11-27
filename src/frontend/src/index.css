@@ -4909,6 +4909,35 @@ body.menu-open {
   }
 }
 
+/* ========================================
+   Profile Actions Responsive
+   ======================================== */
+
+@media (max-width: 1110px) {
+  .profile-actions {
+    flex-wrap: wrap;
+  }
+
+  .profile-action-link {
+    flex: 0 1 auto;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-actions {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+  }
+
+  .profile-action-link {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 376px) {
   .profile-actions {
     flex-direction: column;
