@@ -3180,6 +3180,7 @@ button {
 /* ========================================
    Delete Account Modal
    ======================================== */
+
 .delete-account-modal-overlay {
   position: fixed;
   inset: 0;
@@ -3229,6 +3230,9 @@ button {
 
 .delete-password-wrapper input {
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
   padding: 0.85rem 3rem 0.85rem 1rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
