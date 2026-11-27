@@ -4925,7 +4925,7 @@ body.menu-open {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .profile-actions {
     flex-wrap: nowrap;
     gap: 0.4rem;
