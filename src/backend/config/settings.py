@@ -3,11 +3,15 @@ from pathlib import Path
 
 import dj_database_url
 from dotenv import load_dotenv
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables from .env file at the root of the project
 load_dotenv(BASE_DIR.parent.parent / '.env')
+
+# Cloudinary configuration (ensures that the URLs generated for media files are HTTPS)
+cloudinary.config(secure=True)
 
 # Environment variables
 
@@ -20,6 +24,8 @@ BREVO_API_KEY = os.getenv('BREVO_API_KEY')
 CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
 
 # Hosting and Cross-Origin Configuration
 
@@ -34,6 +40,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
+# Origins trusted for CSRF checks
+CSRF_TRUSTED_ORIGINS = [
+    'https://clonvix.onrender.com',
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:8000",
+]
+
+# Tells Django the request came in over HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
@@ -46,8 +63,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'github',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 # Override the default Django user model
@@ -126,6 +145,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'accounts.validators.PasswordCharacterValidator',
     },
 ]
 

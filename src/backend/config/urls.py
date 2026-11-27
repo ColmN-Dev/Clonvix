@@ -15,6 +15,7 @@ def api_status(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/status/', api_status, name='api_status'),
+    path('api/accounts/', include('accounts.urls')),
     path('api/github/', include('github.urls')),
     re_path(r'^(?!api/|admin/|static/).*$', TemplateView.as_view(template_name='index.html')),
 ]

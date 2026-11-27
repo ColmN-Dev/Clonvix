@@ -1,8 +1,6 @@
 import { useParams, Link, useSearchParams } from 'react-router'
 import { useState, useEffect } from 'react'
 import { MapPin, UsersRound, Link as LinkIcon, BookBookmark, Star, GitFork } from 'lucide-react'
-import { siYoutube, siInstagram, siTwitch, siMastodon, siFacebook, siTelegram, siDiscord, siBluesky, siX, siReddit } from 'simple-icons'
-import type { SimpleIcon } from 'simple-icons'
 import type { GithubProfile, GithubUser } from '../types/github_profile'
 import type { ProfileReadme } from '../types/readme'
 import ReadmeContent from '../components/ReadmeContent'
@@ -11,20 +9,7 @@ import UserCard from '../components/UserCard'
 import Pagination from '../components/Pagination'
 import { timeAgo } from '../utils/timeAgo'
 import { formatCount } from '../utils/formatCount'
-
-// Mapping of social media providers to their corresponding Simple Icons
-const socialIcons: Record<string, SimpleIcon> = {
-    youtube: siYoutube,
-    instagram: siInstagram,
-    twitch: siTwitch,
-    mastodon: siMastodon,
-    facebook: siFacebook,
-    telegram: siTelegram,
-    discord: siDiscord,
-    bluesky: siBluesky,
-    x: siX,
-    reddit: siReddit,
-}
+import { socialIcons } from '../utils/socialIcons'
 
 interface GithubProfileRepo {
     id: number

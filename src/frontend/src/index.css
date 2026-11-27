@@ -222,7 +222,7 @@ button {
   display: flex;
   flex: 1;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   font-size: 1rem;
 }
 
@@ -243,6 +243,65 @@ button {
   box-shadow: 0 0 12px var(--accent);
   color: var(--accent);
   text-shadow: 0 0 12px var(--accent);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 1rem;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.auth-links a,
+.auth-links button {
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  transition: color 0.2s ease, background 0.2s ease,
+    border-color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+.auth-links a:not(.profile-link):hover,
+.auth-links button:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  background: var(--bg-primary);
+  box-shadow: 0 0 12px var(--accent);
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  transition: box-shadow 0.2s ease;
+}
+
+.profile-link:hover {
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+.profile-link .profile-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: box-shadow 0.2s ease;
+}
+
+.profile-link:hover .profile-avatar {
+  box-shadow: 0 0 12px var(--accent);
 }
 
 /* ========================================
@@ -335,7 +394,7 @@ button {
 }
 
 /* ========================================
-   Error Message
+   Message Alerts
    ======================================== */
 
 .error-message {
@@ -348,6 +407,31 @@ button {
   background-color: rgba(220, 38, 38, 0.1);
   color: #dc2626;
   margin: 2rem auto;
+}
+
+.success-message {
+  padding: 0.75rem 2rem;
+  max-width: 75rem;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #16a34a;
+  border-radius: 0.5rem;
+  background-color: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+  margin: 2rem auto;
+}
+
+.auth-message {
+  animation: fadeOut 5s ease forwards;
+}
+
+@keyframes fadeOut {
+  0%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ========================================
@@ -2222,6 +2306,38 @@ button {
   color: var(--text-primary);
 }
 
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  padding-top: 0.5rem;
+}
+
+.profile-action-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.profile-action-link:hover {
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
 .profile-connections {
   display: flex;
   align-items: center;
@@ -2495,6 +2611,834 @@ button {
 }
 
 /* ========================================
+   Authentication
+   ======================================== */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 3rem 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 28rem;
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h1 {
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
+}
+
+.auth-form input:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.auth-form input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.auth-form button:not(.password-toggle) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.auth-form button:hover {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+}
+
+.forgot-password-link {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.forgot-password-link a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.forgot-password-link a:hover {
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent);
+}
+
+.auth-switch {
+  width: 100%;
+  max-width: 28rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  text-align: center;
+}
+
+.auth-switch p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.auth-switch a {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.auth-switch a:hover {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  padding-right: 3rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease, text-shadow 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 999px;
+}
+
+.password-toggle:hover {
+  color: var(--accent);
+}
+
+.page-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50vh;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ========================================
+   Edit Profile
+   ======================================== */
+
+.edit-profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 1.5rem;
+}
+
+.edit-profile-page h1 {
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.profile-image-card,
+.profile-information-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image-card h2,
+.profile-information-card h2 {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.profile-image-card > div,
+.profile-information-card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-image-card input[type="file"] {
+  cursor: pointer;
+}
+
+.edit-profile-form label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.edit-profile-form input,
+.edit-profile-form textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
+}
+
+.edit-profile-form input:hover,
+.edit-profile-form textarea:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.edit-profile-form textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.edit-profile-form input::placeholder,
+.edit-profile-form textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.edit-profile-form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.edit-profile-form button:hover {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.edit-profile-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.edit-profile-form button:disabled:hover {
+  color: var(--text-primary);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* ========================================
+   Social Links Editor
+   ======================================== */
+
+.social-links-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.social-links-editor > label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.social-link-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.social-link-input input {
+  flex: 1 1 15rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-link-input input::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+.social-link-input input:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.social-link-input input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.social-links-editor button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.social-links-editor button:hover:not(:disabled) {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.social-links-editor button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+/* ========================================
+   Account Settings
+   ======================================== */
+
+.account-settings-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 1.5rem;
+}
+
+.account-settings-page h1 {
+  width: 100%;
+  max-width: 40rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.account-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.account-information-card,
+.connected-accounts-card,
+.danger-zone-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.account-settings-form h2 {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.account-setting-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.account-setting-field h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.account-setting-field input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, outline 0.2s ease;
+}
+
+.account-setting-field button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.password-settings input {
+  width: 100%;
+}
+
+.password-settings button:not(.password-toggle) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+}
+
+.password-settings .password-toggle {
+  padding: 0.25rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.password-settings .password-toggle:hover {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.danger-zone-card {
+  border-color: #dc5555;
+}
+
+.danger-zone-card h2 {
+  font-size: 1.5rem;
+}
+
+.danger-zone-card label {
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.danger-zone-card p {
+  gap: 0.5rem;
+  line-height: 1.2;
+}
+
+.delete-account-button {
+  padding: 0.7rem 1rem;
+  border: 1px solid #dc5555;
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: #dc5555;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+.delete-account-button:hover {
+  color: #ff0000;
+  text-shadow: 0 0 12px #ff0000;
+  box-shadow: 0 0 12px #ff0000;
+}
+
+/* ========================================
+   Delete Account Modal
+   ======================================== */
+.delete-account-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.delete-account-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 28rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.delete-account-modal h2 {
+  color: #dc5555;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.delete-account-modal p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.delete-account-modal label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.delete-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.delete-password-wrapper input {
+  width: 100%;
+  padding: 0.85rem 3rem 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.delete-password-wrapper button {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.delete-account-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.delete-account-modal-actions button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* Cancel button */
+.delete-account-modal-actions button:first-child {
+  transition: color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.delete-account-modal-actions button:first-child:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* Delete Account button */
+.delete-account-modal-actions button:last-child {
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.delete-account-modal-actions button:last-child:hover {
+  border-color: #ff0000;
+  background: #ff0000;
+  box-shadow: 0 0 12px #ff0000;
+}
+
+/* Password input */
+.delete-password-wrapper input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.delete-password-wrapper input:focus {
+  outline: none;
+  border-color: #dc5555;
+  box-shadow: 0 0 8px #dc5555;
+}
+
+.delete-account-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-account-error {
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #dc2626;
+  border-radius: 0.5rem;
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+.delete-account-success {
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #16a34a;
+  border-radius: 0.5rem;
+  background-color: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: -1.5rem;
+  text-align: center;
+}
+
+/* ========================================
+   Verify Email
+   ======================================== */
+
+.verify-email-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 80vh;
+  padding: 3rem 1.5rem;
+}
+
+.verify-email-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 32rem;
+  padding: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.verify-email-card > svg {
+  color: var(--accent);
+}
+
+.verify-email-card h1 {
+  color: var(--text-primary);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.verify-email-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.verification-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  text-align: left;
+}
+
+.verification-status span {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.verification-status strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.verify-email-card button {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.verify-email-card button:hover:not(:disabled) {
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.verify-email-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.verify-email-card small {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.verify-email-card a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.verify-email-card a:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
    Footer
    ======================================== */
 
@@ -2645,7 +3589,7 @@ body.menu-open {
   overflow: hidden;
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1150px) {
   :root {
     --header-height: 76px;
   }
@@ -2661,6 +3605,10 @@ body.menu-open {
   }
 
   .site-header > .nav-links {
+    display: none;
+  }
+
+  .auth-links {
     display: none;
   }
 
@@ -2737,14 +3685,19 @@ body.menu-open {
     gap: 0;
   }
 
-  .mobile-menu .nav-links a {
+  .mobile-menu .nav-links a,
+  .mobile-menu .nav-links button {
     padding: 1rem 0.5rem;
     border-bottom: 1px solid var(--border);
     border-radius: 0;
+    color: var(--text-secondary);
     font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
   }
 
-  .mobile-menu .nav-links a:hover {
+  .mobile-menu .nav-links a:hover,
+  .mobile-menu .nav-links button:hover {
     transform: translateX(5px);
     background: transparent;
     box-shadow: none;
@@ -3766,14 +4719,43 @@ body.menu-open {
 }
 
 @media (max-width: 400px) {
-  .profile-repositories-dropdown {
-    width: 100%;
-    margin-left: 0;
-  }
+.profile-repositories-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.profile-repositories-title {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.profile-repositories-dropdown {
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
   .profile-repo-card {
     padding: 1rem;
   }
+}
+
+@media (max-width: 375px) {
+.profile-repositories-header {
+    flex-wrap: wrap;
+}
+
+.profile-repositories-title {
+    font-size: 1rem;
+}
+
+.profile-repositories-dropdown {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 0;
+}
 }
 
 /* ========================================
@@ -3848,5 +4830,155 @@ body.menu-open {
     .profile-users-back {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
+  }
+}
+
+/* ========================================
+   Authentication Responsive
+   ======================================== */
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 2rem 1rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+  }
+}
+
+/* ========================================
+   Profile Header Responsive
+   ======================================== */
+
+@media (max-width: 1150px) {
+ .mobile-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-profile-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+}
+
+/* ========================================
+   Edit Profile Responsive
+   ======================================== */
+
+@media (max-width: 400px) {
+  .edit-profile-page {
+    padding: 2rem 1rem;
+  }
+
+  .edit-profile-form {
+    padding: 1.5rem 1rem;
+  }
+
+  #website {
+    width: 100%;
+    flex: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .social-link-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .social-link-input input {
+    width: 100%;
+    flex: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .social-link-input button {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 376px) {
+  .profile-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+}
+
+/* ========================================
+   Account Settings Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .account-settings-page {
+    padding: 2rem 1rem;
+  }
+
+  .account-settings-page h1 {
+    font-size: 1.6rem;
+  }
+
+  .account-information-card,
+  .connected-accounts-card,
+  .danger-zone-card {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-settings-page {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .account-settings-page h1 {
+    font-size: 1.4rem;
+  }
+
+  .account-settings-form {
+    gap: 1rem;
+  }
+
+  .account-information-card,
+  .connected-accounts-card,
+  .danger-zone-card {
+    padding: 1.25rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .account-settings-form h2 {
+    font-size: 1.1rem;
+  }
+
+  .account-setting-field {
+    gap: 0.6rem;
+  }
+
+  .account-setting-field input {
+    padding: 0.8rem;
+    font-size: 16px;
+  }
+
+  .password-settings button:not(.password-toggle) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ========================================
+   Verify Email Responsive
+   ======================================== */
+
+@media (max-width: 480px) {
+  .verify-email-card {
+    padding: 2rem 1.5rem;
   }
 }

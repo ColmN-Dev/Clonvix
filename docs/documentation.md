@@ -132,7 +132,7 @@ Clonvix developer profiles and further authenticated functionality remain to be 
 
 The frontend is a React application written in TypeScript and built with Vite. The entry point renders the `App` component, which uses React Router to handle navigation between the Home, About, ColmN-Dev, Contact, Topic,Repository Detail, GitHub Profile, Search and Search Results pages. The About and Contact pages are placeholders for now.
 
-The layout is built from separate components. `Header` contains the Clonvix logo and title, the `Nav` links and the `ThemeToggle`. `Footer` contains the brand, explore links and a GitHub link. On screens below 1050px, the navigation links collapse into a hamburger button that opens a slide-out menu with a dark overlay. The button switches between a menu and close icon, and the menu closes when the overlay or a link is clicked. Icons come from [`lucide-react`](https://lucide.dev/icons/).
+The layout is built from separate components. `Header` contains the Clonvix logo and title, the `Nav` links and the `ThemeToggle`. `Footer` contains the brand, explore links and a GitHub link. On screens below 1150px, the navigation links collapse into a hamburger button that opens a slide-out menu with a dark overlay. The button switches between a menu and close icon, and the menu closes when the overlay or a link is clicked. Icons come from [`lucide-react`](https://lucide.dev/icons/).
 
 The theme toggle offers System, Light and Dark. The choice is saved in `localStorage` and applied by setting a `data-theme` attribute on the `<html>` element. In System mode, the attribute is removed and the CSS follows the operating system through `prefers-color-scheme`.
 
@@ -142,7 +142,7 @@ Tailwind CSS v4 is configured through the Vite plugin, alongside a custom styles
 - Light and dark colour themes, with a darker green accent in light mode and a lime accent in dark mode.
 - Shared background, text, border and card colour variables.
 - Header, navigation, theme toggle and footer styles.
-- The hamburger menu and responsive breakpoints for screens below 1050px, tablets, small phones and landscape phones.
+- The hamburger menu and responsive breakpoints for screens below 1150px, tablets, small phones and landscape phones.
 - Basic `focus-visible` styling for keyboard accessibility.
 - Custom text selection colours that follow the active theme.
 
